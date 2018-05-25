@@ -2,20 +2,20 @@ package modeluser
 
 import (
 	"../../connect"
-	"fmt"
-	"io/ioutil"
+	//"fmt"
+	//"io/ioutil"
 	"log"
-	"bytes"
-	"net/http"
-	"encoding/json"
-	"encoding/hex"
+	//"bytes"
+	//"net/http"
+	//"encoding/json"
+	//"encoding/hex"
 	"golang.org/x/crypto/bcrypt"
-	"crypto/md5"
-	"mime/multipart"
-	"strconv"
+	//"crypto/md5"
+	//"mime/multipart"
+	//"strconv"
 	"time"
-	"strings"
-	"google.golang.org/api/drive/v3"
+	//"strings"
+	//"google.golang.org/api/drive/v3"
 )
 
 type Cities struct {
@@ -58,6 +58,15 @@ type ResponseUser struct {
 	Message  					string 		`json:Message`
 }
 
+type ResponseUserId struct {
+	Status       				string       `json:Status`
+	User         				Users        `json:User`
+	People      				People     	 `json:Profiles`
+	Roles_idrole 				int          `json:Roles_idrole`
+	Namecities   				string       `json:Namecities`
+	Namecountry  				string       `json:Namecountry`
+}
+
 type Listeners struct {
 	Id           		int    `gorm:"primary_key;column:cilistener" json:idlisteners`
 }
@@ -65,49 +74,50 @@ type Listeners struct {
 //Crear nuevo usuario
 func CreateUser(user Users, people People, cities Cities, countries Countries) Users {
 
-	//Creacion de people
-	connect.GetConnection().Create(&people)
-
-	//Creacion de user
-	user = EncrypPassword(user)
-	user.Created_at = "0000-00-00 00:00:00"
-	user.Id = people.Id
-	connect.GetConnection().Create(&user) //Creara una id cada vez
-
+	//Creacion de cities y countries
 	connect.GetConnection().Create(&countries)
 
 	cities.Countries_idcountries = countries.Id
 	connect.GetConnection().Create(&cities)
 
+	//Creacion de people
+	people.Countries_idcountries = countries.Id
+	connect.GetConnection().Create(&people)
+
+	//Creacion de user
+	user = EncrypPassword(user)
+
+	t := time.Now()
+	user.Created_at = t.String()
+	user.Id = people.Id
+	connect.GetConnection().Create(&user) //Creara una id cada vez
+
 	return user //Para usar luego esa id
 }
 
 //Consulta a la base de datos para obtener la informacion de un usuario por id
-func GetUser(id string) (Users, People, int, string, string, string, string) {
+func GetUser(id string) (Users, People, int, string, string) {
 	var user Users
 	var people People
 	var roles Roles
 	var countries Countries
-	var cities Citiesr
+	var cities Cities
 
-	connect.GetConnection().Where("iduser = ?", id).First(&user)
-	connect.GetConnection().Where("users_iduser = ?", id).First(&people)
+	connect.GetConnection().Where("ciuser = ?", id).First(&user)
+	connect.GetConnection().Where("cipeople = ?", id).First(&people)
 	connect.GetConnection().Where("idrole = ?", user.Roles_idrole).First(&roles)
-	connect.GetConnection().Where("people_users_iduser = ?", id).First(&countries)
+	connect.GetConnection().Where("idcountries = ?", people.Countries_idcountries).First(&countries)
 	connect.GetConnection().Where("countries_idcountries = ?", countries.Id).First(&cities)
-	connect.GetConnection().Table("creditcard").Where("users_iduser = ?", id).Find(&creditcard)
-	connect.GetConnection().Table("featureuser").Where("users_iduser = ? ", id).First(&featureusers)
 
-	return user, people, roles.Id,.Namelanguage, cities.Namecities, countries.Namecountry, countries.Areacode, creditcard, featureusers
+	return user, people, roles.Id, cities.Namecities, countries.Namecountry
 }
 
 
-
 //Función para ver todos los usuarios
-func GetUsers(status int) []UserRol {
+func GetUsers(status int) []Users {
 	var users []Users
 
-	var userrol []UserRol
+	//var userrol []UserRol
 /*
 	if status == -1 {
 		connect.GetConnection().Select("*").Find(&users)
@@ -125,7 +135,7 @@ func GetUsers(status int) []UserRol {
 		}
 	}
 */
-	return userrol
+	return users
 }
 
 //Buscar el usuario con el email
@@ -161,7 +171,7 @@ func UpdatePassword(user Users, password string) {
 }
 
 //Función para actualizar un usuario
-func UpdateUs(id string, user Users, people People, cities Cities, countries Countries, FileLogo multipart.File, HandleLogo *multipart.FileHeader, FileIcon multipart.File, HandleIcon *multipart.FileHeader) Users {
+func UpdateUs(id string, user Users, people People, cities Cities, countries Countries) Users {
 	if user.Password == "" {
 		passworduser := GetUsuario(user.Email)
 		user.Password = passworduser.Password
@@ -171,11 +181,11 @@ func UpdateUs(id string, user Users, people People, cities Cities, countries Cou
 
 	t := time.Now()
 	user.Updated_at = t.String()
-	connect.GetConnection().Table("users").Where("iduser = ?", id).Updates(user)
-	connect.GetConnection().Table("people").Where("users_iduser = ?", id).Updates(people)
+	connect.GetConnection().Table("users").Where("ciuser = ?", id).Updates(user)
+	connect.GetConnection().Table("people").Where("ciuser = ?", id).Updates(people)
 
-	connect.GetConnection().Table("countries").Where("profiles_users_iduser = ?", id).Updates(countries)
-	connect.GetConnection().Table("cities").Where("countries_idcountries= ?", countries.Id).Updates(cities)
+	connect.GetConnection().Table("countries").Where("idcountries = ?", people.Countries_idcountries).Updates(countries)
+	connect.GetConnection().Table("cities").Where("countries_idcountries = ?", countries.Id).Updates(cities)
 
 	return user
 }
@@ -205,12 +215,10 @@ func DeleteUser(iduser string) Users {
 	var countries Countries
 	var cities Cities
 
-	connect.GetConnection().Where("iduser = ?", iduser).First(&user)
-	connect.GetConnection().Where("users_iduser = ?", iduser).First(&people)
-	connect.GetConnection().Where("users_iduser = ?", iduser).First()
-	connect.GetConnection().Where("profiles_users_iduser = ?", iduser).First(&countries)
+	connect.GetConnection().Where("ciuser = ?", iduser).First(&user)
+	connect.GetConnection().Where("cipeople = ?", iduser).First(&people)
+	connect.GetConnection().Where("idcountries = ?", people.Countries_idcountries).First(&countries)
 	connect.GetConnection().Where("countries_idcountries = ?", countries.Id).First(&cities)
-	connect.GetConnection().Table("featureuser").Where("users_iduser = ?", iduser).First(&featureuser)
 
 	if cities.Id != 0 {
 		connect.GetConnection().Delete(&cities)
@@ -220,29 +228,27 @@ func DeleteUser(iduser string) Users {
 		connect.GetConnection().Delete(&countries)
 	}
 
-	if.Id != 0 {
-		connect.GetConnection().Delete()
-	}
-
 	connect.GetConnection().Exec("DELETE FROM `listeners_has_notifications` WHERE `listeners_has_notifications`.`Notifications_users_iduser` = " + iduser)
 	connect.GetConnection().Exec("DELETE FROM `listeners_has_users` WHERE `listeners_has_users`.`users_iduser` = " + iduser)
 	connect.GetConnection().Exec("DELETE FROM `notifications` WHERE `notifications`.`users_iduser` = " + iduser)
 
-	if people.Id != 0 {
-		log.Println("Borrando profile")
-		connect.GetConnection().Delete(&people)
-	}
-
-	idDriveUserfolder := modelimages.SearchIdDrive("User" + iduser)
-	modelimages.GetSrv().Files.Delete(idDriveUserfolder).Do()
 	if user.Id != 0 {
 		connect.GetConnection().Delete(&user)
 	}
 
-	if featureuser.Idfeatureuser != 0 {
+	if people.Id != 0 {
+		log.Println("Borrando perfil")
+		connect.GetConnection().Delete(&people)
+	}
+
+	//idDriveUserfolder := modelimages.SearchIdDrive("User" + iduser)
+	//modelimages.GetSrv().Files.Delete(idDriveUserfolder).Do()
+	
+
+	/*if featureuser.Idfeatureuser != 0 {
 		log.Println("Borrando feature user")
 		connect.GetConnection().Table("featureuser").Delete(&featureuser)
-	}
+	}*/
 
 	return user
 }

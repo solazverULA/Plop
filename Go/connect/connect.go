@@ -9,7 +9,6 @@ import (
 )
 
 var connection *gorm.DB
-var connectionbusiness *gorm.DB
 
 const engine_sql string = "mysql"
 
@@ -24,31 +23,22 @@ func BeforeCreate(scope *gorm.Scope) {
 
 //Inicializa la Base de Datos
 func InicializarBaseDatos() {
-	//connection = ConexionORM(CrearString("root", "", "notificator"))
-	//connection = ConexionORM(CrearString("root", "Soporte2011", "notificator"))
-	connection = ConexionORM(CrearString("root", "", "notificator"))
-	connectionbusiness = ConexionORM(CrearString("root", "", "business"))
+	connection = ConexionORM(CrearString("root", "", "plop"))
 
 	log.Println("La conexión con la base de datos fue exitosa.")
 
 	connection.Callback().Create().Register("BeforeCreate", BeforeCreate)
 	//connectionbusiness.Callback().Create().Register("BeforeCreateBussines", BeforeCreate)
 	connection.LogMode(true)
-	connectionbusiness.LogMode(true)
 }
 
 func GetConnection() *gorm.DB {
 	return connection
 }
 
-func GetConnectionBusiness() *gorm.DB {
-	return connectionbusiness
-}
-
 //Cierra la conexion con la base de datos
 func CerrarConexion() {
 	connection.Close()
-	connectionbusiness.Close()
 	log.Println("La conexión con la base de datos ha sido cerrada.")
 }
 

@@ -1,9 +1,9 @@
 package register
 
 import (
-	"bytes"
+	//"bytes"
 	"encoding/json"
-	"fmt"
+	//"fmt"
 	"log"
 	"net/http"
 
@@ -14,7 +14,7 @@ import (
 //Funcion para registrar un nuevo usuario
 func Register(w http.ResponseWriter, r *http.Request) {
 
-	user, people, _, cities, countries := user.GetDataFromUser(r)
+	user, people, _, cities, countries := user.GetUserRequest(r)
 
 	w.Header().Set("Content-Type", "text/html; charset-utf-8")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
