@@ -13,7 +13,7 @@ import (
 	//"crypto/md5"
 	//"mime/multipart"
 	//"strconv"
-	"time"
+	//"time"
 	//"strings"
 	//"google.golang.org/api/drive/v3"
 )
@@ -34,13 +34,13 @@ type Users struct {
 	Id                  		int    		`gorm:"primary_key;column:ciuser" json:iduser` //Que nombre de columna va a buscar en la bd
 	Email               		string 		`gorm:"column:email" json:Email`
 	Password            		string 		`gorm:"column:pasword json:Password`
-	Created_at          		string 		`gorm:"column:created_at json:Created_at` //time
-	Updated_at          		string 		`gorm:"column:updated_at json:Updated_at` //time
+	//Created_at          		string 		`gorm:"column:created_at json:Created_at` //time
+	//Updated_at          		string 		`gorm:"column:updated_at json:Updated_at` //time
 	Roles_idrole        		int    		`gorm:"column:rols_idrole" json:Roles_idrole`
 }
 
 type People struct {
-	Id           				int    		`gorm:"primary_key;column:cipeople" json:idprofiles`
+	Id           				int    		`gorm:"primary_key;column:cipeople" json:Idprofiles`
 	Nameprofile  				string 		`gorm:"column:name" json:Nameprofile`
 	Gender 						string 		`gorm:"column:gender" json:Gender`
 	Countries_idcountries 		int 		`gorm:"column:countries_idcountries" json:Countries_idcountries`
@@ -72,7 +72,7 @@ type Listeners struct {
 }
 
 //Crear nuevo usuario
-func CreateUser(user Users, people People, cities Cities, countries Countries) Users {
+func CreateUser(user Users, people People, rol Roles, cities Cities, countries Countries) Users {
 
 	//Creacion de cities y countries
 	connect.GetConnection().Create(&countries)
@@ -80,16 +80,20 @@ func CreateUser(user Users, people People, cities Cities, countries Countries) U
 	cities.Countries_idcountries = countries.Id
 	connect.GetConnection().Create(&cities)
 
+	//Creacion de roles
+	connect.GetConnection().Table("rols").Create(&rol)
+
 	//Creacion de people
 	people.Countries_idcountries = countries.Id
-	connect.GetConnection().Create(&people)
+	connect.GetConnection().Table("people").Create(&people)
 
 	//Creacion de user
 	user = EncrypPassword(user)
 
-	t := time.Now()
-	user.Created_at = t.String()
+	/*t := time.Now()
+	user.Created_at = t.String()*/
 	user.Id = people.Id
+	user.Roles_idrole = rol.Id
 	connect.GetConnection().Create(&user) //Creara una id cada vez
 
 	return user //Para usar luego esa id
@@ -179,8 +183,8 @@ func UpdateUs(id string, user Users, people People, cities Cities, countries Cou
 		user = EncrypPassword(user)
 	}
 
-	t := time.Now()
-	user.Updated_at = t.String()
+/*	t := time.Now()
+	user.Updated_at = t.String()*/
 	connect.GetConnection().Table("users").Where("ciuser = ?", id).Updates(user)
 	connect.GetConnection().Table("people").Where("ciuser = ?", id).Updates(people)
 

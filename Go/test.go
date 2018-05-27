@@ -10,14 +10,14 @@ import (
 
 //Test para enviar el post del usuario
 func main() {
-	url := "http://localhost:8001//register" //Ruta
+	url := "http://localhost:8001/register" //Ruta
 
-	var jsonStr = []byte(`{""}`)
+	var jsonStr = []byte(`{"Idprofiles":25154497, "Email":"anaelizabethguer1@gmail.com", "Password":"ana1510", "Nameprofile":"Ana", Rolename":"Administrador"}`)
 		
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
 	
 	fmt.Println("URL:>", url)
-	req.Header.Set("Authorization", " Bearer 81985fd0-76c7-4cc8-86f5-99effa1075c0")
+	//req.Header.Set("Authorization", " Bearer 81985fd0-76c7-4cc8-86f5-99effa1075c0")
 	//req.Header.Set("Content-Type", "multipart/form-data")
 	req.Header.Set("Content-Type", "application/json")
 
