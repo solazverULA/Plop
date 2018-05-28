@@ -4,8 +4,9 @@ import (
 	"net/http"
 	"encoding/json"
 	"../../Models/ModelUser"
-	//"strconv"
+	"strconv"
 	"github.com/gorilla/mux"
+	"mime/multipart"
 	"log"
 	"io/ioutil"
 	"fmt"
@@ -93,7 +94,7 @@ func GetUserRequest(r *http.Request) (modeluser.Users, modeluser.People, modelus
 	var countries modeluser.Countries
 
 	body, err := ioutil.ReadAll(r.Body) //Convierte el r.body en un json, ioutill convierte r a formato json
-	log.Println(body)
+	//log.Println(body)
 
 	json.Unmarshal(body, &struct { //Puedo dividir el json para las modeluser profiles y user
 		*modeluser.Users
@@ -101,13 +102,45 @@ func GetUserRequest(r *http.Request) (modeluser.Users, modeluser.People, modelus
 		*modeluser.Roles
 		*modeluser.Cities
 		*modeluser.Countries
-	}{&user, &people, &rol,&cities, &countries})
+	}{&user, &people, &rol, &cities, &countries})
 
 
 	if err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println(people)
 	fmt.Println("llego bien aqui")
 
 	return user, people, rol, cities, countries
+}
+
+///Funcion para agregar los datos del registro con la imagen incluida
+func GetDataFromUser(r *http.Request) (modeluser.Users, modeluser.People, modeluser.Cities, modeluser.Countries, multipart.File, *multipart.FileHeader) {
+	var profile modeluser.People
+	var user modeluser.Users
+	var cities modeluser.Cities
+	var countries modeluser.Countries
+
+	file, handle, err := r.FormFile("image")
+	if err != nil {
+		log.Println("no hay imagen %v", err)
+		file = nil
+		handle = nil
+	}
+	log.Println("%v", file)
+	user.Email = r.FormValue("Email")
+	user.Password = r.FormValue("Password")
+	Roles_idrole, _ := strconv.Atoi(r.FormValue("Roles_idrole"))
+	user.Roles_idrole = Roles_idrole
+
+	profile.Nameprofile = r.FormValue("Nameprofile")
+	profile.Gender = r.FormValue("Gender")
+
+	cities.Namecities = r.FormValue("Namecities")
+	countries.Namecountry = r.FormValue("Namecountry")
+
+	log.Println("usuario: ")
+	log.Println(user)
+
+	return user, profile, cities, countries, file, handle
 }

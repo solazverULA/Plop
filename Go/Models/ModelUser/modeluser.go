@@ -2,20 +2,22 @@ package modeluser
 
 import (
 	"../../connect"
+	"../ModelImages"
 	//"fmt"
-	//"io/ioutil"
+	"io/ioutil"
 	"log"
-	//"bytes"
+	"strconv"
+	"bytes"
 	//"net/http"
 	//"encoding/json"
 	//"encoding/hex"
 	"golang.org/x/crypto/bcrypt"
 	//"crypto/md5"
-	//"mime/multipart"
+	"mime/multipart"
 	//"strconv"
 	//"time"
 	//"strings"
-	//"google.golang.org/api/drive/v3"
+	"google.golang.org/api/drive/v3"
 )
 
 type Cities struct {
@@ -40,9 +42,11 @@ type Users struct {
 }
 
 type People struct {
-	Id           				int    		`gorm:"primary_key;column:cipeople" json:Idprofiles`
+	Id           				int    		`gorm:"column:cipeople" json:Idprofiles`
 	Nameprofile  				string 		`gorm:"column:name" json:Nameprofile`
 	Gender 						string 		`gorm:"column:gender" json:Gender`
+	Srclogo      				string 		`gorm:"column:src_logo" json:Srclogo`
+	Srcicon      				string 		`gorm:"column:src_icon" json:Srcicon`
 	Countries_idcountries 		int 		`gorm:"column:countries_idcountries" json:Countries_idcountries`
 }
 
@@ -72,7 +76,7 @@ type Listeners struct {
 }
 
 //Crear nuevo usuario
-func CreateUser(user Users, people People, rol Roles, cities Cities, countries Countries) Users {
+func CreateUser(user Users, people People, cities Cities, countries Countries, File multipart.File, Handle *multipart.FileHeader) Users {
 
 	//Creacion de cities y countries
 	connect.GetConnection().Create(&countries)
@@ -81,7 +85,7 @@ func CreateUser(user Users, people People, rol Roles, cities Cities, countries C
 	connect.GetConnection().Create(&cities)
 
 	//Creacion de roles
-	connect.GetConnection().Table("rols").Create(&rol)
+	//connect.GetConnection().Table("rols").Create(&rol)
 
 	//Creacion de people
 	people.Countries_idcountries = countries.Id
@@ -90,10 +94,65 @@ func CreateUser(user Users, people People, rol Roles, cities Cities, countries C
 	//Creacion de user
 	user = EncrypPassword(user)
 
+	vector := []string{modelimages.NotificatorDriveFolderId()}
+	//id := strconv.Itoa(user[len(user)-1].Id)
+	id := strconv.Itoa(user.Id)
+	if modelimages.SearchIdDrive("User"+id) == "" {
+		file_metadata := &drive.File{
+			Name:     "User" + id,
+			MimeType: "application/vnd.google-apps.folder",
+			Parents:  vector,
+		}
+
+		file, err := modelimages.GetSrv().Files.Create(file_metadata).Do()
+		if err != nil {
+			log.Printf("Failed to create file %v", err)
+		}
+
+		log.Printf("File: %+v", file)
+		IdUSerfolder := file.Id
+		if File != nil {
+			vector = []string{IdUSerfolder}
+			data, err := ioutil.ReadAll(File)
+			if err != nil {
+				log.Printf("%+v", err)
+
+			}
+			//permision, _ := modelimages.GetSrv().Permissions.Create("file.Id,", &drive.Permission{Role:"owner", Type:"anyone"}).Do()
+			file_metadata := &drive.File{
+				Name:     "ImageLogo" + id,
+				MimeType: Handle.Header.Get("Content-Type"),
+				Parents:  vector,
+			}
+			file, err := modelimages.GetSrv().Files.Create(file_metadata).Media(bytes.NewReader(data)).Do()
+			if err != nil {
+				log.Printf("Failed to create file %v", err)
+			}
+
+			log.Printf("File: %+v", file)
+			people.Srclogo = file.Id
+
+		}
+		vector = []string{IdUSerfolder}
+		file_metadata = &drive.File{
+			Name:     "UserNotification" + id,
+			MimeType: "application/vnd.google-apps.folder",
+			Parents:  vector,
+		}
+
+		file, err = modelimages.GetSrv().Files.Create(file_metadata).Do()
+		if err != nil {
+			log.Printf("Failed to create file %v", err)
+		}
+
+		log.Printf("File: %+v", file)
+
+	}
+
 	/*t := time.Now()
 	user.Created_at = t.String()*/
 	user.Id = people.Id
-	user.Roles_idrole = rol.Id
+	//user.Roles_idrole = rol.Id
 	connect.GetConnection().Create(&user) //Creara una id cada vez
 
 	return user //Para usar luego esa id

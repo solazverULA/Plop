@@ -139,6 +139,8 @@ CREATE TABLE `people` (
   `cipeople` int(11) NOT NULL,
   `name` varchar(45) DEFAULT NULL COMMENT 'User full name',
   `gender` varchar(45) DEFAULT NULL COMMENT 'User gender',
+  `src_logo` text COMMENT 'Drive id of user logo',
+  `src_icon` text COMMENT 'Drive id of icon user',
   `countries_idcountries` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -164,6 +166,8 @@ CREATE TABLE `users` (
   `ciuser` int(11) NOT NULL,
   `email` varchar(100) DEFAULT NULL COMMENT 'User Email for login to the application',
   `password` varchar(100) DEFAULT NULL COMMENT 'Password form the user',
+  `created_at` varchar(90) DEFAULT NULL,
+  `updated_at` varchar(90) DEFAULT NULL,
   `rols_idrole` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
