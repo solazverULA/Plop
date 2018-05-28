@@ -15,7 +15,7 @@ import (
 	//"crypto/md5"
 	"mime/multipart"
 	//"strconv"
-	//"time"
+	"time"
 	//"strings"
 	"google.golang.org/api/drive/v3"
 )
@@ -36,8 +36,8 @@ type Users struct {
 	Id                  		int    		`gorm:"primary_key;column:ciuser" json:iduser` //Que nombre de columna va a buscar en la bd
 	Email               		string 		`gorm:"column:email" json:Email`
 	Password            		string 		`gorm:"column:pasword json:Password`
-	//Created_at          		string 		`gorm:"column:created_at json:Created_at` //time
-	//Updated_at          		string 		`gorm:"column:updated_at json:Updated_at` //time
+	Created_at          		string 		`gorm:"column:created_at json:Created_at` //time
+	Updated_at          		string 		`gorm:"column:updated_at json:Updated_at` //time
 	Roles_idrole        		int    		`gorm:"column:rols_idrole" json:Roles_idrole`
 }
 
@@ -84,9 +84,6 @@ func CreateUser(user Users, people People, cities Cities, countries Countries, F
 	cities.Countries_idcountries = countries.Id
 	connect.GetConnection().Create(&cities)
 
-	//Creacion de roles
-	//connect.GetConnection().Table("rols").Create(&rol)
-
 	//Creacion de people
 	people.Countries_idcountries = countries.Id
 	connect.GetConnection().Table("people").Create(&people)
@@ -95,7 +92,6 @@ func CreateUser(user Users, people People, cities Cities, countries Countries, F
 	user = EncrypPassword(user)
 
 	vector := []string{modelimages.NotificatorDriveFolderId()}
-	//id := strconv.Itoa(user[len(user)-1].Id)
 	id := strconv.Itoa(user.Id)
 	if modelimages.SearchIdDrive("User"+id) == "" {
 		file_metadata := &drive.File{
@@ -149,8 +145,8 @@ func CreateUser(user Users, people People, cities Cities, countries Countries, F
 
 	}
 
-	/*t := time.Now()
-	user.Created_at = t.String()*/
+	t := time.Now()
+	user.Created_at = t.String()
 	user.Id = people.Id
 	//user.Roles_idrole = rol.Id
 	connect.GetConnection().Create(&user) //Creara una id cada vez

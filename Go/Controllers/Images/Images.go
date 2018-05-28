@@ -94,16 +94,6 @@ func GetImageForId(w http.ResponseWriter, r *http.Request){
 
 }
 
-//Funcion para obtener todas las imagenes que tienen un nombre
-func GetSlider(w http.ResponseWriter, r *http.Request) {
-    w.Header().Set("Content-Type", "text/html; charsed-utf-8")
-    w.Header().Set("Access-Control-Allow-Origin", "*")
-    vars := mux.Vars(r) 
-    nameimage := vars["name"] 
-
-    json.NewEncoder(w).Encode(modelimages.GetSlider(nameimage))
-}
-
 //Función para obtener la imagen por nombre
 func GetImageForName(w http.ResponseWriter, r *http.Request) {
     w.Header().Set("Content-Type", "text/html; charsed-utf-8")

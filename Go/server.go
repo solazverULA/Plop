@@ -5,6 +5,8 @@ import (
 	"net/http"
 
 	"./Controllers/Register"
+	"./Controllers/Login"
+	"./Controllers/Images"
 	"./Controllers/User"
 	"./connect"
 	"github.com/gorilla/mux"
@@ -23,9 +25,20 @@ func main() {
 	r.HandleFunc("/user/{id}", user.GetUser).Methods("GET")
 	//r.HandleFunc("/getusers", user.GetUsers).Methods("GET")
 	r.HandleFunc("/getuser", user.GetUserEmail).Methods("GET")
-	r.HandleFunc("/register", register.Register).Methods("POST")
 	r.HandleFunc("/user/{id}/update", user.UpdateUser).Methods("POST")
 	r.HandleFunc("/user/{id}/delete", user.DeleteUser).Methods("POST")
+
+	//Rutas login
+	r.HandleFunc("/login", login.Login).Methods("POST")
+
+	//Rutas registro
+	r.HandleFunc("/register", register.Register).Methods("POST")
+
+	//Rutas imagenes
+	r.HandleFunc("/upload/{name}", images.Upload).Methods("POST")
+	r.HandleFunc("/images/getforname/{name}", images.GetImageForName).Methods("GET")
+	r.HandleFunc("/images/getforid/{id}", images.GetImageForId).Methods("GET")
+	r.HandleFunc("/deleteimage/{name}", images.DeleteImage).Methods("GET")
 
 	//Ruta para conectar con react
 	r.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir("./React/build/"))))

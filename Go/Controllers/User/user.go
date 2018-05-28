@@ -114,6 +114,22 @@ func GetUserRequest(r *http.Request) (modeluser.Users, modeluser.People, modelus
 	return user, people, rol, cities, countries
 }
 
+//Función para obtener los datos de solo el usuario
+func GetRequestUser(r *http.Request) modeluser.Users {
+	var user modeluser.Users
+
+	decoder := json.NewDecoder(r.Body)
+	err := decoder.Decode(&user)
+	log.Println(r.Body)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("llego bien aqui")
+
+	return user
+}
+
 ///Funcion para agregar los datos del registro con la imagen incluida
 func GetDataFromUser(r *http.Request) (modeluser.Users, modeluser.People, modeluser.Cities, modeluser.Countries, multipart.File, *multipart.FileHeader) {
 	var profile modeluser.People

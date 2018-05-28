@@ -261,33 +261,11 @@ func SearchIdDrive(name string) string {
 	
 }
 
-//Funcion para obtener todas las imagenes que tienen cierto nombre
-func GetSlider(name string) []string {
-	validToken(srv, tok)
-	var images []string
-
-	r, err := srv.Files.List().
-		Fields("nextPageToken, files(id, name)").Do()
-	if err != nil {
-		log.Printf("Unable to retrieve files: %v", err)
-	}
-
-	fmt.Println("Files:")
-	if len(r.Files) > 0 {
-		for _, i := range r.Files {
-			if i.Name == (name) {
-				images = append(images, i.Id)
-			}
-
-		}
-	}
-	return images
-
-}
 func DeleteImage(id string) string {
 	srv.Files.Delete(id).Do()
 	return id
 }
+
 func DeleteImageName(name string) {
 	idDriveUserfolder := SearchIdDrive(name)
 	srv.Files.Delete(idDriveUserfolder).Do()
