@@ -17,7 +17,7 @@ import (
 	"../ModelListeners"
 	//"../ModelOthers"
 	//"../ModelUser"
-	"google.golang.org/api/drive/v3"
+	//"google.golang.org/api/drive/v3"
 )
 
 type Notifications struct {
@@ -67,6 +67,126 @@ type NotificationsSimple struct {
 	Listeners     					[]modellisteners.Listeners
 }
 
+//Función para enviar notificaciones a dispositivos ios y android
+func SendNotification(idnotification string) Notifications {
+	var notification Notifications
+	var listenerhasnotifications []ListenersReceiveNotifications
+	connect.GetConnection().Where("idnotifications = ?", idnotification).First(&notification)
+	connect.GetConnection().Where("notifications_idnotifications = ?", idnotification).Find(&listenerhasnotifications)
+	//fmt.Println(len(notification.Shendule))
+	/*if len(notification.Shendule) > 1 {
+		jstime, _ := time.Parse("Mon Jan 02 2006 15:04:05 GMT-0700 (MST)", notification.Shendule)
+
+		fmt.Printf(jstime.Format("2006-01-02 15:04:05.000000000 -0700 MST"))
+		notificactionShendule = append(notificactionShendule, ShenduleNotification{Id: idnotification, Date: jstime, Repete: 1})
+		notification.Shendule = " "
+		connect.GetConnection().Table("notifications").Where("idnotifications = ?", idnotification).Updates(notification)
+		return notification
+	}*/
+	for i := 0; i < len(listenerhasnotifications); i++ {
+		var listener modellisteners.Listeners
+		connect.GetConnection().Where("cilisteners =?", listenerhasnotifications[i].Listeners_idlisteners).First(&listener)
+		var devices []modellisteners.Devices
+		connect.GetConnection().Where("listeners_cilisteners=?", listener.Id).Find(&devices)
+		for j := 0; j < len(devices); j++ {
+			if (devices[j].Os == "ios" || devices[j].Os == "android"){
+				var jsonstr []byte
+				//var profile modeluser.People
+				//var feactureUser modelfeatures.Featureuser
+				//connect.GetConnection().Table("featureuser").Where("users_iduser = ?", notification.Users_iduser).First(&feactureUser)
+				//feactureUser.Sendnotification++
+				/*if notification.Resends > 1 {
+					feactureUser.Resendnotification++
+				}*/
+				//connect.GetConnection().Table("featureuser").Where("users_iduser = ?", notification.Users_iduser).Updates(&feactureUser)
+				//connect.GetConnection().Where("users_iduser = ?", notification.Users_iduser).First(&profile)
+				notificationtype := strconv.Itoa(notification.Type)
+				idlistener := strconv.Itoa(listener.Id)
+
+				//jsonstr = []byte(`{ "to":"` + devices[j].Token + `","data":{"title":"` + notification.Title + `",` + `"body":"` + notification.Body + `","src":"` + modelimages.SearchIdDrive(notification.Srcimage) + `","srcExpandible":"` + modelimages.SearchIdDrive(notification.Srcimageexpandible) + `","icon":"` + modelimages.SearchIdDrive(profile.Srcicon) + `","type":` + notificationtype + `,"action":"` + notification.Action + `","id":` + idnotification + `,"idlisteners":` + idlistener + `,"namebutton":"` + notification.Namebutton + `"}}`)
+				jsonstr = []byte(`{ "to":"` + devices[j].Token + `","data":{"title":"` + notification.Title + `",` + `"body":"` + notification.Body + `","src":"` + modelimages.SearchIdDrive(notification.Srcimage) + `","type":` + notificationtype + `","idlisteners":` + idlistener + `,"namebutton":"` +`"}}`)
+
+				url := "https://fcm.googleapis.com/fcm/send"
+				log.Println(string(jsonstr))
+				req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonstr))
+				req.Header.Set("Authorization", "key=AAAAC-tGU2I:APA91bHbyYtdVnCaWbjeMnsVXfhGYNXPptz4MnbZCw1bs9aXp-qCWOwyoVIDuonh6E3ubbiYXEMx59xey8pMUrmI6iw5aZUvReaB4iO4qBsJxLy2wSeaozio24N388Jncyq4qnOVJ9mo")
+				req.Header.Set("Content-Type", "application/json")
+				fmt.Println("URL:>", url)
+				client := &http.Client{}
+				resp, err := client.Do(req)
+
+				if err != nil {
+					panic(err)
+				}
+				defer resp.Body.Close()
+
+				fmt.Println("response Status:", resp.Status)
+				fmt.Println("response Headers:", resp.Header)
+
+				body, _ := ioutil.ReadAll(resp.Body)
+
+				fmt.Println("response Body:", string(body))
+				//notification.Resends += 1
+			}/* else if listener.Agreeterms == 1 {
+				var profile modeluser.Profiles
+				var feactureUser modelfeatures.Featureuser
+				connect.GetConnection().Where("users_iduser = ?", notification.Users_iduser).First(&profile)
+				connect.GetConnection().Table("featureuser").Where("users_iduser = ?", notification.Users_iduser).First(&feactureUser)
+				feactureUser.Sendnotification++
+				if notification.Resends > 1 {
+					feactureUser.Resendnotification++
+				}
+				connect.GetConnection().Table("featureuser").Where("users_iduser = ?", notification.Users_iduser).Updates(&feactureUser)
+				fmt.Println("P256h:", devices[j].P256h)
+				fmt.Println("Auth:", devices[j].Auth)
+				fmt.Println("Endpoint:", devices[j].Endpoint)
+				subjson := `{"Endpoint":"` + devices[j].Endpoint + `", "keys":{"p256dh":"` + devices[j].P256h + `", "auth":"` + devices[j].Auth + `"}}`
+
+				var jsonstr []byte
+				notificationtype := strconv.Itoa(notification.Type)
+				idlistener := strconv.Itoa(listener.Id)
+				if notification.Type != 8 {
+					jsonstr = []byte(`{"notification":{"title":"` + notification.Title + `",` + `"body":"` + notification.Body + `","src":"` + modelimages.SearchIdDrive(notification.Srcimage) + `","srcExpandible":"` + modelimages.SearchIdDrive(notification.Srcimageexpandible) + `","icon":"` + modelimages.SearchIdDrive(profile.Srcicon) + `","type":` + notificationtype + `,"action":"` + notification.Action + `","id":` + idnotification + `,"idlisteners":` + idlistener + `,"namebutton":"` + notification.Namebutton + `"}}`)
+
+				} else {
+					jsonstr = []byte(`{"notification":{"title":"` + notification.Title + `",` + `"body":"` + notification.Body + `","src":"` + modelimages.SearchIdDrive(notification.Srcimage) + `","srcExpandible":"` + modelimages.SearchIdDrive(notification.Srcimageexpandible) + `","icon":"` + modelimages.SearchIdDrive(profile.Srcicon) + `","type":` + notificationtype + `,"id":` + idnotification + `,"idlisteners":` + idlistener + `}}`)
+
+				}
+				fmt.Println("response Body:", string(jsonstr))
+
+				// Decode subscription
+				privatekey, _, err := webpush.GenerateVAPIDKeys()
+				if err != nil {
+					fmt.Println("error:", err)
+				} else {
+					fmt.Println("key:", privatekey)
+				}
+
+				s := webpush.Subscription{}
+				if err := json.NewDecoder(bytes.NewBufferString(subjson)).Decode(&s); err != nil {
+					log.Fatal(err)
+				}
+
+				data, err := webpush.SendNotification([]byte(jsonstr), &s, &webpush.Options{
+					Subscriber:      "mailto:<EMAIL@EXAMPLE.COM>",
+					TTL:             691200,
+					VAPIDPrivateKey: "SVJ3KdJCC4xKhhpsh7Hs6GgWkjUYrWZf5B9D3KzAfd8",
+					Time_to_live:    691200,
+				})
+				if err != nil {
+					log.Fatal(err)
+				}
+				log.Println(data)
+				notification.Resends += 1
+			}*/
+		}
+
+	}
+	connect.GetConnection().Table("notifications").Where("idnotifications = ?", idnotification).Updates(notification)
+
+	return notification
+}
+
 //Función para crear una nueva notificación
 func CreateNotifications(notification Notifications, Listener modellisteners.ListenerVector, userid int, File multipart.File, Handle *multipart.FileHeader, FileExpandible multipart.File, HandleExpandible *multipart.FileHeader) Notifications {
 
@@ -75,7 +195,7 @@ func CreateNotifications(notification Notifications, Listener modellisteners.Lis
 	//notification.Users_iduser = userid
 
 	connect.GetConnection().Create(&notification) //Creara una id cada vez
-	iduser := strconv.Itoa(userid)
+	//iduser := strconv.Itoa(userid)
 
 	usersendnotifications.Notifications_idnotifications = notification.Id
 	usersendnotifications.Users_iduser = userid
@@ -236,126 +356,7 @@ func CreateNotifications(notification Notifications, Listener modellisteners.Lis
 		listenerhasnotifications.Notifications_idnotifications = notification.Id
 		connect.GetConnection().Create(&listenerhasnotifications)
 	}
-
+	SendNotification(strconv.Itoa(notification.Id))
 	return notification //Para usar luego esa id
 }
 
-//Función para enviar notificaciones a dispositivos ios y android
-func SendNotification(idnotification string) Notifications {
-	var notification Notifications
-	var listenerhasnotifications []ListenersReceiveNotifications
-	connect.GetConnection().Where("idnotifications = ?", idnotification).First(&notification)
-	connect.GetConnection().Where("notifications_idnotifications = ?", idnotification).Find(&listenerhasnotifications)
-	//fmt.Println(len(notification.Shendule))
-	/*if len(notification.Shendule) > 1 {
-		jstime, _ := time.Parse("Mon Jan 02 2006 15:04:05 GMT-0700 (MST)", notification.Shendule)
-
-		fmt.Printf(jstime.Format("2006-01-02 15:04:05.000000000 -0700 MST"))
-		notificactionShendule = append(notificactionShendule, ShenduleNotification{Id: idnotification, Date: jstime, Repete: 1})
-		notification.Shendule = " "
-		connect.GetConnection().Table("notifications").Where("idnotifications = ?", idnotification).Updates(notification)
-		return notification
-	}*/
-	for i := 0; i < len(listenerhasnotifications); i++ {
-		var listener modellisteners.Listeners
-		connect.GetConnection().Where("cilisteners =?", listenerhasnotifications[i].Listeners_idlisteners).First(&listener)
-		var devices []modellisteners.Devices
-		connect.GetConnection().Where("listeners_cilisteners=?", listener.Id).Find(&devices)
-		for j := 0; j < len(devices); j++ {
-			if (devices[j].Os == "ios" || devices[j].Os == "android"){
-				var jsonstr []byte
-				//var profile modeluser.People
-				//var feactureUser modelfeatures.Featureuser
-				//connect.GetConnection().Table("featureuser").Where("users_iduser = ?", notification.Users_iduser).First(&feactureUser)
-				//feactureUser.Sendnotification++
-				/*if notification.Resends > 1 {
-					feactureUser.Resendnotification++
-				}*/
-				//connect.GetConnection().Table("featureuser").Where("users_iduser = ?", notification.Users_iduser).Updates(&feactureUser)
-				//connect.GetConnection().Where("users_iduser = ?", notification.Users_iduser).First(&profile)
-				notificationtype := strconv.Itoa(notification.Type)
-				idlistener := strconv.Itoa(listener.Id)
-
-				//jsonstr = []byte(`{ "to":"` + devices[j].Token + `","data":{"title":"` + notification.Title + `",` + `"body":"` + notification.Body + `","src":"` + modelimages.SearchIdDrive(notification.Srcimage) + `","srcExpandible":"` + modelimages.SearchIdDrive(notification.Srcimageexpandible) + `","icon":"` + modelimages.SearchIdDrive(profile.Srcicon) + `","type":` + notificationtype + `,"action":"` + notification.Action + `","id":` + idnotification + `,"idlisteners":` + idlistener + `,"namebutton":"` + notification.Namebutton + `"}}`)
-				jsonstr = []byte(`{ "to":"` + devices[j].Token + `","data":{"title":"` + notification.Title + `",` + `"body":"` + notification.Body + `","src":"` + modelimages.SearchIdDrive(notification.Srcimage) + `","type":` + notificationtype + `","idlisteners":` + idlistener + `,"namebutton":"` +`"}}`)
-
-				url := "https://fcm.googleapis.com/fcm/send"
-				log.Println(string(jsonstr))
-				req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonstr))
-				req.Header.Set("Authorization", "key=AAAAC-tGU2I:APA91bHbyYtdVnCaWbjeMnsVXfhGYNXPptz4MnbZCw1bs9aXp-qCWOwyoVIDuonh6E3ubbiYXEMx59xey8pMUrmI6iw5aZUvReaB4iO4qBsJxLy2wSeaozio24N388Jncyq4qnOVJ9mo")
-				req.Header.Set("Content-Type", "application/json")
-				fmt.Println("URL:>", url)
-				client := &http.Client{}
-				resp, err := client.Do(req)
-
-				if err != nil {
-					panic(err)
-				}
-				defer resp.Body.Close()
-
-				fmt.Println("response Status:", resp.Status)
-				fmt.Println("response Headers:", resp.Header)
-
-				body, _ := ioutil.ReadAll(resp.Body)
-
-				fmt.Println("response Body:", string(body))
-				//notification.Resends += 1
-			}/* else if listener.Agreeterms == 1 {
-				var profile modeluser.Profiles
-				var feactureUser modelfeatures.Featureuser
-				connect.GetConnection().Where("users_iduser = ?", notification.Users_iduser).First(&profile)
-				connect.GetConnection().Table("featureuser").Where("users_iduser = ?", notification.Users_iduser).First(&feactureUser)
-				feactureUser.Sendnotification++
-				if notification.Resends > 1 {
-					feactureUser.Resendnotification++
-				}
-				connect.GetConnection().Table("featureuser").Where("users_iduser = ?", notification.Users_iduser).Updates(&feactureUser)
-				fmt.Println("P256h:", devices[j].P256h)
-				fmt.Println("Auth:", devices[j].Auth)
-				fmt.Println("Endpoint:", devices[j].Endpoint)
-				subjson := `{"Endpoint":"` + devices[j].Endpoint + `", "keys":{"p256dh":"` + devices[j].P256h + `", "auth":"` + devices[j].Auth + `"}}`
-
-				var jsonstr []byte
-				notificationtype := strconv.Itoa(notification.Type)
-				idlistener := strconv.Itoa(listener.Id)
-				if notification.Type != 8 {
-					jsonstr = []byte(`{"notification":{"title":"` + notification.Title + `",` + `"body":"` + notification.Body + `","src":"` + modelimages.SearchIdDrive(notification.Srcimage) + `","srcExpandible":"` + modelimages.SearchIdDrive(notification.Srcimageexpandible) + `","icon":"` + modelimages.SearchIdDrive(profile.Srcicon) + `","type":` + notificationtype + `,"action":"` + notification.Action + `","id":` + idnotification + `,"idlisteners":` + idlistener + `,"namebutton":"` + notification.Namebutton + `"}}`)
-
-				} else {
-					jsonstr = []byte(`{"notification":{"title":"` + notification.Title + `",` + `"body":"` + notification.Body + `","src":"` + modelimages.SearchIdDrive(notification.Srcimage) + `","srcExpandible":"` + modelimages.SearchIdDrive(notification.Srcimageexpandible) + `","icon":"` + modelimages.SearchIdDrive(profile.Srcicon) + `","type":` + notificationtype + `,"id":` + idnotification + `,"idlisteners":` + idlistener + `}}`)
-
-				}
-				fmt.Println("response Body:", string(jsonstr))
-
-				// Decode subscription
-				privatekey, _, err := webpush.GenerateVAPIDKeys()
-				if err != nil {
-					fmt.Println("error:", err)
-				} else {
-					fmt.Println("key:", privatekey)
-				}
-
-				s := webpush.Subscription{}
-				if err := json.NewDecoder(bytes.NewBufferString(subjson)).Decode(&s); err != nil {
-					log.Fatal(err)
-				}
-
-				data, err := webpush.SendNotification([]byte(jsonstr), &s, &webpush.Options{
-					Subscriber:      "mailto:<EMAIL@EXAMPLE.COM>",
-					TTL:             691200,
-					VAPIDPrivateKey: "SVJ3KdJCC4xKhhpsh7Hs6GgWkjUYrWZf5B9D3KzAfd8",
-					Time_to_live:    691200,
-				})
-				if err != nil {
-					log.Fatal(err)
-				}
-				log.Println(data)
-				notification.Resends += 1
-			}*/
-		}
-
-	}
-	connect.GetConnection().Table("notifications").Where("idnotifications = ?", idnotification).Updates(notification)
-
-	return notification
-}
