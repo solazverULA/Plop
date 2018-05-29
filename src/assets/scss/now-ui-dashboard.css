@@ -17,7 +17,6 @@
  */
 /*     brand Colors              */
 /*      light colors         */
-
 .bootstrap-switch.wrapper {
   min-height: auto;
   height: auto; }
@@ -51,38 +50,6 @@ Copyright (c) 2015 Daniel Eden
 .animated.flipOutY {
   -webkit-animation-duration: .75s;
   animation-duration: .75s; }
-
-  @keyframes fadeInUp {
-      from {
-          transform: translate3d(0,40px,0)
-      }
-
-      to {
-          transform: translate3d(0,0,0);
-          opacity: 1
-      }
-  }
-
-  @-webkit-keyframes fadeInUp {
-      from {
-          transform: translate3d(0,40px,0)
-      }
-
-      to {
-          transform: translate3d(0,0,0);
-          opacity: 1
-      }
-  }
-
-  .animatedFadeInUp {
-      opacity: 0
-  }
-
-  .fadeInUp {
-      opacity: 0;
-      animation-name: fadeInUp;
-      -webkit-animation-name: fadeInUp;
-  }
 
 @-webkit-keyframes shake {
   from, to {
@@ -696,47 +663,6 @@ Copyright (c) 2015 Daniel Eden
   .navbar .navbar-nav > a.btn:not(.btn-icon) .now-ui-icons {
     position: relative;
     top: 1px; }
-
-    .btn-primaryBlue {
-      background-color: #2ca8FF;
-      color: #FFFFFF;
-      box-shadow: 0px 2px 8px 0px dimgray !important; }
-      .btn-primaryBlue:hover, .btn-primaryBlue:focus, .btn-primaryBlue:active, .btn-primaryBlue.active, .btn-primaryBlue:active:focus, .btn-primaryBlue:active:hover, .btn-primaryBlue.active:focus, .btn-primaryBlue.active:hover,
-      .show > .btn-primaryBlue.dropdown-toggle,
-      .show > .btn-primaryBlue.dropdown-toggle:focus,
-      .show > .btn-primaryBlue.dropdown-toggle:hover,
-      .show > .btn-primaryBlue.btn[aria-haspopup="true"],
-      .show > .btn-primaryBlue.btn[aria-haspopup="true"]:focus,
-      .show > .btn-primaryBlue.btn[aria-haspopup="true"]:hover {
-        background-color: #5dbcff;
-        color: #FFFFFF;
-        box-shadow: none; }
-      .btn-primaryBlue:not([data-action]):hover {
-        box-shadow: 0 3px 8px 0 dimgray; }
-      .btn-primaryBlue.disabled, .btn-primaryBlue.disabled:hover, .btn-primaryBlue.disabled:focus, .btn-primaryBlue.disabled.focus, .btn-primaryBlue.disabled:active, .btn-primaryBlue.disabled.active, .btn-primaryBlue:disabled, .btn-primaryBlue:disabled:hover, .btn-primaryBlue:disabled:focus, .btn-primaryBlue:disabled.focus, .btn-primaryBlue:disabled:active, .btn-primaryBlue:disabled.active, .btn-primaryBlue[disabled], .btn-primaryBlue[disabled]:hover, .btn-primaryBlue[disabled]:focus, .btn-primaryBlue[disabled].focus, .btn-primaryBlue[disabled]:active, .btn-primaryBlue[disabled].active,
-      fieldset[disabled] .btn-primaryBlue,
-      fieldset[disabled] .btn-primaryBlue:hover,
-      fieldset[disabled] .btn-primaryBlue:focus,
-      fieldset[disabled] .btn-primaryBlue.focus,
-      fieldset[disabled] .btn-primaryBlue:active,
-      fieldset[disabled] .btn-primaryBlue.active {
-        background-color: #2ca8FF;
-        border-color: #2ca8FF; }
-      .btn-primaryBlue.btn-simple {
-        color: #2ca8FF;
-        border-color: #2ca8FF; }
-        .btn-primaryBlue.btn-simple:hover, .btn-primaryBlue.btn-simple:focus, .btn-primaryBlue.btn-simple:active {
-          background-color: transparent;
-          color: #5dbcff;
-          border-color: #5dbcff;
-          box-shadow: none; }
-      .btn-primaryBlue.btn-link {
-        color: #2ca8FF; }
-        .btn-primaryBlue.btn-link:hover, .btn-primaryBlue.btn-link:focus, .btn-primaryBlue.btn-link:active {
-          background-color: transparent;
-          color: #5dbcff;
-          text-decoration: none;
-          box-shadow: none; }
 
 .btn-primary {
   background-color: #f96332;
