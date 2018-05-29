@@ -171,32 +171,6 @@ func GetUser(id string) (Users, People, int, string, string) {
 	return user, people, roles.Id, cities.Namecities, countries.Namecountry
 }
 
-
-//Función para ver todos los usuarios
-func GetUsers(status int) []Users {
-	var users []Users
-
-	//var userrol []UserRol
-/*
-	if status == -1 {
-		connect.GetConnection().Select("*").Find(&users)
-		for i := 0; i < len(users); i++ {
-			var roles Roles
-			connect.GetConnection().Where("idrole = ?", users[i].Roles_idrole).First(&roles)
-			userrol = append(userrol, UserRol{users[i], roles.Rolename})
-		}
-	} else {
-		connect.GetConnection().Where("status = ?", status).Find(&users)
-		for i := 0; i < len(users); i++ {
-			var roles Roles
-			connect.GetConnection().Where("idrole = ?", users[i].Roles_idrole).First(&roles)
-			userrol = append(userrol, UserRol{users[i], roles.Rolename})
-		}
-	}
-*/
-	return users
-}
-
 //Buscar el usuario con el email
 func GetUsuario(email_user string) Users {
 	user := Users{}
@@ -229,26 +203,6 @@ func UpdatePassword(user Users, password string) {
 	connect.GetConnection().Table("users").Where("iduser = ?", user.Id).Updates(user)
 }
 
-//Función para actualizar un usuario
-func UpdateUs(id string, user Users, people People, cities Cities, countries Countries) Users {
-	if user.Password == "" {
-		passworduser := GetUsuario(user.Email)
-		user.Password = passworduser.Password
-	} else {
-		user = EncrypPassword(user)
-	}
-
-/*	t := time.Now()
-	user.Updated_at = t.String()*/
-	connect.GetConnection().Table("users").Where("ciuser = ?", id).Updates(user)
-	connect.GetConnection().Table("people").Where("ciuser = ?", id).Updates(people)
-
-	connect.GetConnection().Table("countries").Where("idcountries = ?", people.Countries_idcountries).Updates(countries)
-	connect.GetConnection().Table("cities").Where("countries_idcountries = ?", countries.Id).Updates(cities)
-
-	return user
-}
-
 //Funcion para saber si dos email son iguales
 func ValideEmail(email string, user Users) bool {
 	if email == user.Email {
@@ -265,54 +219,3 @@ func CambiarContraseña(user Users) Users {
 
 	return user
 }
-
-//Función para eliminar un usuario
-func DeleteUser(iduser string) Users {
-
-	var user Users
-	var people People
-	var countries Countries
-	var cities Cities
-
-	connect.GetConnection().Where("ciuser = ?", iduser).First(&user)
-	connect.GetConnection().Where("cipeople = ?", iduser).First(&people)
-	connect.GetConnection().Where("idcountries = ?", people.Countries_idcountries).First(&countries)
-	connect.GetConnection().Where("countries_idcountries = ?", countries.Id).First(&cities)
-
-	if cities.Id != 0 {
-		connect.GetConnection().Delete(&cities)
-	}
-
-	if countries.Id != 0 {
-		connect.GetConnection().Delete(&countries)
-	}
-
-	connect.GetConnection().Exec("DELETE FROM `listeners_has_notifications` WHERE `listeners_has_notifications`.`Notifications_users_iduser` = " + iduser)
-	connect.GetConnection().Exec("DELETE FROM `listeners_has_users` WHERE `listeners_has_users`.`users_iduser` = " + iduser)
-	connect.GetConnection().Exec("DELETE FROM `notifications` WHERE `notifications`.`users_iduser` = " + iduser)
-
-	if user.Id != 0 {
-		connect.GetConnection().Delete(&user)
-	}
-
-	if people.Id != 0 {
-		log.Println("Borrando perfil")
-		connect.GetConnection().Delete(&people)
-	}
-
-	//idDriveUserfolder := modelimages.SearchIdDrive("User" + iduser)
-	//modelimages.GetSrv().Files.Delete(idDriveUserfolder).Do()
-	
-
-	/*if featureuser.Idfeatureuser != 0 {
-		log.Println("Borrando feature user")
-		connect.GetConnection().Table("featureuser").Delete(&featureuser)
-	}*/
-
-	return user
-}
-
-
-
-
-

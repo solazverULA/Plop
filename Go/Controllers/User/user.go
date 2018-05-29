@@ -58,33 +58,6 @@ func GetUserEmail(w http.ResponseWriter, r * http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
-//Función para actualizar datos del usuario
-func UpdateUser(w http.ResponseWriter, r * http.Request) {
-	vars := mux.Vars(r)		//Obtenemos los valores de la url
-	user_id := vars["id"]
-
-	w.Header().Set("Content-Type", "text/html; charset-utf-8")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	user, people, _, cities, countries := GetUserRequest(r)
-
-	response := modeluser.ResponseUser{"succes", modeluser.UpdateUs(user_id, user, people, cities, countries), "Usuario actualizado con éxito"}
-	json.NewEncoder(w).Encode(response)
-}
-
-//Función para eliminar un usuario
-func DeleteUser(w http.ResponseWriter, r * http.Request) {
-	vars := mux.Vars(r)		//Obtenemos los valores de la url
-	user_id := vars["id"]
-	w.Header().Set("Content-Type", "text/html; charset-utf-8")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-
-	//user, _, _ , _, _ := modeluser.GetUser(user_id)
-	
-	response := modeluser.ResponseUser{"succes", modeluser.DeleteUser(user_id), "Ususario eliminado con éxito"}
-	json.NewEncoder(w).Encode(response)
-	
-}
-
 //Función para extraer del request el json del usuario
 func GetUserRequest(r *http.Request) (modeluser.Users, modeluser.People, modeluser.Roles, modeluser.Cities, modeluser.Countries) {
 	var user modeluser.Users
