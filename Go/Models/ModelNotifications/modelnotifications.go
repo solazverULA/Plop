@@ -13,7 +13,7 @@ import (
 	"../../connect"
 	//webpush "../../src/github.com/sherclockholmes/webpush-go"
 	//"../ModelFeatures"
-	"../ModelImages"
+	//"../ModelImages"
 	"../ModelListeners"
 	//"../ModelOthers"
 	//"../ModelUser"
@@ -83,13 +83,13 @@ func SendNotification(idnotification string) Notifications {
 		connect.GetConnection().Table("notifications").Where("idnotifications = ?", idnotification).Updates(notification)
 		return notification
 	}*/
-	for i := 0; i < len(listenerhasnotifications); i++ {
+	for i := 0; i < /*len(listenerhasnotifications)*/1; i++ {
 		var listener modellisteners.Listeners
-		connect.GetConnection().Where("cilisteners =?", listenerhasnotifications[i].Listeners_idlisteners).First(&listener)
+		//connect.GetConnection().Where("cilisteners =?", listenerhasnotifications[i].Listeners_idlisteners).First(&listener)
 		var devices []modellisteners.Devices
 		connect.GetConnection().Where("listeners_cilisteners=?", listener.Id).Find(&devices)
-		for j := 0; j < len(devices); j++ {
-			if (devices[j].Os == "ios" || devices[j].Os == "android"){
+		for j := 0; j < /*len(devices)*/ 1; j++ {
+			
 				var jsonstr []byte
 				//var profile modeluser.People
 				//var feactureUser modelfeatures.Featureuser
@@ -100,11 +100,11 @@ func SendNotification(idnotification string) Notifications {
 				}*/
 				//connect.GetConnection().Table("featureuser").Where("users_iduser = ?", notification.Users_iduser).Updates(&feactureUser)
 				//connect.GetConnection().Where("users_iduser = ?", notification.Users_iduser).First(&profile)
-				notificationtype := strconv.Itoa(notification.Type)
+				//notificationtype := strconv.Itoa(notification.Type)
 				idlistener := strconv.Itoa(listener.Id)
 
 				//jsonstr = []byte(`{ "to":"` + devices[j].Token + `","data":{"title":"` + notification.Title + `",` + `"body":"` + notification.Body + `","src":"` + modelimages.SearchIdDrive(notification.Srcimage) + `","srcExpandible":"` + modelimages.SearchIdDrive(notification.Srcimageexpandible) + `","icon":"` + modelimages.SearchIdDrive(profile.Srcicon) + `","type":` + notificationtype + `,"action":"` + notification.Action + `","id":` + idnotification + `,"idlisteners":` + idlistener + `,"namebutton":"` + notification.Namebutton + `"}}`)
-				jsonstr = []byte(`{ "to":"` + devices[j].Token + `","data":{"title":"` + notification.Title + `",` + `"body":"` + notification.Body + `","src":"` + modelimages.SearchIdDrive(notification.Srcimage) + `","type":` + notificationtype + `","idlisteners":` + idlistener + `,"namebutton":"` +`"}}`)
+				jsonstr = []byte(`{ "to":"c84oxjTlgEU:APA91bHw1Eb38k7r4gIAQiajoDPHcUOfoOd9Dub5iN9b2eF8UfPvHvX34xNDTPEEh2_dtEkVbTAxq-XsoMrH4gyNgToyRkJ09_fKDvYqECm8GUIEIbbwx9rlLLI_Jqrpju9LqGXMulnN","data":{"title":"` + notification.Title + `",` + `"body":"` + notification.Body /*` + modelimages.SearchIdDrive(notification.Srcimage) + `*/ + `","src":"","type":1,"idlisteners":` + idlistener + `,"namebutton":"` +`"}}`)
 
 				url := "https://fcm.googleapis.com/fcm/send"
 				log.Println(string(jsonstr))
@@ -127,7 +127,7 @@ func SendNotification(idnotification string) Notifications {
 
 				fmt.Println("response Body:", string(body))
 				//notification.Resends += 1
-			}/* else if listener.Agreeterms == 1 {
+			/* else if listener.Agreeterms == 1 {
 				var profile modeluser.Profiles
 				var feactureUser modelfeatures.Featureuser
 				connect.GetConnection().Where("users_iduser = ?", notification.Users_iduser).First(&profile)

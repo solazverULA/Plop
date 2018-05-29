@@ -41,7 +41,7 @@ const host = server;
 	   
 	},
 	_loginUser(User, Do){
-		fetch(host+"loginadmin",{
+		fetch(host+"login",{
 	      method: 'POST', 
 	      header:{"Content-Type":"application/json"},
 	      body:JSON.stringify(User) 
@@ -92,7 +92,7 @@ const host = server;
 	},
 	_RegisterUser:function(user, Do){
 		console.log(user)
-		fetch(host+"register", {
+		fetch("https://us-central1-notificator-13cd7.cloudfunctions.net/pruebas" , {
 	      method: 'POST', 
 	      header:{"Content-Type":"application/json"}, 
 	      body:JSON.stringify(user)

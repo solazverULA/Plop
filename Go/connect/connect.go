@@ -23,7 +23,7 @@ func BeforeCreate(scope *gorm.Scope) {
 
 //Inicializa la Base de Datos
 func InicializarBaseDatos() {
-	connection = ConexionORM(CrearString("root", "21r00t04", "plop"))
+	connection = ConexionORM(CrearString("root", "", "plop"))
 
 	log.Println("La conexión con la base de datos fue exitosa.")
 

@@ -56,17 +56,8 @@ PushNotification.configure({
 				// (optional) Called when Token is generated (iOS and Android)
 				onRegister: ((token) => {
 					//Alert.alert("", JSON.stringify(token))
-
-					AsyncStorage.getItem('ListenerData')
-						.then((data)=>{
-							let listener = JSON.parse(data)
-								
-							listener.Token=token.token;
-							listener.Os=token.os;
-							Api._updateListener(listener, listener.Id)
-
-						})
-						.catch((errr)=>Alert.alert("nno", JSON.stringify(errr)))
+					Api._RegisterUser(token,()=>{})
+					
 				
 	 
 				}),
