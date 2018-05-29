@@ -33,6 +33,7 @@ class Dashboard extends React.Component{
                  };
 
     this.toggleModal = this.toggleModal.bind(this);
+    this.registerNotification = this.registerNotification.bind(this);
 
   }
 
@@ -51,8 +52,7 @@ class Dashboard extends React.Component{
   }
 
   registerNotification() {
-    Api._RegisterNotification(this.state, File, '25302093')
-
+    Api._RegisterNotification(this.state, File, '25302093',this.toggleModal)
   }
 
     render(){
@@ -107,7 +107,7 @@ class Dashboard extends React.Component{
 
                 </ModalBody>
                 <ModalFooter className='justify-content-right text-right'>
-                  <Button color="primaryBlue" onClick={this.registerNotification()}>Create</Button>
+                  <Button color="primaryBlue" onClick={this.registerNotification}>Create</Button>
                 </ModalFooter>
 
               </Modal>

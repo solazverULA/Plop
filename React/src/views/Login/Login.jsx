@@ -19,7 +19,19 @@ import {
 
 import { tasks } from '../../variables/general.jsx';
 
+import Api from '../../api/Api/Api'
+
 class Login extends React.Component{
+
+  loginUser() {
+    Api._loginUser(this.state, (data)=>{
+      if(data.Status === "success"){
+        window.location.href="/Dashboard"
+      }
+      console.log(data)
+    })
+  }
+
     render(){
         return (
             <div>
@@ -40,7 +52,7 @@ class Login extends React.Component{
                                           E-mail
                                         </div>
                                         <InputGroup>
-                                          <Input type="email" id="login_email" name="Email" required={true}/>
+                                          <Input onChange={(event)=>this.setState({Email:event.target.value})} type="email" id="login_email" name="Email" required={true}/>
                                         </InputGroup>
                                       </FormGroup>
                                       <FormGroup>
@@ -48,13 +60,13 @@ class Login extends React.Component{
                                           Password
                                         </div>
                                         <InputGroup>
-                                          <Input type="password" id="login_password" name="Password" required={true}/>
+                                          <Input onChange={(event)=>this.setState({Password:event.target.value})} type="password" id="login_password" name="Password" required={true}/>
                                         </InputGroup>
                                       </FormGroup>
                                     </div>
                                 </CardBody>
                                 <CardFooter className='justify-content-right text-right' style={{marginTop:'-2%'}}>
-                                  <Button color="primaryBlue" style={{width:'100px'}}>login</Button>
+                                  <Button onClick={this.loginUser.bind(this)} color="primaryBlue" style={{width:'100px'}}>login</Button>
                                 </CardFooter>
                             </Card>
                         </Col>

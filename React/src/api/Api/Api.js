@@ -336,8 +336,8 @@ const host = localhost;
 
 	},
 
-	_loginAdminUser(User, Do){
-		fetch(host+"loginadmin",{
+	_loginUser(User, Do){
+		fetch(host+"login",{
 	      method: 'POST',
 	      header:{"Content-Type":"application/json"},
 	      body:JSON.stringify(User)
@@ -678,7 +678,7 @@ const host = localhost;
 	    .catch(err => console.log(err));
 
 	},
-	_RegisterNotification:function(Data, file, iduser){
+	_RegisterNotification:function(Data, file, iduser, Do){
 
 		var formData = new FormData();
 // Fields in the post
@@ -702,9 +702,7 @@ const host = localhost;
 			 })
 			.then((response) => response.json())
 			.then((responseJson) => {
-			  // Perform success response.
-
-			  window.location.href ="/Admin/#/notifications/all";
+			  Do()
 			})
 			.catch((error) => {
 			    console.log(error)
