@@ -71,9 +71,16 @@ type NotificationsSimple struct {
 func CreateNotifications(notification Notifications, Listener modellisteners.ListenerVector, userid int, File multipart.File, Handle *multipart.FileHeader, FileExpandible multipart.File, HandleExpandible *multipart.FileHeader) Notifications {
 
 	listenerhasnotifications := ListenersReceiveNotifications{}
+	usersendnotifications := UsersSendNotifications{}
 	//notification.Users_iduser = userid
+
 	connect.GetConnection().Create(&notification) //Creara una id cada vez
 	iduser := strconv.Itoa(userid)
+
+	usersendnotifications.Notifications_idnotifications = notification.Id
+	usersendnotifications.Users_iduser = userid
+	connect.GetConnection().Create(&usersendnotifications)
+	
 
 	iddriveuserfolder := modelimages.SearchIdDrive("UserNotification" + iduser)
 
