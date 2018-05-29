@@ -31,13 +31,9 @@ class Sidebar extends React.Component{
         return (
             <div className="sidebar" data-color="blue">
                 <div className="logo">
-                	<a href="https://www.creative-tim.com" className="simple-text logo-mini">
-                        <div className="logo-img">
-                            <img src={logo} alt="react-logo" />
-                        </div>
-                	</a>
-                	<a href="https://www.creative-tim.com" className="simple-text logo-normal">
-                		Creative Tim
+
+                	<a className="simple-text logo-normal">
+                		<h4>Plop!</h4>
                 	</a>
                 </div>
                 <div className="sidebar-wrapper" ref="sidebar">

@@ -26,7 +26,7 @@ class Login extends React.Component{
   loginUser() {
     Api._loginUser(this.state, (data)=>{
       if(data.Status === "success"){
-        window.location.href="/Dashboard"
+        window.location.href="/notifications"
       }
       console.log(data)
     })
