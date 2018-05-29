@@ -81,7 +81,7 @@ func CreateNotifications(notification Notifications, Listener modellisteners.Lis
 	usersendnotifications.Users_iduser = userid
 	connect.GetConnection().Create(&usersendnotifications)
 	
-
+	/*
 	iddriveuserfolder := modelimages.SearchIdDrive("UserNotification" + iduser)
 
 	id := strconv.Itoa(notification.Id)
@@ -160,7 +160,7 @@ func CreateNotifications(notification Notifications, Listener modellisteners.Lis
 			notification.Srcimage = defaultvalues.Defaultbackgroundimage
 			//notification.Srcimageexpandible = "FileServer" + id
 		} else {*/
-			file_metadata = &drive.File{
+			/*file_metadata = &drive.File{
 				Name:     "ImageServer" + id,
 				MimeType: Handle.Header.Get("Content-Type"),
 				Parents:  vector,
