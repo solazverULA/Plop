@@ -23,7 +23,7 @@ var srv *drive.Service
 var tok *oauth2.Token
 var config oauth2.TokenSource
 
-const notificatorDriveFolderId = "1CEkIrTFcuQUaTZM5-xFImTZOFN2mycsp" /*"12CRGEHz4HWiGskuvzdWpF0DSfgiPm6Dk"*/
+const notificatorDriveFolderId = "1ahKhGzwsRlRYAN1vz3D7VVmJDIKoEIqB" /*"12CRGEHz4HWiGskuvzdWpF0DSfgiPm6Dk"*/
 
 type RefreshToken struct {
 	Access_token  string `json:access_token`

@@ -71,9 +71,16 @@ type NotificationsSimple struct {
 func CreateNotifications(notification Notifications, Listener modellisteners.ListenerVector, userid int, File multipart.File, Handle *multipart.FileHeader, FileExpandible multipart.File, HandleExpandible *multipart.FileHeader) Notifications {
 
 	listenerhasnotifications := ListenersReceiveNotifications{}
+	usersendnotifications := UsersSendNotifications{}
 	//notification.Users_iduser = userid
+
 	connect.GetConnection().Create(&notification) //Creara una id cada vez
 	iduser := strconv.Itoa(userid)
+
+	usersendnotifications.Notifications_idnotifications = notification.Id
+	usersendnotifications.Users_iduser = userid
+	connect.GetConnection().Create(&usersendnotifications)
+	
 
 	iddriveuserfolder := modelimages.SearchIdDrive("UserNotification" + iduser)
 
@@ -251,9 +258,9 @@ func SendNotification(idnotification string) Notifications {
 	}*/
 	for i := 0; i < len(listenerhasnotifications); i++ {
 		var listener modellisteners.Listeners
-		connect.GetConnection().Where("idlisteners =?", listenerhasnotifications[i].Listeners_idlisteners).First(&listener)
+		connect.GetConnection().Where("cilisteners =?", listenerhasnotifications[i].Listeners_idlisteners).First(&listener)
 		var devices []modellisteners.Devices
-		connect.GetConnection().Where("listeners_idlisteners=?", listener.Id).Find(&devices)
+		connect.GetConnection().Where("listeners_cilisteners=?", listener.Id).Find(&devices)
 		for j := 0; j < len(devices); j++ {
 			if (devices[j].Os == "ios" || devices[j].Os == "android"){
 				var jsonstr []byte

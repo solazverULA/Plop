@@ -9,6 +9,7 @@ import (
 	"./Controllers/Images"
 	"./Controllers/User"
 	"./Controllers/Notifications"
+	"./Controllers/Listener"
 	"./connect"
 	"github.com/gorilla/mux"
 )
@@ -47,6 +48,10 @@ func main() {
 	//r.HandleFunc("/notification/{id}/usersimple", notifications.GetNotificationUser).Methods("GET")
 	//r.HandleFunc("/notification/{id}", notifications.GetNotification).Methods("GET")
 	r.HandleFunc("/notifications/{idnotification}/send", notifications.SendNotification).Methods("POST")
+
+	//Rutas listeners
+	r.HandleFunc("/user/{id}/registerlistener", listener.RegisterListener).Methods("POST")
+	r.HandleFunc("/listeners/{phonenumber}/subscribe", listener.SubscribeListener).Methods("GET")
 
 	//Ruta para conectar con react
 	r.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir("./React/build/"))))
