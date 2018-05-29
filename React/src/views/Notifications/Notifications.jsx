@@ -21,6 +21,8 @@ import {
     PanelHeader
 } from '../../components';
 
+import Api from '../../api/Api/Api'
+
 class Dashboard extends React.Component{
 
   constructor(props) {
@@ -31,6 +33,7 @@ class Dashboard extends React.Component{
                  };
 
     this.toggleModal = this.toggleModal.bind(this);
+    this.registerNotification = this.registerNotification.bind(this);
 
   }
 
@@ -46,6 +49,10 @@ class Dashboard extends React.Component{
     this.setState({
       toggle: !this.state.toggle
     });
+  }
+
+  registerNotification() {
+    Api._RegisterNotification(this.state, File, '25302093',this.toggleModal)
   }
 
     render(){
@@ -71,7 +78,7 @@ class Dashboard extends React.Component{
                           Title
                         </div>
                         <InputGroup>
-                          <Input style={{width:'300px'}} type="text" id="notification_title" name="Title" placeholder="Notification title" required={true}/>
+                          <Input style={{width:'300px'}} type="text" id="notification_title" name="Title" placeholder="Notification title" onChange={(event)=>this.setState({Title:event.target.value})} required={true}/>
                         </InputGroup>
                       </FormGroup>
                     </Row>
@@ -79,10 +86,20 @@ class Dashboard extends React.Component{
                       <FormGroup>
                         Atach an image
                         <InputGroup>
-                          <Button style={{width:'150px'}} color="primaryBlue" for="notification_file">
+                          <Button style={{width:'150px'}} color="primaryBlue" for="notification_file" onClick={()=>{document.getElementById("notification_file").click()}}>
                             <i className='now-ui-icons design_image'></i>
                           </Button>
-                          <Input style={{paddingLeft:'100%'}} className='custom-file-upload' type="file" id="notification_file" name="File"/>
+                          <Input onChange={(event)=>{this.setState({File: event.target.files[0]})}} style={{paddingLeft:'100%'}} className='custom-file-upload' type="file" id="notification_file" name="File"/>
+                        </InputGroup>
+                      </FormGroup>
+                    </Row>
+                    <Row>
+                      <FormGroup>
+                        <div className='business-title-color'>
+                          Message
+                        </div>
+                        <InputGroup>
+                          <textarea onChange={(event)=>this.setState({Body:event.target.value})} className='business-title-color' style={{'borderRadius':'5px', 'borderColor':'#979797', 'height':'107px'}} type="text" id="notification_Body" name="Body" required={true}/>
                         </InputGroup>
                       </FormGroup>
                     </Row>
@@ -90,7 +107,7 @@ class Dashboard extends React.Component{
 
                 </ModalBody>
                 <ModalFooter className='justify-content-right text-right'>
-                  <Button color="primaryBlue" onClick={this.toggleModal}>Create</Button>
+                  <Button color="primaryBlue" onClick={this.registerNotification}>Create</Button>
                 </ModalFooter>
 
               </Modal>

@@ -2,20 +2,22 @@ package modeluser
 
 import (
 	"../../connect"
+	"../ModelImages"
 	//"fmt"
-	//"io/ioutil"
+	"io/ioutil"
 	"log"
-	//"bytes"
+	"strconv"
+	"bytes"
 	//"net/http"
 	//"encoding/json"
 	//"encoding/hex"
 	"golang.org/x/crypto/bcrypt"
 	//"crypto/md5"
-	//"mime/multipart"
+	"mime/multipart"
 	//"strconv"
-	//"time"
+	"time"
 	//"strings"
-	//"google.golang.org/api/drive/v3"
+	"google.golang.org/api/drive/v3"
 )
 
 type Cities struct {
@@ -34,15 +36,17 @@ type Users struct {
 	Id                  		int    		`gorm:"primary_key;column:ciuser" json:iduser` //Que nombre de columna va a buscar en la bd
 	Email               		string 		`gorm:"column:email" json:Email`
 	Password            		string 		`gorm:"column:pasword json:Password`
-	//Created_at          		string 		`gorm:"column:created_at json:Created_at` //time
-	//Updated_at          		string 		`gorm:"column:updated_at json:Updated_at` //time
+	Created_at          		string 		`gorm:"column:created_at json:Created_at` //time
+	Updated_at          		string 		`gorm:"column:updated_at json:Updated_at` //time
 	Roles_idrole        		int    		`gorm:"column:rols_idrole" json:Roles_idrole`
 }
 
 type People struct {
-	Id           				int    		`gorm:"primary_key;column:cipeople" json:Idprofiles`
+	Id           				int    		`gorm:"column:cipeople" json:Idprofiles`
 	Nameprofile  				string 		`gorm:"column:name" json:Nameprofile`
 	Gender 						string 		`gorm:"column:gender" json:Gender`
+	Srclogo      				string 		`gorm:"column:src_logo" json:Srclogo`
+	Srcicon      				string 		`gorm:"column:src_icon" json:Srcicon`
 	Countries_idcountries 		int 		`gorm:"column:countries_idcountries" json:Countries_idcountries`
 }
 
@@ -72,16 +76,13 @@ type Listeners struct {
 }
 
 //Crear nuevo usuario
-func CreateUser(user Users, people People, rol Roles, cities Cities, countries Countries) Users {
+func CreateUser(user Users, people People, cities Cities, countries Countries, File multipart.File, Handle *multipart.FileHeader) Users {
 
 	//Creacion de cities y countries
 	connect.GetConnection().Create(&countries)
 
 	cities.Countries_idcountries = countries.Id
 	connect.GetConnection().Create(&cities)
-
-	//Creacion de roles
-	connect.GetConnection().Table("rols").Create(&rol)
 
 	//Creacion de people
 	people.Countries_idcountries = countries.Id
@@ -90,10 +91,64 @@ func CreateUser(user Users, people People, rol Roles, cities Cities, countries C
 	//Creacion de user
 	user = EncrypPassword(user)
 
-	/*t := time.Now()
-	user.Created_at = t.String()*/
+	vector := []string{modelimages.NotificatorDriveFolderId()}
+	id := strconv.Itoa(user.Id)
+	if modelimages.SearchIdDrive("User"+id) == "" {
+		file_metadata := &drive.File{
+			Name:     "User" + id,
+			MimeType: "application/vnd.google-apps.folder",
+			Parents:  vector,
+		}
+
+		file, err := modelimages.GetSrv().Files.Create(file_metadata).Do()
+		if err != nil {
+			log.Printf("Failed to create file %v", err)
+		}
+
+		log.Printf("File: %+v", file)
+		IdUSerfolder := file.Id
+		if File != nil {
+			vector = []string{IdUSerfolder}
+			data, err := ioutil.ReadAll(File)
+			if err != nil {
+				log.Printf("%+v", err)
+
+			}
+			//permision, _ := modelimages.GetSrv().Permissions.Create("file.Id,", &drive.Permission{Role:"owner", Type:"anyone"}).Do()
+			file_metadata := &drive.File{
+				Name:     "ImageLogo" + id,
+				MimeType: Handle.Header.Get("Content-Type"),
+				Parents:  vector,
+			}
+			file, err := modelimages.GetSrv().Files.Create(file_metadata).Media(bytes.NewReader(data)).Do()
+			if err != nil {
+				log.Printf("Failed to create file %v", err)
+			}
+
+			log.Printf("File: %+v", file)
+			people.Srclogo = file.Id
+
+		}
+		vector = []string{IdUSerfolder}
+		file_metadata = &drive.File{
+			Name:     "UserNotification" + id,
+			MimeType: "application/vnd.google-apps.folder",
+			Parents:  vector,
+		}
+
+		file, err = modelimages.GetSrv().Files.Create(file_metadata).Do()
+		if err != nil {
+			log.Printf("Failed to create file %v", err)
+		}
+
+		log.Printf("File: %+v", file)
+
+	}
+
+	t := time.Now()
+	user.Created_at = t.String()
 	user.Id = people.Id
-	user.Roles_idrole = rol.Id
+	//user.Roles_idrole = rol.Id
 	connect.GetConnection().Create(&user) //Creara una id cada vez
 
 	return user //Para usar luego esa id
@@ -114,32 +169,6 @@ func GetUser(id string) (Users, People, int, string, string) {
 	connect.GetConnection().Where("countries_idcountries = ?", countries.Id).First(&cities)
 
 	return user, people, roles.Id, cities.Namecities, countries.Namecountry
-}
-
-
-//Función para ver todos los usuarios
-func GetUsers(status int) []Users {
-	var users []Users
-
-	//var userrol []UserRol
-/*
-	if status == -1 {
-		connect.GetConnection().Select("*").Find(&users)
-		for i := 0; i < len(users); i++ {
-			var roles Roles
-			connect.GetConnection().Where("idrole = ?", users[i].Roles_idrole).First(&roles)
-			userrol = append(userrol, UserRol{users[i], roles.Rolename})
-		}
-	} else {
-		connect.GetConnection().Where("status = ?", status).Find(&users)
-		for i := 0; i < len(users); i++ {
-			var roles Roles
-			connect.GetConnection().Where("idrole = ?", users[i].Roles_idrole).First(&roles)
-			userrol = append(userrol, UserRol{users[i], roles.Rolename})
-		}
-	}
-*/
-	return users
 }
 
 //Buscar el usuario con el email
@@ -174,26 +203,6 @@ func UpdatePassword(user Users, password string) {
 	connect.GetConnection().Table("users").Where("iduser = ?", user.Id).Updates(user)
 }
 
-//Función para actualizar un usuario
-func UpdateUs(id string, user Users, people People, cities Cities, countries Countries) Users {
-	if user.Password == "" {
-		passworduser := GetUsuario(user.Email)
-		user.Password = passworduser.Password
-	} else {
-		user = EncrypPassword(user)
-	}
-
-/*	t := time.Now()
-	user.Updated_at = t.String()*/
-	connect.GetConnection().Table("users").Where("ciuser = ?", id).Updates(user)
-	connect.GetConnection().Table("people").Where("ciuser = ?", id).Updates(people)
-
-	connect.GetConnection().Table("countries").Where("idcountries = ?", people.Countries_idcountries).Updates(countries)
-	connect.GetConnection().Table("cities").Where("countries_idcountries = ?", countries.Id).Updates(cities)
-
-	return user
-}
-
 //Funcion para saber si dos email son iguales
 func ValideEmail(email string, user Users) bool {
 	if email == user.Email {
@@ -210,54 +219,3 @@ func CambiarContraseña(user Users) Users {
 
 	return user
 }
-
-//Función para eliminar un usuario
-func DeleteUser(iduser string) Users {
-
-	var user Users
-	var people People
-	var countries Countries
-	var cities Cities
-
-	connect.GetConnection().Where("ciuser = ?", iduser).First(&user)
-	connect.GetConnection().Where("cipeople = ?", iduser).First(&people)
-	connect.GetConnection().Where("idcountries = ?", people.Countries_idcountries).First(&countries)
-	connect.GetConnection().Where("countries_idcountries = ?", countries.Id).First(&cities)
-
-	if cities.Id != 0 {
-		connect.GetConnection().Delete(&cities)
-	}
-
-	if countries.Id != 0 {
-		connect.GetConnection().Delete(&countries)
-	}
-
-	connect.GetConnection().Exec("DELETE FROM `listeners_has_notifications` WHERE `listeners_has_notifications`.`Notifications_users_iduser` = " + iduser)
-	connect.GetConnection().Exec("DELETE FROM `listeners_has_users` WHERE `listeners_has_users`.`users_iduser` = " + iduser)
-	connect.GetConnection().Exec("DELETE FROM `notifications` WHERE `notifications`.`users_iduser` = " + iduser)
-
-	if user.Id != 0 {
-		connect.GetConnection().Delete(&user)
-	}
-
-	if people.Id != 0 {
-		log.Println("Borrando perfil")
-		connect.GetConnection().Delete(&people)
-	}
-
-	//idDriveUserfolder := modelimages.SearchIdDrive("User" + iduser)
-	//modelimages.GetSrv().Files.Delete(idDriveUserfolder).Do()
-	
-
-	/*if featureuser.Idfeatureuser != 0 {
-		log.Println("Borrando feature user")
-		connect.GetConnection().Table("featureuser").Delete(&featureuser)
-	}*/
-
-	return user
-}
-
-
-
-
-
