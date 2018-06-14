@@ -1,0 +1,118 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div>
+  <div
+    className="panel-header panel-header-sm"
+  />
+  <div
+    className="content"
+  >
+    <div
+      className="justify-content-center row"
+    >
+      <div
+        className="justify-content-center col-12 col-md-4"
+      >
+        <div
+          className="card-chart card"
+          style={
+            Object {
+              "height": "300px",
+            }
+          }
+        >
+          <div
+            className="card-header"
+            style={
+              Object {
+                "paddingTop": "7%",
+              }
+            }
+          >
+            <h4
+              className="card-title"
+            >
+              Login
+            </h4>
+          </div>
+          <div
+            className="card-body"
+          >
+            <div
+              lg={2}
+              md={2}
+              style={
+                Object {
+                  "paddingTop": "2%",
+                }
+              }
+              xs={10}
+            >
+              <div
+                className="form-group"
+              >
+                <div>
+                  E-mail
+                </div>
+                <div
+                  className="input-group"
+                >
+                  <input
+                    className="form-control"
+                    id="login_email"
+                    name="Email"
+                    onChange={[Function]}
+                    required={true}
+                    type="email"
+                  />
+                </div>
+              </div>
+              <div
+                className="form-group"
+              >
+                <div>
+                  Password
+                </div>
+                <div
+                  className="input-group"
+                >
+                  <input
+                    className="form-control"
+                    id="login_password"
+                    name="Password"
+                    onChange={[Function]}
+                    required={true}
+                    type="password"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="justify-content-right text-right card-footer"
+            style={
+              Object {
+                "marginTop": "-2%",
+              }
+            }
+          >
+            <button
+              className="btn btn-primaryBlue"
+              onClick={[Function]}
+              style={
+                Object {
+                  "width": "100px",
+                }
+              }
+              type="button"
+            >
+              login
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

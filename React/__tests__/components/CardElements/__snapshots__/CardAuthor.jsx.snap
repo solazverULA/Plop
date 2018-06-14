@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div
+  className="author"
+>
+  <a
+    href="#"
+  >
+    <img
+      alt={undefined}
+      className="avatar border-gray"
+      src={undefined}
+    />
+    <h5
+      className="title"
+    />
+  </a>
+  <p
+    className="description"
+  />
+</div>
+`;

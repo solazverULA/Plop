@@ -20,4 +20,4 @@ const lenguage = (message) => {
 
 }
 
-export default translator;
+export default lenguage;

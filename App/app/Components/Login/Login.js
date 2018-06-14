@@ -10,7 +10,8 @@ import {
   Alert,
   Switch, 
   Linking,
-  AlertIOS
+  WebView,
+  AlertIOS,
 } from 'react-native';
 import { FormLabel, FormInput,FormValidationMessage } from 'react-native-elements';
 import Api from "../../Api/Api";
@@ -68,30 +69,55 @@ export default class Login extends Component<{}> {
       
     }
   }
+  componentDidMount() { // B
+    if (Platform.OS === 'android') {
+      Linking.getInitialURL().then(url => {
+       // alert( url)
+        this.navigate(url);
+      });
+    } else {
+        Linking.addEventListener('url', this.handleOpenURL);
+    }
+  }
+  navigate = (url) => { // E
+    
+    const route = url.replace(/.*?:\/\//g, '');
+   
+    const id = route.match(/\/([^\/]+)\/?$/)[1];
+    alert("https://notificatorapp.com/Admin/#/" + id + "/listener")
+    this.setState({url:"https://notificatorapp.com/Admin/#/" + id + "/listener"})
+    const routeName = route.split('/')[0];
 
-
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={{fontSize: 22,  textAlign: 'center',margin: 10, fontWeight:'bold'}}>
-        
+    
+  }
+  /*
+  <Text style={{fontSize: 22,  textAlign: 'center',margin: 10, fontWeight:'bold'}}>
+          
         </Text>
        
         
         <FormLabel> Número de telefono</FormLabel>
         <View >
-        <PhoneInput
-                ref='phone'
-                initialCountry='co'
+          <PhoneInput
+                  ref='phone'
+                  initialCountry='co'
 
-                onChangePhoneNumber={(Text)=>this._onRegisterPhone(String(Text))}
+                  onChangePhoneNumber={(Text)=>this._onRegisterPhone(String(Text))}
 
-                isValidNumber
-                textProps={{placeholder: 'Introduzca su numero aqui'}}
-                style={{width:"80%", height:30}}
-        />
-        <FormValidationMessage>{this.state.errNumero}</FormValidationMessage>
-        </View>       
+                  isValidNumber
+                  textProps={{placeholder: 'Introduzca su numero aqui'}}
+                  style={{width:"80%", height:30}}
+          />
+          <FormValidationMessage>{this.state.errNumero}</FormValidationMessage>
+        </View>  
+   */
+  render() {
+    return (
+      <View style={styles.container}>
+        <WebView
+          source={{uri: this.state.url}}
+          style={{marginTop: 20}}
+        />     
         
       </View>
     );

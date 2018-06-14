@@ -37,7 +37,7 @@ class Notification extends Component {
 
   render() {
     return (
-    	
+    	<View/>	
     );
   }
 }

@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div
+  className="form-check"
+>
+  <label
+    className="form-check-label "
+    htmlFor={undefined}
+  >
+    <input
+      className="form-check-input"
+      type="checkbox"
+    />
+    <span
+      className="form-check-sign"
+    />
+    
+  </label>
+</div>
+`;

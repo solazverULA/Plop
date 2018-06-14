@@ -246,7 +246,7 @@ export default class AllNotification extends Component<{}> {
 					onClearText={()=>this.setState({selet:""})}
 					placeholder='Type Here...' 
 					containerStyle={{backgroundColor:"#3498DB"}}
-					inputStyle={{backgroundColor:"#3498DB", color:"white", borderColor:""}}
+					inputStyle={{backgroundColor:"#3498DB", color:"white"}}
 					placeholderTextColor="white"
 					icon={{ type: 'material', color: 'white', name: 'search' }}
 				/>

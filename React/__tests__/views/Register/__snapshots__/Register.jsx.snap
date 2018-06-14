@@ -1,0 +1,170 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div>
+  <div
+    className="panel-header panel-header-sm"
+  />
+  <div
+    className="content"
+  >
+    <div
+      className="justify-content-center row"
+    >
+      <div
+        className="justify-content-center col-12 col-md-4"
+      >
+        <div
+          className="card-chart card"
+          style={
+            Object {
+              "height": "300px",
+            }
+          }
+        >
+          <div
+            className="card-header"
+            style={
+              Object {
+                "paddingTop": "7%",
+              }
+            }
+          >
+            <h4
+              className="card-title"
+            >
+              Register
+            </h4>
+          </div>
+          <div
+            className="card-body"
+          >
+            <div
+              lg={2}
+              md={2}
+              style={
+                Object {
+                  "paddingTop": "2%",
+                }
+              }
+              xs={10}
+            >
+              <div
+                className="form-group"
+              >
+                <div>
+                  E-mail
+                </div>
+                <div
+                  className="input-group"
+                >
+                  <input
+                    className="form-control"
+                    id="register_email"
+                    name="Email"
+                    required={true}
+                    type="email"
+                  />
+                </div>
+              </div>
+              <div
+                className="form-group"
+              >
+                <div>
+                  Password
+                </div>
+                <div
+                  className="input-group"
+                >
+                  <input
+                    className="form-control"
+                    id="register_password"
+                    name="Password"
+                    required={true}
+                    type="password"
+                  />
+                </div>
+              </div>
+              <div
+                className="form-group"
+              >
+                <div>
+                  Confirm password
+                </div>
+                <div
+                  className="input-group"
+                >
+                  <input
+                    className="form-control"
+                    id="register_confirm_password"
+                    name="Password"
+                    required={true}
+                    type="password"
+                  />
+                </div>
+              </div>
+              <div
+                className="form-group"
+              >
+                <div>
+                  ID number
+                </div>
+                <div
+                  className="input-group"
+                >
+                  <input
+                    className="form-control"
+                    id="register_id_number"
+                    name="id"
+                    required={true}
+                    type="number"
+                  />
+                </div>
+              </div>
+              <div
+                className="form-group"
+              >
+                <div>
+                  Gender
+                </div>
+                <div
+                  className="input-group"
+                >
+                  <input
+                    className="form-control"
+                    id="register_id_number"
+                    name="id"
+                    required={true}
+                    type="number"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="justify-content-right text-right card-footer"
+            style={
+              Object {
+                "marginTop": "-2%",
+              }
+            }
+          >
+            <button
+              className="btn btn-primaryBlue"
+              onClick={[Function]}
+              style={
+                Object {
+                  "width": "100px",
+                }
+              }
+              type={undefined}
+            >
+              register
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -1,0 +1,95 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#393e42",
+          "borderBottomColor": "#000",
+          "borderBottomWidth": 1,
+          "borderTopColor": "#000",
+          "borderTopWidth": 1,
+        },
+        false,
+        Object {
+          "backgroundColor": "#3498DB",
+        },
+      ]
+    }
+  >
+    <TextInput
+      allowFontScaling={true}
+      onChangeText={[Function]}
+      onClearText={[Function]}
+      placeholder="Type Here..."
+      placeholderTextColor="white"
+      style={
+        Array [
+          Object {
+            "backgroundColor": "#303337",
+            "borderRadius": 3,
+            "color": "#86939e",
+            "fontSize": 17.5,
+            "height": 30,
+            "margin": 8,
+            "overflow": "hidden",
+            "paddingLeft": 26,
+            "paddingRight": 19,
+          },
+          false,
+          false,
+          Object {
+            "borderRadius": 15,
+          },
+          Object {
+            "backgroundColor": "#3498DB",
+            "color": "white",
+          },
+          undefined,
+          false,
+        ]
+      }
+      underlineColorAndroid="transparent"
+    />
+    <Text
+      accessible={true}
+      allowFontScaling={false}
+      ellipsizeMode="tail"
+      style={
+        Array [
+          Object {
+            "color": "white",
+            "fontSize": 16,
+          },
+          Array [
+            Object {
+              "backgroundColor": "transparent",
+              "position": "absolute",
+              "top": 15.5,
+            },
+            Object {
+              "left": 16,
+            },
+            undefined,
+          ],
+          Object {
+            "fontFamily": "Material Icons",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+        ]
+      }
+    >
+      
+    </Text>
+  </View>
+</View>
+`;
