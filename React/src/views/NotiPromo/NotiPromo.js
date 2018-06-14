@@ -12,10 +12,10 @@ import {
 } from "reactstrap";
 
 import Switch from "react-switch";
-import Api from "../../../Api/Api";
+import Languaje from "../../api/translator/translator"
 import cookie from "react-cookies";
-import Languaje from "../../../LanguajeApi/LanguajeApi"
-import SearchInput, {createFilter} from 'react-search-input'
+import Api from "../../api/Api/Api";
+import SearchInput, { createFilter } from 'react-search-input'
 import {Animated} from "react-animated-css";
 
 class NotiPromo extends React.Component {
@@ -53,6 +53,8 @@ class NotiPromo extends React.Component {
 			search: !this.state.search
 		});
 	}
+
+	
 
 	render() {
 		return (
@@ -98,7 +100,7 @@ class NotiPromo extends React.Component {
 				: 
 
 				<div style={{'paddingTop':'3%'}}>
-					<img src= {require("../../../Assets/Images/logo.png")} style={{
+					<img src= {require("../../assets/img/favicon.png")} style={{
 						width: '18%',
 						marginTop: '1%',
 						marginLeft: '4%'}}/>

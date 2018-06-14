@@ -10,14 +10,14 @@ import {
   Input,
 } from "reactstrap";
 import Loader from 'react-loader-spinner'
-import ReactPhoneInput from "react-phone-input";
+import ReactPhoneInput from "../../components/reactPhoneInput";
 import HomePage from '../NotiPromo';
 import NotificationPage from '../Notipoints/Notipoints'
 import Switch from "react-switch";
 import Api from "../../api/Api/Api";
 import cookie from "react-cookies";
 import Languaje from "../../api/translator/translator"
-import SearchInput, {createFilter} from 'react-search-input'
+
 
 const applicationServerPublicKey ="BFHGUoqTwUGrJ94P4bquY4BsL8aIpzaaXYqyQgaJwp7YcFr0QddCpMYE344NwPu-bEBeZo_drz5RSPKtf0-ykjw";
 
@@ -138,9 +138,7 @@ class ListenerWeb extends React.Component {
 
 
 	componentDidMount(){
-		if(!this.state.ListenerData)
-			this.UserSuscription();
-		else if(!this.props.match.params.pass){
+		if(this.state.ListenerData){
 			Api._getNotificationListener(this.state.ListenerData.Id ,(data)=>{
 				this.setState({NotificationListener:(data?data:[])})
 			})
@@ -159,13 +157,10 @@ class ListenerWeb extends React.Component {
 
 			})
 
-		Api._getShareListener(this.state.ListenerData.Id ,(data)=>{
+			Api._getShareListener(this.state.ListenerData.Id ,(data)=>{
 
-				this.setState({getShareButton:data?data:[]});
-		})
-
-
-				this.UserSuscription();
+					this.setState({getShareButton:data?data:[]});
+			})
 		}
 	}
 
@@ -551,7 +546,7 @@ class ListenerWeb extends React.Component {
 										<Col xs="12">
 											<div style={{fontSize:15, color:"#2979AF", fontWeight:"bold"}} >{Languaje("EnviaNotificaciones")}</div>
 
-											<img src= {require("../../../Assets/Images/googleplay.png")} style={{height:60, marginTop:0}} className="imageReceptor"/>
+											
 										</Col>
 
 									</Row>

@@ -10,9 +10,9 @@ import {
   ModalFooter,
   ModalHeader,
 } from "reactstrap";
-import Languaje from "../../../LanguajeApi/LanguajeApi"
+import Languaje from "../../api/translator/translator"
 import cookie from "react-cookies";
-import Api from "../../../Api/Api";
+import Api from "../../api/Api/Api";
 import {Animated} from "react-animated-css";
 import {
   FacebookShareButton,
@@ -64,7 +64,7 @@ class Notipoints extends React.Component {
 		return (
 			<div style= {{background:"white",    height: '-webkit-fill-available'}} >
 				<div>
-					<img src= {require("../../../Assets/Images/logo.png")} style={{
+					<img src= {require("../../assets/img/favicon.png")} style={{
 						width: '18%', 
 						marginTop: '1%',
 						marginLeft: '4%'}} className="imageReceptor"/>
@@ -84,7 +84,7 @@ class Notipoints extends React.Component {
 						marginLeft: '10%'}} >
 						<img src= {"https://drive.google.com/uc?export=view&id="+ this.props.User.Created_at} style={{width: '12%', marginTop: '4%',  marginLeft: '-6%', borderRadius: 18}} className="imageReceptor"/>
 						<div style= {{    display: 'inline'}} >
-							<img src= {require("../../../Assets/Images/tickets.png")} style={{width: '20%', marginTop: '1%',  marginLeft: '4%'}} className="imageReceptor"/>
+							<img src= {require("../../assets/img/tickets.png")} style={{width: '20%', marginTop: '1%',  marginLeft: '4%'}} className="imageReceptor"/>
 							<div style= {{display: 'inline', color: "#88BC4F",paddingLeft: "30%"}} >
 								<p style= {{display: 'inline',fontSize: '25pt'}}>{this.props.User.Status}</p>
 								<p style= {{display: 'inline'}} >pts</p>
