@@ -54,7 +54,7 @@ func main() {
 	r.HandleFunc("/listeners/{phonenumber}/subscribe", listener.SubscribeListener).Methods("GET")
 
 	//Ruta para conectar con react
-	r.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir("./React/build/"))))
+	r.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir("../React/build/"))))
 
 	log.Println("El servidor se encuentra en el puerto 8001")
 	log.Fatal(http.ListenAndServe(":8001", r))

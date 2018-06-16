@@ -16,8 +16,8 @@ import NotificationPage from '../Notipoints/Notipoints'
 import Switch from "react-switch";
 import Api from "../../api/Api/Api";
 import cookie from "react-cookies";
-import Languaje from "../../api/translator/translator"
-
+import Languaje from "../../api/translator/translator";
+import FondoApp from "../../assets/img/fondoapp.jpg";
 
 const applicationServerPublicKey ="BFHGUoqTwUGrJ94P4bquY4BsL8aIpzaaXYqyQgaJwp7YcFr0QddCpMYE344NwPu-bEBeZo_drz5RSPKtf0-ykjw";
 
@@ -55,7 +55,9 @@ class ListenerWeb extends React.Component {
 			userSelected:{},
 		};
 		console.log("prosp",this.props)
-
+		document.body.style.backgroundImage = FondoApp;
+		console.log(FondoApp)
+		document.body.style.backgroundColor ="white";
 		if(this.state.ListenerData){
 			
 			this.setState({...this.state,...this.state.ListenerData, DD:"11", MM:"11", YYYY:"1999", Namelistener:"default", Phonenumber:"444444444444"})
@@ -107,16 +109,16 @@ class ListenerWeb extends React.Component {
 		}else{
 			this.state.devices = "browser";
 		}
-		
+
 		Api._getUserForId(this.props.match.params.id, (Data)=>{
-			this.setState({UserData:Data.Profile, User:Data.User});
+			this.setState({UserData:Data.Profile ? Data.Profile:{}, User:Data.User});
 			document.title=this.state.UserData.Linktitle;
 			if(Data.User.Roles_idrole==2){
 				document.body.style.backgroundColor ="white";
 			} else {
 				document.body.style.backgroundColor ="white";
 				if(!this.state.ListenerData){
-					document.body.style.backgroundImage = "url('https://drive.google.com/uc?export=view&id="+ this.state.UserData.Srclogo+"')";
+					document.body.style.backgroundImage = FondoApp;
 				}
 			}
 			if(Data.Namelanguage == "Spanish"){
