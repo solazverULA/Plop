@@ -25,9 +25,9 @@ func main() {
 
 	//Rutas crud usuarios
 	r.HandleFunc("/user/{id}", user.GetUser).Methods("GET")
-	//r.HandleFunc("/getusers", user.GetUsers).Methods("GET")
+	r.HandleFunc("/getusers", user.GetUsers).Methods("GET")
 	r.HandleFunc("/getuser", user.GetUserEmail).Methods("GET")
-	//r.HandleFunc("/user/{id}/update", user.UpdateUser).Methods("POST")
+	r.HandleFunc("/user/{id}/update", user.UpdateUser).Methods("POST")
 	//r.HandleFunc("/user/{id}/delete", user.DeleteUser).Methods("POST")
 
 	//Rutas login

@@ -70,7 +70,7 @@ type UsersSendNotifications struct {
 
 type ResponseListener struct {
 	Status  			string    `json:Status`
-	Data    			Listeners `json:Receptor`
+	Data    			Devices `json:Receptor`
 	Message 			string    `json:Message`
 }
 
@@ -80,8 +80,8 @@ func CreateListener(listener Listeners, devices Devices, iduser int) Listeners {
 	var listenercompr Devices
 	var user modeluser.Users
 
-	connect.GetConnection().Table("users").Where("iduser = ?", iduser).First(&user)
-	connect.GetConnection().Table("devices").Where("phonenumber = ?", devices.Phonenumber).First(&listenercompr)
+	connect.GetConnection().Table("users").Where("ciuser = ?", iduser).First(&user)
+	connect.GetConnection().Table("devices").Where("phone_number = ?", devices.Phonenumber).First(&listenercompr)
 
 	if listenercompr.Phonenumber == devices.Phonenumber {
 		devices = listenercompr
@@ -254,10 +254,10 @@ func GetListenerUser(iduser string) []Listeners {
 }
 
 //Opcion de suscribir y desuscribir un listener
-func SuscribeListener(phonenumber string) Listeners {
-	var listener Listeners
+func SuscribeListener(phonenumber string) Devices {
+	var listener Devices
 
-	connect.GetConnection().Table("listeners").Where("number = ?", phonenumber).First(&listener)
+	connect.GetConnection().Table("devices").Where("phone_number = ?", phonenumber).First(&listener)
 	//listener.Agreeterms = 1
 	//connect.GetConnection().Table("listeners").Where("number = ?", phonenumber).Updates(&listener)
 
