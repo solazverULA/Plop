@@ -80,6 +80,7 @@ CREATE TABLE `devices` (
   `end_point` varchar(250) DEFAULT NULL COMMENT 'key of the browser notification',
   `p256h` varchar(250) DEFAULT NULL COMMENT 'code of the browser notification',
   `phone_number` varchar(30) NOT NULL,
+  `os` varchar(30) NOT NULL,
   `listeners_cilisteners` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -126,6 +127,7 @@ CREATE TABLE `notifications` (
   `idnotifications` int(11) NOT NULL,
   `title` text,
   `body` text,
+  `type` int(45) DEFAULT NULL COMMENT 'what is the notification type (0 for single, 1 for expandible, 2 button, 3 whatsapp)',
   `src_image` text COMMENT 'drive id of notification image'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -284,14 +286,14 @@ ALTER TABLE `users`
 --
 
 ALTER TABLE `cities`
-  MODIFY `idcities` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idcities` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `countries`
 --
 
 ALTER TABLE `countries`
-  MODIFY `idcountries` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idcountries` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `features`
@@ -304,7 +306,7 @@ ALTER TABLE `features`
 --
 
 ALTER TABLE `notifications`
-  MODIFY `idnotifications` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idnotifications` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `rols`
@@ -312,6 +314,14 @@ ALTER TABLE `notifications`
 
 ALTER TABLE `rols`
   MODIFY `idrole` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+
+--
+-- AUTO_INCREMENT de la tabla `people`
+--
+
+ALTER TABLE `people`
+  MODIFY `cipeople` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Restricciones para tablas volcadas

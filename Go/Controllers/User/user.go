@@ -58,11 +58,35 @@ func GetUserEmail(w http.ResponseWriter, r * http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
+//Función para ver todos los usuarios
+func GetUsers(w http.ResponseWriter, r * http.Request) {
+	w.Header().Set("Content-Type", "text/html; charset-utf-8")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	
+	//conexion con json
+	json.NewEncoder(w).Encode(modeluser.GetUsers())
+}
+
+
+//Función para actualizar datos del usuario
+func UpdateUser(w http.ResponseWriter, r * http.Request) {
+	vars := mux.Vars(r)		//Obtenemos los valores de la url
+	user_id := vars["id"]
+
+	w.Header().Set("Content-Type", "text/html; charset-utf-8")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	user, profile, cities, countries, filelogo, handlelogo, fileicon, handleicon := GetDataFromUser(r)
+
+	response := modeluser.ResponseUser{"succes", modeluser.UpdateUs(user_id, user, profile, cities, countries, filelogo, handlelogo, fileicon, handleicon), "Usuario actualizado con éxito"}
+	json.NewEncoder(w).Encode(response)
+	
+}
+
 //Función para extraer del request el json del usuario
-func GetUserRequest(r *http.Request) (modeluser.Users, modeluser.People, modeluser.Roles, modeluser.Cities, modeluser.Countries) {
+func GetUserRequest(r *http.Request) (modeluser.Users, modeluser.People, modeluser.Cities, modeluser.Countries) {
 	var user modeluser.Users
 	var people modeluser.People
-	var rol modeluser.Roles
 	var cities modeluser.Cities
 	var countries modeluser.Countries
 
@@ -72,10 +96,9 @@ func GetUserRequest(r *http.Request) (modeluser.Users, modeluser.People, modelus
 	json.Unmarshal(body, &struct { //Puedo dividir el json para las modeluser profiles y user
 		*modeluser.Users
 		*modeluser.People
-		*modeluser.Roles
 		*modeluser.Cities
 		*modeluser.Countries
-	}{&user, &people, &rol, &cities, &countries})
+	}{&user, &people, &cities, &countries})
 
 
 	if err != nil {
@@ -84,7 +107,7 @@ func GetUserRequest(r *http.Request) (modeluser.Users, modeluser.People, modelus
 	fmt.Println(people)
 	fmt.Println("llego bien aqui")
 
-	return user, people, rol, cities, countries
+	return user, people, cities, countries
 }
 
 //Función para obtener los datos de solo el usuario
@@ -104,7 +127,7 @@ func GetRequestUser(r *http.Request) modeluser.Users {
 }
 
 ///Funcion para agregar los datos del registro con la imagen incluida
-func GetDataFromUser(r *http.Request) (modeluser.Users, modeluser.People, modeluser.Cities, modeluser.Countries, multipart.File, *multipart.FileHeader) {
+func GetDataFromUser(r *http.Request) (modeluser.Users, modeluser.People, modeluser.Cities, modeluser.Countries, multipart.File, *multipart.FileHeader,  multipart.File, *multipart.FileHeader) {
 	var profile modeluser.People
 	var user modeluser.Users
 	var cities modeluser.Cities
@@ -117,11 +140,24 @@ func GetDataFromUser(r *http.Request) (modeluser.Users, modeluser.People, modelu
 		handle = nil
 	}
 	log.Println("%v", file)
+
+	fileIcon, handleIcon, err := r.FormFile("imageIcon")
+	if err != nil {
+		log.Println("no hay imagen %v", err)
+		fileIcon = nil
+		handleIcon = nil
+	}
+	log.Println("%v", fileIcon)
+
 	user.Email = r.FormValue("Email")
+	log.Println("Email: %s", user.Email)
 	user.Password = r.FormValue("Password")
 	Roles_idrole, _ := strconv.Atoi(r.FormValue("Roles_idrole"))
 	user.Roles_idrole = Roles_idrole
 
+	//Id, _ := strconv.Atoi(r.FormValue("Id"))
+	//profile.Id = Id
+	//log.Println("Id: %v", Id)
 	profile.Nameprofile = r.FormValue("Nameprofile")
 	profile.Gender = r.FormValue("Gender")
 
@@ -131,5 +167,5 @@ func GetDataFromUser(r *http.Request) (modeluser.Users, modeluser.People, modelu
 	log.Println("usuario: ")
 	log.Println(user)
 
-	return user, profile, cities, countries, file, handle
+	return user, profile, cities, countries, file, handle, fileIcon, handleIcon
 }

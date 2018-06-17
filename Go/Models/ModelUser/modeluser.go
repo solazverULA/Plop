@@ -3,7 +3,7 @@ package modeluser
 import (
 	"../../connect"
 	"../ModelImages"
-	//"fmt"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"strconv"
@@ -71,8 +71,13 @@ type ResponseUserId struct {
 	Namecountry  				string       `json:Namecountry`
 }
 
+type UserRol struct {
+	User     					Users
+	Rolename 					string
+}
+
 type Listeners struct {
-	Id           		int    `gorm:"primary_key;column:cilistener" json:idlisteners`
+	Id           				int    `gorm:"primary_key;column:cilistener" json:idlisteners`
 }
 
 //Crear nuevo usuario
@@ -179,6 +184,22 @@ func GetUsuario(email_user string) Users {
 	return user
 }
 
+//Función para ver todos los usuarios
+func GetUsers() []UserRol {
+	var users []Users
+	var userrol []UserRol
+
+	connect.GetConnection().Select("*").Find(&users)
+	for i := 0; i < len(users); i++ {
+		var roles Roles
+		connect.GetConnection().Where("idrole = ?", users[i].Roles_idrole).First(&roles)
+		userrol = append(userrol, UserRol{users[i], roles.Rolename})
+	}
+
+
+	return userrol
+}
+
 //Encriptar contraseña
 func EncrypPassword(user Users) Users {
 	userPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), 10)
@@ -212,10 +233,98 @@ func ValideEmail(email string, user Users) bool {
 }
 
 //Función para cambiar contraseña
-
 func CambiarContraseña(user Users) Users {
 	user = EncrypPassword(user)
 	connect.GetConnection().Table("users").Where("email = ?", user.Email).Updates(user)
+
+	return user
+}
+
+//Función para actualizar un usuario
+func UpdateUs(id string, user Users, profiles People, cities Cities, countries Countries, FileLogo multipart.File, HandleLogo *multipart.FileHeader, FileIcon multipart.File, HandleIcon *multipart.FileHeader) Users {
+
+	IdUSerfolder := modelimages.SearchIdDrive("User" + id)
+	if FileLogo != nil {
+		vector := []string{IdUSerfolder}
+		data, err := ioutil.ReadAll(FileLogo)
+		if err != nil {
+			log.Printf("%+v", err)
+
+		}
+		//permision, _ := modelimages.GetSrv().Permissions.Create("file.Id,", &drive.Permission{Role:"owner", Type:"anyone"}).Do()
+		file_metadata := &drive.File{
+			Name:     "ImageLogo" + id,
+			MimeType: HandleLogo.Header.Get("Content-Type"),
+			Parents:  vector,
+		}
+		file, err := modelimages.GetSrv().Files.Create(file_metadata).Media(bytes.NewReader(data)).Do()
+		if err != nil {
+			log.Printf("Failed to create file %v", err)
+		}
+		permissiondata := &drive.Permission{
+			Type:               "anyone",
+			Role:               "reader",
+			Domain:             "",
+			AllowFileDiscovery: true,
+		}
+		pres, err := modelimages.GetSrv().Permissions.Create(file.Id, permissiondata).Do()
+		if err != nil {
+			log.Printf("Error: %v", err)
+		}
+		fmt.Printf("%s, %s\n", pres.Type, pres.Role)
+		log.Printf("File: %+v", file)
+		profiles.Srclogo = "ImageLogo" + id
+
+	}
+	
+	if FileIcon != nil {
+		vector := []string{IdUSerfolder}
+		data, err := ioutil.ReadAll(FileIcon)
+		if err != nil {
+			log.Printf("%+v", err)
+
+		}
+		
+		file_metadata := &drive.File{
+			Name:     "ImageIcon" + id,
+			MimeType: HandleIcon.Header.Get("Content-Type"),
+			Parents:  vector,
+		}
+		file, err := modelimages.GetSrv().Files.Create(file_metadata).Media(bytes.NewReader(data)).Do()
+		if err != nil {
+			log.Printf("Failed to create file %v", err)
+		}
+		permissiondata := &drive.Permission{
+			Type:               "anyone",
+			Role:               "reader",
+			Domain:             "",
+			AllowFileDiscovery: true,
+		}
+		pres, err := modelimages.GetSrv().Permissions.Create(file.Id, permissiondata).Do()
+		if err != nil {
+			log.Printf("Error: %v", err)
+		}
+		fmt.Printf("%s, %s\n", pres.Type, pres.Role)
+
+		log.Printf("File: %+v", file)
+		profiles.Srcicon = "ImageIcon" + id
+
+	}
+
+	if user.Password == "" {
+		passworduser := GetUsuario(user.Email)
+		user.Password = passworduser.Password
+	} else {
+		user = EncrypPassword(user)
+	}
+
+	t := time.Now()
+	user.Updated_at = t.String()
+	connect.GetConnection().Table("users").Where("ciuser = ?", id).Updates(user)
+	connect.GetConnection().Table("people").Where("cipeople = ?", id).Updates(profiles)
+
+	connect.GetConnection().Table("countries").Where("profiles_users_iduser = ?", id).Updates(countries)
+	connect.GetConnection().Table("cities").Where("countries_idcountries= ?", countries.Id).Updates(cities)
 
 	return user
 }
