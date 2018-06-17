@@ -54,7 +54,6 @@ class ListenerWeb extends React.Component {
 			getShareButton:[],
 			userSelected:{},
 		};
-		console.log("prosp",this.props)
 		document.body.style.backgroundImage = FondoApp;
 		console.log(FondoApp)
 		document.body.style.backgroundColor ="white";
@@ -323,30 +322,28 @@ class ListenerWeb extends React.Component {
 													!this.state.addNew
 													?<Col xs="12">
 														<FormGroup>
-															<Row>
-																<Col  xs="12">
-																	<Row>
-																		<Col xs="4">
-																		</Col>
-																		<Col xs="4">
-
-																			<Label className="switch switch-sm switch-text switch-info float-right mb-0">
-																                <Input type="checkbox" className="switch-input" onChange={()=>{this.state.genre=this.state.genre=="Female"?"Male":"Female"}}/>
-																                <span className="switch-label" data-on={Languaje("SexoFemenino")} data-off={Languaje("SexoMasculino")}></span>
-																                <span className="switch-handle"></span>
-																            </Label>		
-
-																		</Col>
-																		<Col xs="4">
-																		</Col>
-
-																	</Row>
+															<Row style={{marginBottom:'8%'}}>
+																
+																<Col xs="4">
 																</Col>
+																<Col xs="4">
+
+																	<Label className="switch switch-sm switch-text switch-info float-right mb-0">
+														                <Input  type="checkbox" className="switch-input" onChange={()=>{ this.setState({genre:this.state.genre=="Female"?"Male":"Female"})}}/>
+														                <span style={{fontSize:12 ,padding: 5, color:this.state.genre=="Female"?"white":"#2979AF"}} className="switch-label" data-on={Languaje("SexoFemenino")} data-off={Languaje("SexoMasculino")}>{this.state.genre=="Female" ? Languaje("SexoFemenino") : Languaje("SexoMasculino")}</span>
+														                <span className="switch-handle"></span>
+														            </Label>		
+
+																</Col>
+																<Col xs="4">
+																</Col>
+
+																	
 															</Row>
 															<Row style={{marginLeft:"0.2%"}}>
 																 <div className="subTitleReceptor">{Languaje("CreateFechaNacimiento")}</div>
 															</Row>
-															<Row>
+															<Row style={{marginBottom:'8%'}}>
 																<Col xs="4">
 																	 <Input type="select" className="imputReceptor" id="Name" name="name" placeholder={"DD"} onChange={(event)=>this.setState({DD:event.target.value})}>
 																			<option value="DD">{"DD"}</option>
@@ -498,12 +495,12 @@ class ListenerWeb extends React.Component {
 															</Row>
 																<div className="errores">{this.state.errDate}</div>
 														</FormGroup>
-														 <FormGroup>
+														 <FormGroup style={{marginBottom:'8%'}}>
 																 <div className="subTitleReceptor">{Languaje("CreateName")}</div>
 																 <Input className="imputReceptor" type="text" id="Name" name="name" placeholder={Languaje("TuNombre")} onChange={(event)=>this.setState({Namelistener:event.target.value})}/>
 																 	<div className="errores">{this.state.errName}</div>
 														 </FormGroup>
-														 <FormGroup>
+														 <FormGroup style={{marginBottom:'8%'}}>
 																<div className="subTitleReceptor" >{Languaje("Telefono")}</div>
 																<ReactPhoneInput  className="imputReceptor input-group-addon" placeholder={"1235443258"} defaultCountry={'co'} onChange={(text)=>this.setState({Phonenumber:text})}/>
 																<div className="errores">{this.state.errPhonenumber}</div>
