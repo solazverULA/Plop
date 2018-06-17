@@ -18,6 +18,8 @@ import Api from "../../api/Api/Api";
 import cookie from "react-cookies";
 import Languaje from "../../api/translator/translator";
 import FondoApp from "../../assets/img/fondoapp.jpg";
+import LogoPlop from "../../assets/img/Logo_plop.png";
+
 
 const applicationServerPublicKey ="BFHGUoqTwUGrJ94P4bquY4BsL8aIpzaaXYqyQgaJwp7YcFr0QddCpMYE344NwPu-bEBeZo_drz5RSPKtf0-ykjw";
 
@@ -54,9 +56,9 @@ class ListenerWeb extends React.Component {
 			getShareButton:[],
 			userSelected:{},
 		};
-		document.body.style.backgroundImage = FondoApp;
+		document.body.style.backgroundImage = 'url('+FondoApp+')';
 		console.log(FondoApp)
-		document.body.style.backgroundColor ="white";
+		document.body.style.backgroundColor ="rgba(41, 121, 175, 0.28)";
 		if(this.state.ListenerData){
 			
 			this.setState({...this.state,...this.state.ListenerData, DD:"11", MM:"11", YYYY:"1999", Namelistener:"default", Phonenumber:"444444444444"})
@@ -158,10 +160,7 @@ class ListenerWeb extends React.Component {
 
 			})
 
-			Api._getShareListener(this.state.ListenerData.Id ,(data)=>{
-
-					this.setState({getShareButton:data?data:[]});
-			})
+			
 		}
 	}
 
@@ -293,7 +292,7 @@ class ListenerWeb extends React.Component {
 									{
 										this.state.User.Roles_idrole!=2
 										?<Col xs="12">
-											<img src= {"https://drive.google.com/uc?export=view&id="+ this.state.UserData.Srcicon} style={{}} className="imageReceptor"/>
+											<img src= {this.state.UserData.Srcicon ? "https://drive.google.com/uc?export=view&id="+ this.state.UserData.Srcicon : LogoPlop} style={{}} className="imageReceptor"/>
 										</Col>
 										:null
 									}
@@ -309,7 +308,7 @@ class ListenerWeb extends React.Component {
 													:<Col xs="12">
 														<Row style={{marginBottom:"7%"}}>
 															<Col xs="3">
-																<img src= {"https://drive.google.com/uc?export=view&id="+ this.state.UserData.Srcicon} style={{height:50, width:50}} className="imageReceptor"/>
+																<img src= {this.state.UserData.Srcicon ? "https://drive.google.com/uc?export=view&id="+ this.state.UserData.Srcicon : LogoPlop} style={{height:50, width:50}} className="imageReceptor"/>
 															</Col>
 															<Col xs="9" style={{marginTop:"6%",textAlign:"left"}} className="titleReceptor">
 																{ this.state.UserData.Nameprofile ?this.state.UserData.Nameprofile.toUpperCase(): null}
@@ -526,7 +525,7 @@ class ListenerWeb extends React.Component {
 																      />
 																    :
 																    <Button
-																		style={{borderColor:(this.state.Phonenumber.length<8 || this.state.DD == "DD" || this.state.MM == "MM" || this.state.YYYY == "YYYY" || this.state.Namelistener == "" || !this.state.checkbox) ? "grey" :"green",
+																		style={{borderWidth:1,borderStyle:"solid",borderColor:(this.state.Phonenumber.length<8 || this.state.DD == "DD" || this.state.MM == "MM" || this.state.YYYY == "YYYY" || this.state.Namelistener == "" || !this.state.checkbox) ? "grey" :"green",
 																			color:(this.state.Phonenumber.length<8 || this.state.DD == "DD" || this.state.MM == "MM" || this.state.YYYY == "YYYY" || this.state.Namelistener == "" || !this.state.checkbox) ? "grey" :"green",}}
 																		type="submit" size="md" color="primary" className=" buttonReceptor js-push-btn mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
 																			{this.state.buttonMjs}
