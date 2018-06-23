@@ -1,0 +1,6 @@
+{
+  "name": "NotiPromo",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./NotiPromo.js"
+}

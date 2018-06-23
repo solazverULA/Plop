@@ -92,7 +92,7 @@ func GetUserRequest(r *http.Request) (modeluser.Users, modeluser.People, modelus
 
 	body, err := ioutil.ReadAll(r.Body) //Convierte el r.body en un json, ioutill convierte r a formato json
 	//log.Println(body)
-
+	
 	json.Unmarshal(body, &struct { //Puedo dividir el json para las modeluser profiles y user
 		*modeluser.Users
 		*modeluser.People

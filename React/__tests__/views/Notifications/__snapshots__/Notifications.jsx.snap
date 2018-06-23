@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div>
+  <div
+    className="panel-header panel-header-sm"
+  />
+  <div
+    style={
+      Object {
+        "marginLeft": "1%",
+      }
+    }
+  >
+    <button
+      className="btn-round btn-icon btn btn-primaryBlue"
+      onClick={[Function]}
+      type="button"
+    >
+      <i
+        className="now-ui-icons ui-1_simple-add"
+      />
+    </button>
+  </div>
+  <div
+    className="content flex-center animated animatedFadeInUp fadeInUp"
+  >
+    <h2>
+      Create a new notification!
+    </h2>
+  </div>
+</div>
+`;
