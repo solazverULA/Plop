@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 	//"time"
 	"../../connect"
 	//webpush "../../src/github.com/sherclockholmes/webpush-go"
@@ -17,7 +18,7 @@ import (
 
 //Receptores
 type Listeners struct {
-	Id             		int    `gorm:"primary_key;column:cilisteners" json:idlisteners`
+	Id             		int    `gorm:"column:cilisteners" json:idlisteners`
 }
 
 type ListenersHasUsers struct {
@@ -69,19 +70,31 @@ type UsersSendNotifications struct {
 }	
 
 type ResponseListener struct {
-	Status  			string    `json:Status`
-	Data    			Devices `json:Receptor`
-	Message 			string    `json:Message`
+	Status  			string    	`json:Status`
+	Data    			Devices 	`json:Receptor`
+	Message 			string    	`json:Message`
+}
+
+type People struct {
+	Id           				int    		`gorm:"column:cipeople" json:Idprofiles`
+	Nameprofile  				string 		`gorm:"column:name" json:Nameprofile`
+	Gender 						string 		`gorm:"column:gender" json:Gender`
+	Srclogo      				string 		`gorm:"column:src_logo" json:Srclogo`
+	Srcicon      				string 		`gorm:"column:src_icon" json:Srcicon`
+	Countries_idcountries 		int 		`gorm:"column:countries_idcountries" json:Countries_idcountries`
 }
 
 //Crear nuevo receptor
-func CreateListener(listener Listeners, devices Devices, iduser int) Listeners {
+func CreateListener(devices Devices, people People, iduser int) Listeners {
+	var listener Listeners
 	var listenerhasuser ListenersHasUsers
 	var listenercompr Devices
 	var user modeluser.Users
 
 	connect.GetConnection().Table("users").Where("ciuser = ?", iduser).First(&user)
-	connect.GetConnection().Table("devices").Where("phone_number = ?", devices.Phonenumber).First(&listenercompr)
+	phonenumber := strings.Split(devices.Phonenumber, " ")
+	connect.GetConnection().Table("devices").Where("phone_number = ?", phonenumber[1]).First(&listenercompr)
+	pais := ReturnCountry(phonenumber[0])
 
 	if listenercompr.Phonenumber == devices.Phonenumber {
 		devices = listenercompr
@@ -94,6 +107,22 @@ func CreateListener(listener Listeners, devices Devices, iduser int) Listeners {
 		connect.GetConnection().Create(&listenerhasuser)
 		
 	} else {
+		var countries modeluser.Countries
+
+		connect.GetConnection().Table("countries").Where("name_country = ?", pais).First(&countries)
+		if countries.Id == 0 {
+			countries.Namecountry = pais
+			connect.GetConnection().Table("countries").Create(&countries)
+		}
+		people.Countries_idcountries = countries.Id
+		connect.GetConnection().Table("people").Create(&people)
+		
+		var peoples []People
+		connect.GetConnection().Table("people").Find(&peoples)
+		peopleId := peoples[len(peoples)-1].Id
+		fmt.Println("id", peopleId)
+
+		listener.Id = peopleId
 		connect.GetConnection().Create(&listener)
 		//connect.GetConnection().Find(&listeners)
 		//listenerId := listeners[len(listeners)-1].Id
@@ -279,4 +308,70 @@ func ListenersAndDevices(iduser string) []ListenersDevices {
 	}
 	return listenerdevices
 
+}
+
+
+//Funcion para determinar el nombre de un pais a partir de su codigo
+func ReturnCountry(codigo string) string {
+	paises := []struct {
+        codigo  string
+        country string
+    }{
+        {"+7", "Abjasia"},
+        {"+93", "Afganistán"},
+        {"+355", "Albania"},
+        {"+49", "Alemania"},
+        {"+244", "Angola"},
+        {"+1264", "Anguilla"},
+        {"+672", "Antartida"},
+        {"+1268", "Antigua y Barbuda"},
+        {"+599", "Antillas Holandesas"},
+        {"+966", "Arabia Saudita"},
+		{"+213", "Argelia"},
+		{"+54", "Argentina"},
+		{"+374", "Armenia"},
+		{"+297", "Aruba"},
+		{"+61", "Australia"},
+		{"+43", "Austria"},
+		{"+994", "Azerbaiyan"},
+		{"+1242", "Bahamas"},
+		{"+973", "Bahrein"},
+		{"+880", "Bangladesh"},
+		{"+1246", "Barbados"},
+		{"+32", "Belgica"},
+		{"+501", "Belice"},
+		{"+229", "Benin"},
+		{"+1441", "Bermudas"},
+		{"+375", "Bielorrusia"},
+		{"+591", "Bolivia"},
+		{"+599", "Bonaire"},
+		{"+387", "Bosnia-Herzegovina"},
+		{"+267", "Botswana"},
+		{"+55", "Brasil"},
+		{"+673", "Brunei Darussalam"},
+		{"+359", "Bulgaria"},
+		{"+226", "Burkina Faso"},
+		{"+257", "Burundi"},
+		{"+975", "Butan"},
+		{"+238", "Cabo Verde"},
+		{"+855", "Camboya"},
+		{"+237", "Camerun"},
+		{"+1", "Canada"},
+		{"+235", "Chad"},
+		{"+56", "Chile"},
+		{"+86", "China"},
+		{"+357", "Chipre"},
+		{"+57", "Colombia"},
+		{"+269", "Comores"},
+		{"+242", "Congo"},
+    }
+
+    for _, c := range paises {
+        if codigo == c.codigo {
+            return c.country
+        } else {
+        	return "Venezuela"
+        }
+    }
+	return "Venezuela"
 }

@@ -55,7 +55,11 @@ CREATE TABLE `countries` (
 CREATE TABLE `features` (
   `idfeatures` int(11) NOT NULL,
   `resend_notification` int(11) DEFAULT NULL,
-  `edit_notification` int(11) DEFAULT NULL
+  `edit_notification` int(11) DEFAULT NULL,
+  `create_groups` int(11) DEFAULT NULL,
+  `custom_logo` int(11) DEFAULT NULL,
+  `notification_types` int(11) DEFAULT NULL,
+  `schedule_notification` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------

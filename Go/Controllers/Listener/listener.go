@@ -20,24 +20,26 @@ func RegisterListener(w http.ResponseWriter, r * http.Request) {
 
 	userid, _ := strconv.Atoi(user_id)
 
-	listener, devices := GetListenerRequest(r) //Obtiene los datos del listener
-	json.NewEncoder(w).Encode(modellisteners.CreateListener(listener, devices, userid))
+	devices, people := GetListenerRequest(r) //Obtiene los datos del listener
+	json.NewEncoder(w).Encode(modellisteners.CreateListener(devices, people, userid))
 }
 
 //Función para extraer del request el json del listener
-func GetListenerRequest(r * http.Request) (modellisteners.Listeners, modellisteners.Devices){
-	var listener modellisteners.Listeners
+func GetListenerRequest(r * http.Request) (modellisteners.Devices, modellisteners.People){
 	var devices modellisteners.Devices
+	var people modellisteners.People
+
 	body, err := ioutil.ReadAll(r.Body) //Convi
 	json.Unmarshal(body, &struct { //Puedo dividir el json para las modellisteners profiles y user
-		*modellisteners.Listeners
 		*modellisteners.Devices
-	}{&listener, &devices})
+		*modellisteners.People
+	}{&devices, &people})
+
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	return listener, devices
+	return devices, people
 }
 
 //Función para actualizar el estado de un receptor si quiere recibir o no notificaciones cambiar para que solo suscriba y hacer otra que desuscriba
