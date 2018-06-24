@@ -45,7 +45,7 @@ func main() {
 
 	//Rutas Notificaciones
 	r.HandleFunc("/user/{id}/registernotification", notifications.RegisterNotification).Methods("POST")
-	//r.HandleFunc("/notification/{id}/user", notifications.GetNotificationUser).Methods("GET")
+	r.HandleFunc("/notification/{id}/user", notifications.GetNotificationUser).Methods("GET")
 	//r.HandleFunc("/notification/{id}/usersimple", notifications.GetNotificationUser).Methods("GET")
 	//r.HandleFunc("/notification/{id}", notifications.GetNotification).Methods("GET")
 	r.HandleFunc("/notifications/{idnotification}/send", notifications.SendNotification).Methods("POST")
