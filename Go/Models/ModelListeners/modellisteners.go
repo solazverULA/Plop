@@ -18,36 +18,36 @@ import (
 
 //Receptores
 type Listeners struct {
-	Id             		int    `gorm:"column:cilisteners" json:idlisteners`
+	Id             					int    `gorm:"column:cilisteners" json:idlisteners`
 }
 
 type ListenersHasUsers struct {
-	Listeners_idlisteners int `gorm:"column:listeners_cilisteners" json:listeners_idlisteners`
-	Users_iduser          int `gorm:"column:users_ciuser" json:users_iduser`
+	Listeners_idlisteners 			int `gorm:"column:listeners_cilisteners" json:listeners_idlisteners`
+	Users_iduser          			int `gorm:"column:users_ciuser" json:users_iduser`
 }
 
 type ListenersForUsers struct {
-	Listener 			Listeners
-	Email    			string
+	Listener 						Listeners
+	Email    						string
 }
 
 type ListenersDevices struct {
-	Listener 			Listeners
-	Devices  			[]Devices
+	Listener 						Listeners
+	Devices  						[]Devices
 }
 
 type ListenerVector struct {
-	Ids 				[]string `json:Listener`
+	Ids 							[]string `json:Listener`
 }
 
 type Devices struct {
-	Token                 string `gorm:"column:token" json:Token`
-	Auth                  string `gorm:"column:auth" json:Auth`
-	Endpoint              string `gorm:"column:end_point" json:Endpoint`
-	P256h                 string `gorm:"column:p256h" json:P256h`
-	Phonenumber           string `gorm:"column:phone_number" json:Phonenumber`
-	Os 					  string `gorm:"column:os" json:Os`
-	Listeners_idlisteners int    `gorm:"column:listeners_cilisteners" json:listeners_idlisteners`
+	Token                 			string `gorm:"column:token" json:Token`
+	Auth                  			string `gorm:"column:auth" json:Auth`
+	Endpoint              			string `gorm:"column:end_point" json:Endpoint`
+	P256h                 			string `gorm:"column:p256h" json:P256h`
+	Phonenumber           			string `gorm:"column:phone_number" json:Phonenumber`
+	Os 					  			string `gorm:"column:os" json:Os`
+	Listeners_idlisteners 			int    `gorm:"column:listeners_cilisteners" json:listeners_idlisteners`
 }
 
 type Notifications struct {
@@ -59,9 +59,9 @@ type Notifications struct {
 }
 
 type ListenerAndNotifications struct {
-	Status   			int       `json:Status`
-	Date     			string    `json:Date`
-	Listener 			Listeners `json:Listener`
+	Status   						int       `json:Status`
+	Date     						string    `json:Date`
+	Listener 						Listeners `json:Listener`
 }
 
 type UsersSendNotifications struct {
@@ -69,19 +69,25 @@ type UsersSendNotifications struct {
   	Users_iduser 					int `gorm:"column:users_ciuser" json:Users_iduser`
 }	
 
+type ResponseDevices struct {
+	Status  						string    	`json:Status`
+	Data    						Devices 	`json:Devices`
+	Message 						string    	`json:Message`
+}
+
 type ResponseListener struct {
-	Status  			string    	`json:Status`
-	Data    			Devices 	`json:Receptor`
-	Message 			string    	`json:Message`
+	Status  						string    	`json:Status`
+	Data    						People 		`json:Listeners`
+	Message 						string    	`json:Message`
 }
 
 type People struct {
-	Id           				int    		`gorm:"column:cipeople" json:Idprofiles`
-	Nameprofile  				string 		`gorm:"column:name" json:Nameprofile`
-	Gender 						string 		`gorm:"column:gender" json:Gender`
-	Srclogo      				string 		`gorm:"column:src_logo" json:Srclogo`
-	Srcicon      				string 		`gorm:"column:src_icon" json:Srcicon`
-	Countries_idcountries 		int 		`gorm:"column:countries_idcountries" json:Countries_idcountries`
+	Id           					int    		`gorm:"column:cipeople" json:Idprofiles`
+	Nameprofile  					string 		`gorm:"column:name" json:Nameprofile`
+	Gender 							string 		`gorm:"column:gender" json:Gender`
+	Srclogo      					string 		`gorm:"column:src_logo" json:Srclogo`
+	Srcicon      					string 		`gorm:"column:src_icon" json:Srcicon`
+	Countries_idcountries 			int 		`gorm:"column:countries_idcountries" json:Countries_idcountries`
 }
 
 //Crear nuevo receptor
@@ -95,15 +101,18 @@ func CreateListener(devices Devices, people People, iduser int) Listeners {
 	phonenumber := strings.Split(devices.Phonenumber, " ")
 	connect.GetConnection().Table("devices").Where("phone_number = ?", phonenumber[1]).First(&listenercompr)
 	pais := ReturnCountry(phonenumber[0])
+	log.Println(phonenumber)
 
 	if listenercompr.Phonenumber == devices.Phonenumber {
 		devices = listenercompr
+		devices.Phonenumber = phonenumber[1]
 		listenerhasuser.Listeners_idlisteners = listenercompr.Listeners_idlisteners
 		listenerhasuser.Users_iduser = iduser
 		//devices.Listeners_idlisteners = listenercompr.Id
-		if devices.Token != "" || devices.Auth != "" && devices.P256h != "" && devices.Endpoint != "" {
+		//if devices.Token != "" || devices.Auth != "" && devices.P256h != "" && devices.Endpoint != "" {
 			connect.GetConnection().Create(&devices)
-		}
+		//}//}
+
 		connect.GetConnection().Create(&listenerhasuser)
 		
 	} else {
@@ -126,17 +135,39 @@ func CreateListener(devices Devices, people People, iduser int) Listeners {
 		connect.GetConnection().Create(&listener)
 		//connect.GetConnection().Find(&listeners)
 		//listenerId := listeners[len(listeners)-1].Id
+		log.Println(listener.Id)
 		listenerhasuser.Listeners_idlisteners = listener.Id
 		devices.Listeners_idlisteners = listener.Id
 		listenerhasuser.Users_iduser = iduser
-		if devices.Token != "" || devices.Auth != "" && devices.P256h != "" && devices.Endpoint != "" {
+		devices.Phonenumber = phonenumber[1]
+		//if devices.Token != "" || devices.Auth != "" && devices.P256h != "" && devices.Endpoint != "" {
 			connect.GetConnection().Create(&devices)
-		}
+		//}
 		connect.GetConnection().Create(&listenerhasuser)
 	}
 
 	return listener //Para usar luego esa id
 }
+
+//Función para ver todos los listener por OS
+func GetAllListeners(os string) []Listeners {
+	var devices []Devices
+	var listeners []Listeners
+
+	if os == "all" {
+		connect.GetConnection().Select("*").Find(&listeners)
+	} else {
+		connect.GetConnection().Table("devices").Where("os = ?", os).Find(&devices)
+		for i := 0; i < len(devices); i++ {
+			var listener Listeners
+			connect.GetConnection().Table("listeners").Where("cilisteners = ?", devices[i].Listeners_idlisteners).First(&listener)
+			listeners = append(listeners, listener)
+		}
+	}
+
+	return listeners
+}
+
 
 //obtener los listener que un usuario tiene suscripto
 func GetUsersOfListener(idlistener string) []modeluser.Users {
@@ -267,17 +298,26 @@ func GetListenerUser(iduser string) []Listeners {
 	var listenersuser []Listeners
 	var listener []Listeners
 
-	connect.GetConnection().Where("users_iduser = ?", iduser).Find(&listenerhasuser) //Obtengo todos los usuarios que tienen la id pedida
+	connect.GetConnection().Where("users_ciuser = ?", iduser).Find(&listenerhasuser) //Obtengo todos los usuarios que tienen la id pedida
 
 	for i := 0; i < len(listenerhasuser); i++ {
 		//idlistener = append(idlistener, listenerhasuser[i].Listeners_idlisteners)
-		connect.GetConnection().Where("idlisteners = ?", listenerhasuser[i].Listeners_idlisteners).Find(&listenersuser)
+		connect.GetConnection().Where("cilisteners = ?", listenerhasuser[i].Listeners_idlisteners).Find(&listenersuser)
 		for j := 0; j < len(listenersuser); j++ {
 			//if listenersuser[j].Listenerdelete != "delete" {
 				listener = append(listener, listenersuser[j])
 			//}
 		}
 	}
+
+	return listener
+}
+
+//Función para ver los listener por id
+func GetListenerId(id string) People {
+	listener := People{}
+
+	connect.GetConnection().Table("people").Where("cipeople = ?", id).First(&listener)
 
 	return listener
 }

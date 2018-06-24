@@ -54,6 +54,7 @@ CREATE TABLE `countries` (
 
 CREATE TABLE `features` (
   `idfeatures` int(11) NOT NULL,
+  `send_notification` int(11) NOT NULL,
   `resend_notification` int(11) DEFAULT NULL,
   `edit_notification` int(11) DEFAULT NULL,
   `create_groups` int(11) DEFAULT NULL,
@@ -79,6 +80,7 @@ CREATE TABLE `listeners` (
 --
 
 CREATE TABLE `devices` (
+  `iddevices` int(11) NOT NULL,
   `token` varchar(250) DEFAULT NULL COMMENT 'unique token of litener for ios and android devices',
   `auth` varchar(250) DEFAULT NULL COMMENT 'key of browser notifcation',
   `end_point` varchar(250) DEFAULT NULL COMMENT 'key of the browser notification',
@@ -219,7 +221,7 @@ ALTER TABLE `listeners`
 --
 
 ALTER TABLE `devices`
-  ADD PRIMARY KEY (`token`,`auth`,`end_point`,`p256h`),
+  ADD PRIMARY KEY (`iddevices`),
   ADD KEY `fk_devices_listener1_idx` (`listeners_cilisteners`);
 
 --
@@ -298,6 +300,15 @@ ALTER TABLE `cities`
 
 ALTER TABLE `countries`
   MODIFY `idcountries` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+
+--
+-- AUTO_INCREMENT de la tabla `devices`
+--
+
+ALTER TABLE `devices`
+  MODIFY `iddevices` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
 
 --
 -- AUTO_INCREMENT de la tabla `features`

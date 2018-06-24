@@ -12,7 +12,7 @@ import (
 func main() {
 	url := "http://localhost:8001/user/1/registerlistener" //Ruta
 
-	var jsonStr = []byte(`{"Nameprofile":"anita", "Gender":"Female","Phonenumber":"+58 417232123", "Os":"Android"}`)
+	var jsonStr = []byte(`{"Nameprofile":"Gustavo", "Gender":"Male", "Countries_idcountries":1, "Phonenumber":"58 4168059454" }`)
 		
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
 	

@@ -10,6 +10,7 @@ import (
 	"./Controllers/User"
 	"./Controllers/Notifications"
 	"./Controllers/Listener"
+	"./Controllers/Features"
 	"./connect"
 	"github.com/gorilla/mux"
 )
@@ -52,6 +53,42 @@ func main() {
 	//Rutas listeners
 	r.HandleFunc("/user/{id}/registerlistener", listener.RegisterListener).Methods("POST")
 	r.HandleFunc("/listeners/{phonenumber}/subscribe", listener.SubscribeListener).Methods("GET")
+	r.HandleFunc("/getlisteners", listener.GetListeners).Methods("GET")
+	r.HandleFunc("/user/{id}/getlisteners", listener.GetListenersUser).Methods("GET")
+	r.HandleFunc("/listeners/{id}", listener.GetListenersId).Methods("GET")
+
+	/*
+	
+	
+	r.HandleFunc("/listeners/{id}/getallnotifications", listener.GetListenersNotifications).Methods("GET")
+	r.HandleFunc("/getlistenersforuser/{id}", listener.GetListenersForUser).Methods("GET")
+	r.HandleFunc("/lastlisteners", listener.LastListeners).Methods("GET")
+	r.HandleFunc("/listeners/{idlisteners}/update", listener.UpdateListener).Methods("POST")
+	r.HandleFunc("/listeners/{phonenumber}/subscribe", listener.SubscribeListener).Methods("GET")
+	r.HandleFunc("/listeners/{id}/getusers", listener.GetUsers).Methods("GET")
+	r.HandleFunc("/listeners/{id}/user/{iduser}/add", listener.AddUsers).Methods("GET")
+	r.HandleFunc("/listeners/{phonenumber}/unsubscribe", listener.UnsubscribeListener).Methods("GET")
+	r.HandleFunc("/user/{iduser}/devices", listener.ListenersAndDevices).Methods("GET")
+	r.HandleFunc("/user/{idlistener}/unsubscribe", listener.AllUnsubscribedUsers).Methods("GET")
+	r.HandleFunc("/listener/{idlisteners}/deletelistener", listener.DeleteListener).Methods("POST")
+	r.HandleFunc("/listener/{idlisteners}/deleteuser", listener.DeleteListenerUser).Methods("POST")
+	r.HandleFunc("/user/{iduser}/listener/{idlistener}/share", listener.Share).Methods("POST")
+	r.HandleFunc("/listener/{idlistener}/share", listener.ShareListener).Methods("GET")
+	r.HandleFunc("/listeners/{idlisteners}/adddevices", listener.AddDevices).Methods("POST")
+	r.HandleFunc("/listener/{idlisteners}/lastnotificationuser", listener.GetLastNotificationUser).Methods("GET")
+
+	*/
+
+	//Rutas Features
+	r.HandleFunc("/features/{id}/updatefeatures", features.UpdateFeatures).Methods("POST")
+	r.HandleFunc("/features/{id}", features.GetFeature).Methods("GET")
+
+/*
+	//Rutas pagos
+	r.HandleFunc("/getpayplans", payplans.GetPayPlans).Methods("GET")
+	r.HandleFunc("/payplans/register", payplans.RegisterPayPlans).Methods("POST")
+	r.HandleFunc("/payplans/{id}/edit", payplans.EditPayPlans).Methods("POST")
+	r.HandleFunc("/payplans/{id}/delete", payplans.DeletePayPlans).Methods("POST")*/
 
 	//Ruta para conectar con react
 	r.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir("../React/build/"))))

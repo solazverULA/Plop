@@ -19,7 +19,7 @@ func UpdateFeatures(w http.ResponseWriter, r * http.Request) {
 
 	features := GetFeaturesRequest(r)
 
-	response := modelfeatures.ResponseFeatures{"succes", modelfeatures.UpdateFeatures(idfeatures, features), modelfeatures.Featureuser{}, "Features actualizado con éxito"}
+	response := modelfeatures.ResponseFeatures{"succes", modelfeatures.UpdateFeatures(idfeatures, features), "Features actualizado con éxito"}
 	json.NewEncoder(w).Encode(response)
 }
 
@@ -30,7 +30,7 @@ func GetFeature(w http.ResponseWriter, r * http.Request) {
 	w.Header().Set("Content-Type", "text/html; charsed-utf-8")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 
-	response := modelfeatures.ResponseFeatures{"succes", modelfeatures.GetFeature(idfeatures), modelfeatures.Featureuser{}, ""}
+	response := modelfeatures.ResponseFeatures{"succes", modelfeatures.GetFeature(idfeatures), ""}
 	json.NewEncoder(w).Encode(response)
 }
 
