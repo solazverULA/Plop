@@ -6,7 +6,7 @@ import (
 	"github.com/gorilla/mux"
 	"log"
 	"../../Models/ModelListeners"
-	//"../../Models/ModelNotifications"
+	"../../Models/ModelNotifications"
 	"strconv"
 	"io/ioutil"
 )
@@ -106,6 +106,28 @@ func GetUsers(w http.ResponseWriter, r * http.Request) {
 	
 }
 
+//Funcion para obtener los listener que vieron una notificacion
+func GetListenersNotifications(w http.ResponseWriter, r * http.Request) {
+	vars := mux.Vars(r)		//Obtenemos los valores de la url
+	id := vars["id"]
+	w.Header().Set("Content-Type", "text/html; charset-utf-8")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	//conexion con json
+	json.NewEncoder(w).Encode(modelnotifications.GetListenersNotifications(id))
+}
+
+//Función para añadir devices a un listener
+func AddDevices(w http.ResponseWriter, r * http.Request) {
+	vars := mux.Vars(r)
+	id := vars["idlisteners"]
+	w.Header().Set("Content-Type", "text/html; charset-utf-8")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	listener_id, _ := strconv.Atoi(id)
+	devices, _ := GetListenerRequest(r) //Obtiene los datos del listener
+	json.NewEncoder(w).Encode(modellisteners.AddDevices(listener_id, devices))
+}
+
 //Función para ver los devices de un listener
 func ListenersAndDevices(w http.ResponseWriter, r * http.Request) {
 	vars := mux.Vars(r)		//Obtenemos los valores de la url
@@ -116,4 +138,16 @@ func ListenersAndDevices(w http.ResponseWriter, r * http.Request) {
 
 	json.NewEncoder(w).Encode(modellisteners.ListenersAndDevices(iduser))
 
+}
+
+//Función para actualizar datos del listener
+func UpdateListener(w http.ResponseWriter, r * http.Request) {
+	vars := mux.Vars(r)		//Obtenemos los valores de la url
+	listenerid := vars["idlisteners"]
+	w.Header().Set("Content-Type", "text/html; charset-utf-8")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	_, people := GetListenerRequest(r)
+	responselistener := modellisteners.ResponseListener{"succes", modellisteners.UpdateLis(people, listenerid), "Listener actualizado con éxito"}
+	json.NewEncoder(w).Encode(responselistener)		
 }

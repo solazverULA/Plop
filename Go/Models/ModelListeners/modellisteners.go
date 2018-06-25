@@ -168,23 +168,35 @@ func GetAllListeners(os string) []Listeners {
 	return listeners
 }
 
-
-//obtener los listener que un usuario tiene suscripto
+//Obtener los listener que un usuario tiene suscripto
 func GetUsersOfListener(idlistener string) []modeluser.Users {
 	var listenerhasuser []ListenersHasUsers
 	var users []modeluser.Users
-	connect.GetConnection().Where("listeners_idlisteners = ?", idlistener).Find(&listenerhasuser)
+	connect.GetConnection().Where("listeners_cilisteners = ?", idlistener).Find(&listenerhasuser)
 	for i := 0; i < len(listenerhasuser); i++ {
 		var user modeluser.Users
 		var profiles modeluser.People
-		connect.GetConnection().Where("Users_iduser=?", listenerhasuser[i].Users_iduser).First(&profiles)
-		connect.GetConnection().Where("iduser=?", listenerhasuser[i].Users_iduser).First(&user)
-		//user.Created_at = modelimages.SearchIdDrive(profiles.Srcicon)
-		//user.Updated_at = profiles.Nameprofile
+		connect.GetConnection().Where("Users_iduser =?", listenerhasuser[i].Users_iduser).First(&profiles)
+		connect.GetConnection().Where("ciuser =?", listenerhasuser[i].Users_iduser).First(&user)
+		user.Created_at = modelimages.SearchIdDrive(profiles.Srcicon)
+		user.Updated_at = profiles.Nameprofile
 		users = append(users, user)
 	}
 	return users
 
+}
+
+//Funcion para agregar devices al listener
+func AddDevices(listener_id int, devices Devices) Devices {
+
+	devices.Listeners_idlisteners = listener_id
+	var devicescomparar Devices
+	connect.GetConnection().Where("os = ?", devices.Os).Where("token=?", devices.Token).Where("p256h=?", devices.P256h).Where("end_point=?", devices.Endpoint).Where("auth=?", devices.Auth).Where("listeners_cilisteners = ?", devices.Listeners_idlisteners).First(&devicescomparar)
+	if devices.Os != devicescomparar.Os {
+		connect.GetConnection().Create(&devices)
+	}
+
+	return devices
 }
 
 //funcion para enviar notificaciones
@@ -278,19 +290,6 @@ func SendNotificationOffline(notification Notifications, listenerIds ListenerVec
 	return notification
 } 
 
-//Funcion para agregar devices al listener
-func AddDevices(listener_id int, devices Devices) Devices {
-
-	devices.Listeners_idlisteners = listener_id
-	var devicescomparar Devices
-	connect.GetConnection().Where("os = ?", devices.Os).Where("token=?", devices.Token).Where("p256dh=?", devices.P256h).Where("end_point=?", devices.Endpoint).Where("auth=?", devices.Auth).Where("listeners_idlisteners = ", devices.Listeners_idlisteners).First(&devicescomparar)
-	if devices.Os != devicescomparar.Os {
-		connect.GetConnection().Create(&devices)
-	}
-
-	return devices
-}
-
 //Función para ver si existe un listener
 func GetListenerUser(iduser string) []Listeners {
 	var listenerhasuser []ListenersHasUsers
@@ -348,6 +347,13 @@ func ListenersAndDevices(iduser string) []ListenersDevices {
 	}
 	return listenerdevices
 
+}
+
+//Función para actualizar datos del listener en la base de datos
+func UpdateLis(people People, idlistener string) People {
+	connect.GetConnection().Table("people").Where("cipeople = ?", idlistener).Updates(people)
+
+	return people
 }
 
 

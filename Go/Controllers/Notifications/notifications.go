@@ -74,6 +74,29 @@ func SendNotification(w http.ResponseWriter, r * http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
+//Función para obtener las notificaciones por usuario
+func GetNotificationUser(w http.ResponseWriter, r * http.Request) {
+	vars := mux.Vars(r)
+	notificationid := vars["id"]
+
+	w.Header().Set("Content-Type", "text/html; charsed-utf-8")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	json.NewEncoder(w).Encode(modelnotifications.GetNotificationUser(notificationid))
+
+}
+
+//Funcion para ver una notificacion
+func GetNotification(w http.ResponseWriter, r * http.Request) {
+	vars := mux.Vars(r)
+	notificationid := vars["id"]
+
+	w.Header().Set("Content-Type", "text/html; charsed-utf-8")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	json.NewEncoder(w).Encode(modelnotifications.GetNotification(notificationid))
+}
+
 //Funcion para obtener los datos de listener_hasnotification
 func GetListenerHasNotificacionRequest(r * http.Request) modelnotifications.ListenersReceiveNotifications {
 	var listener_hasnotification modelnotifications.ListenersReceiveNotifications

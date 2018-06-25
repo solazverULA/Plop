@@ -46,8 +46,7 @@ func main() {
 	//Rutas Notificaciones
 	r.HandleFunc("/user/{id}/registernotification", notifications.RegisterNotification).Methods("POST")
 	r.HandleFunc("/notification/{id}/user", notifications.GetNotificationUser).Methods("GET")
-	//r.HandleFunc("/notification/{id}/usersimple", notifications.GetNotificationUser).Methods("GET")
-	//r.HandleFunc("/notification/{id}", notifications.GetNotification).Methods("GET")
+	r.HandleFunc("/notification/{id}", notifications.GetNotification).Methods("GET")
 	r.HandleFunc("/notifications/{idnotification}/send", notifications.SendNotification).Methods("POST")
 
 	//Rutas listeners
@@ -56,28 +55,10 @@ func main() {
 	r.HandleFunc("/getlisteners", listener.GetListeners).Methods("GET")
 	r.HandleFunc("/user/{id}/getlisteners", listener.GetListenersUser).Methods("GET")
 	r.HandleFunc("/listeners/{id}", listener.GetListenersId).Methods("GET")
-
-	/*
-	
-	
 	r.HandleFunc("/listeners/{id}/getallnotifications", listener.GetListenersNotifications).Methods("GET")
-	r.HandleFunc("/getlistenersforuser/{id}", listener.GetListenersForUser).Methods("GET")
-	r.HandleFunc("/lastlisteners", listener.LastListeners).Methods("GET")
 	r.HandleFunc("/listeners/{idlisteners}/update", listener.UpdateListener).Methods("POST")
-	r.HandleFunc("/listeners/{phonenumber}/subscribe", listener.SubscribeListener).Methods("GET")
 	r.HandleFunc("/listeners/{id}/getusers", listener.GetUsers).Methods("GET")
-	r.HandleFunc("/listeners/{id}/user/{iduser}/add", listener.AddUsers).Methods("GET")
-	r.HandleFunc("/listeners/{phonenumber}/unsubscribe", listener.UnsubscribeListener).Methods("GET")
-	r.HandleFunc("/user/{iduser}/devices", listener.ListenersAndDevices).Methods("GET")
-	r.HandleFunc("/user/{idlistener}/unsubscribe", listener.AllUnsubscribedUsers).Methods("GET")
-	r.HandleFunc("/listener/{idlisteners}/deletelistener", listener.DeleteListener).Methods("POST")
-	r.HandleFunc("/listener/{idlisteners}/deleteuser", listener.DeleteListenerUser).Methods("POST")
-	r.HandleFunc("/user/{iduser}/listener/{idlistener}/share", listener.Share).Methods("POST")
-	r.HandleFunc("/listener/{idlistener}/share", listener.ShareListener).Methods("GET")
 	r.HandleFunc("/listeners/{idlisteners}/adddevices", listener.AddDevices).Methods("POST")
-	r.HandleFunc("/listener/{idlisteners}/lastnotificationuser", listener.GetLastNotificationUser).Methods("GET")
-
-	*/
 
 	//Rutas Features
 	r.HandleFunc("/features/{id}/updatefeatures", features.UpdateFeatures).Methods("POST")
