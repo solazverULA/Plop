@@ -23,7 +23,7 @@ import {
 
 import Api from '../../api/Api/Api'
 import language from "../../api/translator/translator"
-
+import Cookies from 'react-cookies';
 class Notifications extends React.Component{
 
   constructor(props) {
@@ -31,7 +31,8 @@ class Notifications extends React.Component{
 
     this.state = {visible: false,
                   toggle: false,
-                  notifications:[]
+                  notifications:[],
+                  User:Cookies.load('userId') 
                  };
 
     this.toggleModal = this.toggleModal.bind(this);
@@ -54,7 +55,7 @@ class Notifications extends React.Component{
   }
 
   registerNotification() {
-    Api._RegisterNotification(this.state, File, '25302093',this.toggleModal)
+    Api._RegisterNotification(this.state, this.state.File, this.state.User.Id,this.toggleModal)
   }
 
     render(){

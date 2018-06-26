@@ -69,28 +69,10 @@ class ListenerWeb extends React.Component {
 			this.state.Phonenumber = this.state.ListenerData.Phonenumber
 			Api._getNotificationListener(this.state.ListenerData.Id,(data)=>(this.setState({NotificationListener:data?data:[]})));
 		}
-		if(this.props.match.params.pass){
-			this.state.ListenerData = {};
-			Api._getListenerForId(this.props.match.params.pass,(data)=>{
-				
-				if(data.Id!=0){
-					this.setState({ListenerData:data})
-					Api._getNotificationListener(data.Id ,(notifications)=>{
-						this.setState({NotificationListener:(notifications?notifications:[]), notificationsUser:notifications.filter((data)=>(data.Notifications.Users_iduser==this.state.userSelected.Id))})
-						
-					})
-					Api._getUserListener(data.Id ,(users)=>{
-
-						this.setState({usersListener:users?users:[]});
-
-					})
-
-				}
-			})
-		}
+		
 
 		if (navigator.geolocation) {
-		 navigator.geolocation.getCurrentPosition((position)=>{
+		 	navigator.geolocation.getCurrentPosition((position)=>{
 			this.setState({Latitud: String(position.coords.latitude),
 				Longitud: String(position.coords.longitude) }) },
 				()=>{},{maximumAge:60000, timeout: 4000});
@@ -100,16 +82,17 @@ class ListenerWeb extends React.Component {
 
 			// Windows Phone must come first because its UA also contains "Android"
 
-
+	
 		if (/android/i.test(userAgent)) {
 			this.state.devices = "android-browser"
 		}else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
 			this.state.devices = "iOS-browser";
-			this.state.ShowError = true;
+			
 
 		}else{
 			this.state.devices = "browser";
 		}
+		
 
 		Api._getUserForId(this.props.match.params.id, (Data)=>{
 			this.setState({UserData:Data.Profile ? Data.Profile:{}, User:Data.User});
@@ -199,7 +182,7 @@ class ListenerWeb extends React.Component {
 	writeUserData( user) {
 		if(!this.state.addNew){
 			this.setState({sendingData:true})
-			Api._RegisterListener({Namelistener:this.state.Namelistener,Os:this.state.devices, Phonenumber:this.state.Phonenumber, P256h:!this.state.UserSuscription ? user.keys.p256dh : "", Auth:!this.state.UserSuscription ? user.keys.auth : "", Endpoint:!this.state.UserSuscription ? user.endpoint : "", Agreeterms:1, Latitud:this.state.Latitud, Longitud:this.state.Longitud,Genre:this.state.genre, Age:this.state.DD+"/"+this.state.MM+"/"+this.state.YYYY},
+			Api._RegisterListener({Namelistener:this.state.Namelistener,Os:this.state.devices, Phonenumber: this.state.Phonenumber.slice(0, 3) + " " + this.state.Phonenumber.slice(3) , Agreeterms:1, Latitud:this.state.Latitud, Longitud:this.state.Longitud,Genre:this.state.genre, Age:this.state.DD+"/"+this.state.MM+"/"+this.state.YYYY},
 				this.props.match.params.id,this.props.match.params.idlistener, (data)=>{
 				this.setState({sendingData:false})
 				document.body.style.backgroundImage = "";
@@ -209,20 +192,9 @@ class ListenerWeb extends React.Component {
 					this.setState({usersListener:data?data:[]});
 
 				})
-				Api._getLastNotificationListener(data.Id, (notification)=>{
-
-					let url = (notification.Type == 2 || notification.Type == 3 || notification.Type == 6) ? notification.Action : "https://notificatorapp.com/Admin/#/notification/"+ notification.Srcimage;
-				    if (notification.Type == 7)
-				      url = "https://docs.google.com/document/d/"+notification.Srcimageexpandible+"/edit"
-				    if (notification.Type == 8)
-				      url = "https://notificatorapp.com/Admin/#/information/"+ notification.Id
-					if(!url.includes("https://") && !url.includes("http://")){
-						url= "http://" + url;
-					}
-					window.location = url;
-				})
+				
 				cookie.save('ListenerData', data, { path: '/' });
-				this.setState({ListenerData:data})
+				this.setState({ListenerData:data, ShowError:true})
 			});
 		}else{
 			this.setState({sendingData:true})
@@ -283,10 +255,9 @@ class ListenerWeb extends React.Component {
 		return (
 			<div>
 				{
-			 		(!this.state.ListenerData || this.state.addNew ) && !this.props.match.params.pass
+			 		(!this.state.ListenerData || this.state.addNew )
 					?(
-						!this.state.ShowError
-						?<div>
+						<div>
 							<div className="animated fadeIn">
 								<Row className="justify-content-center text-center">
 									{
@@ -525,6 +496,7 @@ class ListenerWeb extends React.Component {
 																      />
 																    :
 																    <Button
+																    	onClick={this.RegisterListenerButtom.bind(this)}
 																		style={{borderWidth:1,borderStyle:"solid",borderColor:(this.state.Phonenumber.length<8 || this.state.DD == "DD" || this.state.MM == "MM" || this.state.YYYY == "YYYY" || this.state.Namelistener == "" || !this.state.checkbox) ? "grey" :"green",
 																			color:(this.state.Phonenumber.length<8 || this.state.DD == "DD" || this.state.MM == "MM" || this.state.YYYY == "YYYY" || this.state.Namelistener == "" || !this.state.checkbox) ? "grey" :"green",}}
 																		type="submit" size="md" color="primary" className=" buttonReceptor js-push-btn mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
@@ -552,22 +524,14 @@ class ListenerWeb extends React.Component {
 								}
 							</div>
 						</div>
-						:<div>
-							<div>{this.state.ErrorAvailable}</div>
-							<div><a href='/notificator/app-debug.apk' download='Notificator'>{Languaje("MsjAqui")}.</a></div>
-						</div>
+						
 					)
 
 					:<div>
-						
-						{
-							!this.state.openNotificationsUser
-							?
-								<HomePage onRegisterNewUser={(IdUser)=>{window.location.href="https://notificatorapp.com/Admin/#/"+ IdUser+"/listener"}} Listener={this.state.ListenerData} Users={this.state.usersListener} SeeNotificationUser={this._onNotification.bind(this)}/>
-							:
-								<NotificationPage back={()=>this.setState({openNotificationsUser:false})} Notifications={this.state.notificationsUser} User={this.state.userSelected} Listener={this.state.ListenerData} />
-						}
-
+						<div>
+							<div>{this.state.ErrorAvailable}</div>
+							<div><a href='/notificator/app-debug.apk' download='Notificator'>{Languaje("MsjAqui")}.</a></div>
+						</div>
 					</div>
 				}
 			</div>

@@ -24,6 +24,20 @@ import {
 import Api from '../../api/Api/Api'
 import language from "../../api/translator/translator"
 import Cookies from 'react-cookies';
+import {
+  FacebookShareButton,
+  TwitterShareButton,
+  TelegramShareButton,
+  WhatsappShareButton,
+  EmailShareButton,
+} from 'react-share';
+import {
+  FacebookIcon,
+  TwitterIcon,
+  TelegramIcon,
+  WhatsappIcon,
+  EmailIcon,
+} from 'react-share';
 
 class Contacts extends React.Component{
 
@@ -37,7 +51,7 @@ class Contacts extends React.Component{
                  };
 
     this.toggleModal = this.toggleModal.bind(this);
-    Api._getListenerForUserId(this.state.User.Id, (data)=>{console.log(data)});
+    Api._getListenerForUserId(this.state.User.Id, (data)=>{this.setState({contacts:data ? data : []})});
   }
 
   showChart() {
@@ -50,10 +64,13 @@ class Contacts extends React.Component{
 
   toggleModal() {
     this.setState({
-      toggle: !this.state.toggle
+      shareButton: !this.state.shareButton
     });
   }
 
+  deleteListener(index) {
+    this.setState({contacts:this.state.contacts.filter((data,i)=>i!==index)})
+  }
     render(){
         return (
             <div>
@@ -92,19 +109,29 @@ class Contacts extends React.Component{
                   <thead className="thead-default">
                     <tr>
                       <th className="justify-content-center text-center">{language("CreateName")}</th>
-                      <th className="justify-content-center text-center">{language("CreateEmail")}</th>
-                      <th className="justify-content-center text-center">{language("Telefono")}</th>      
-                      <th className="justify-content-center text-center">{language("CreatePais")}</th>
+                      <th className="justify-content-center text-center">{language("Telefono")}</th>
+                      <th className="justify-content-center text-center">{language("CreatePais")}</th>      
+                      <th className="justify-content-center text-center">{language("BotonEliminar")}</th>
                     </tr>
                   </thead>
                   <tbody>
                     { this.state.contacts.map((contacts, i)=>{
                       return(
                         <tr key = {i}>
-                          <td className="justify-content-center text-center"></td>
-                          <td className="justify-content-center text-center"></td>
-                          <td className="justify-content-center text-center"></td>
-                          <td className="justify-content-center text-center"></td>
+                          <td className="justify-content-center text-center">
+                            {contacts.Nameprofile}
+                          </td>
+                          <td className="justify-content-center text-center">
+                            {contacts.Gender}
+                          </td>
+                          <td className="justify-content-center text-center">
+                            {contacts.Srcicon}
+                          </td>
+                          <td className="justify-content-center text-center">
+                            <Button style={{width:'150px'}} color="primaryBlue" for="notification_file" onClick={()=>this.deleteListener(i)}>
+                              <i className='now-ui-icons ui-1_simple-remove'></i>
+                            </Button>
+                          </td>
                         </tr>
                       );
 
@@ -125,7 +152,42 @@ class Contacts extends React.Component{
                   <i className="now-ui-icons ui-1_simple-add"></i>
                 </Button>
               </div>
+              <Modal className="boton-volver" style={{}} isOpen={this.state.shareButton} toggle={()=>{ this.setState({shareButton:false})}} >         
+                <ModalHeader  >
+                    <table>
+                      <tr>
+                        <td>{language("Compartir")}</td>
+                      </tr>
+                    </table>
+                  </ModalHeader>
+                  <table style={{margin:'10%'}} >
+                    <tr>
+                      <td onClick={()=>{this.setState({shareButton:false})}}>
+                        <WhatsappShareButton children={<WhatsappIcon size={32} round={true} />} title={""} url={"https://localhost:3000/ListenerWeb/"+this.state.User.Id}  
+                        />
+                      </td>
+                      <td>Whatsapp</td>
+                    </tr>
+                    <tr>
+                      <td onClick={()=>{this.setState({shareButton:false})}}>
+                        <TwitterShareButton children={<TwitterIcon size={32} round={true} />} title={""} url={"https://localhost:3000/ListenerWeb/"+this.state.User.Id}  
+                        />
+                      </td>
+                      <td>Twitter</td>
+                    </tr> 
+                    <tr>
+                      <td onClick={()=>{this.setState({shareButton:false})}}>
+                        <EmailShareButton children={<EmailIcon size={32} round={true} />} subject={""} body={"https://localhost:3000/ListenerWeb/"+this.state.User.Id}  
+                        />
+                      </td>
+                      <td>Email</td>
+                    </tr>
 
+                  </table>
+                  <ModalFooter  >
+                    <Button className="boton-volver" style={{marginRight: '38%'}} onClick={()=>{this.setState({shareButton:this.state.shareButton})}}>{language("Cerrar")}</Button>
+                  </ModalFooter>
+                </Modal>
             </div>
         );
     }
