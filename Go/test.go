@@ -10,9 +10,9 @@ import (
 
 //Test para enviar el post del usuario
 func main() {
-	url := "http://localhost:8001/listeners/6/adddevices" //Ruta
+	url := "http://localhost:8001/register" //Ruta
 
-	var jsonStr = []byte(`{"Token":"Victor", "Os":"android"}`)
+	var jsonStr = []byte(`{"Email":"Victor", "Password":"victor", "Nameprofile":"Victor"}`)
 		
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
 	

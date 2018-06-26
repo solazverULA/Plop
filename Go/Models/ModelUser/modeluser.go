@@ -152,7 +152,9 @@ func CreateUser(user Users, people People, cities Cities, countries Countries, F
 
 	t := time.Now()
 	user.Created_at = t.String()
-	user.Id = people.Id
+	var peoples []People
+	connect.GetConnection().Table("people").Select("*").Find(&peoples)
+	user.Id = peoples[len(peoples)-1].Id
 	//user.Roles_idrole = rol.Id
 	connect.GetConnection().Create(&user) //Creara una id cada vez
 
@@ -168,7 +170,7 @@ func GetUser(id string) (Users, People, int, string, string) {
 	var cities Cities
 
 	connect.GetConnection().Where("ciuser = ?", id).First(&user)
-	connect.GetConnection().Where("cipeople = ?", id).First(&people)
+	connect.GetConnection().Table("people").Where("cipeople = ?", id).First(&people)
 	connect.GetConnection().Where("idrole = ?", user.Roles_idrole).First(&roles)
 	connect.GetConnection().Where("idcountries = ?", people.Countries_idcountries).First(&countries)
 	connect.GetConnection().Where("countries_idcountries = ?", countries.Id).First(&cities)
