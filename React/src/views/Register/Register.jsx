@@ -47,7 +47,7 @@ class Register extends React.Component{
     Api._registerUser(this.state, null, (data)=>{
       if(data.Status === "success"){
         window.location.href="/Dashboard"
-        Cookies.save('userId', data.User, { path: '/' })
+        Cookies.save('userId', data.DataUser, { path: '/' })
       }
       console.log(data)
     })
