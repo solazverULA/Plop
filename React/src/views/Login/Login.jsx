@@ -5,7 +5,7 @@ import {
 // react plugin used to create charts
 import { Line, Bar } from 'react-chartjs-2';
 // function that returns a color based on an interval of numbers
-
+import Cookies from 'react-cookies';
 import {
     PanelHeader, Stats, CardCategory, Tasks
 } from '../../components';
@@ -27,8 +27,10 @@ class Login extends React.Component{
     Api._loginUser(this.state, (data)=>{
       if(data.Status === "success"){
         window.location.href="/Dashboard"
+        Cookies.save('userId', data.User, { path: '/' })
+        console.log(data)
       }
-      console.log(data)
+      
     })
   }
 

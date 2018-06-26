@@ -1,4 +1,19 @@
 /*  Custom styles  */
+
+.no-padding{
+  padding: 0 0 0 0;
+}
+
+.btn-round {
+  border-radius: 25px !important;
+}
+
+.fixed-right {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+}
+
 .notification-card{
   margin-left: 6%;
   margin-right: 6%;
@@ -370,7 +385,7 @@ input[type="file"] {
 .imageReceptor{
   margin-top: 10%;
   margin-bottom: 5%;
-  width: 150px;
+  width: 100px;
 }
 .subTitleReceptor{
   text-align: left !important;
@@ -460,10 +475,29 @@ input[type=checkbox].css-checkbox {
   justify-content:center;
 }
 
-.flex-center{
-  display: flex;
-  justify-content: center;
-  padding-top: 50% !important;
+/*
+.form-check-radio .form-check-sign::before,
+.form-check-radio .form-check-sign::after {
+  border: 1px solid rgba(134, 142, 150, 0.64) !important;
+}
+
+.form-control {
+  border: 1px solid rgba(134, 142, 150, 0.64) !important;
+}
+*/
+
+.login-register-bg {
+  background-image: url("../img/bg3.jpg");
+  background-size: cover;
+  overflow: hidden;
+}
+
+.max-width {
+  max-width: 100% !important;
+}
+
+.card label {
+  color: #2C2C2C !important;
 }
 
 .card-center{
