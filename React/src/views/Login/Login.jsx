@@ -27,7 +27,7 @@ class Login extends React.Component{
     Api._loginUser(this.state, (data)=>{
       if(data.Status === "success"){
         window.location.href="/Dashboard"
-        Cookies.save('userId', data.User, { path: '/' })
+        Cookies.save('userId', data.DataUser, { path: '/' })
         console.log(data)
       }
       

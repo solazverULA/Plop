@@ -23,6 +23,7 @@ import {
 
 import Api from '../../api/Api/Api'
 import language from "../../api/translator/translator"
+import Cookies from 'react-cookies';
 
 class Contacts extends React.Component{
 
@@ -31,11 +32,12 @@ class Contacts extends React.Component{
 
     this.state = {visible: false,
                   toggle: false,
-                  contacts:[]
+                  contacts:[],
+                  User:Cookies.load('userId') 
                  };
 
     this.toggleModal = this.toggleModal.bind(this);
-    Api._getListenerForUserId();
+    Api._getListenerForUserId(this.state.User.Id, (data)=>{console.log(data)});
   }
 
   showChart() {

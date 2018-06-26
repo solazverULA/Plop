@@ -5,7 +5,7 @@ import {
 // react plugin used to create charts
 import { Line, Bar } from 'react-chartjs-2';
 // function that returns a color based on an interval of numbers
-
+import Cookies from 'react-cookies';
 import {
     PanelHeader, Stats, CardCategory, Tasks
 } from '../../components';
@@ -20,6 +20,14 @@ import {
 import { tasks } from '../../variables/general.jsx';
 
 class Dashboard extends React.Component{
+    constructor(props) {
+      super(props);
+      if (!Cookies.load('userId'))
+         window.location.href="/login"
+
+      console.log(Cookies.load('userId'))
+      this.state = {};
+    }
     render(){
         return (
             <div>
