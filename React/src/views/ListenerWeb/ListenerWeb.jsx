@@ -34,7 +34,7 @@ class ListenerWeb extends React.Component {
 			buttonMjs:Languaje("ButtonRegistrate"),
 			MsjBienvenida:Languaje("MsjBienvenida"),
 			ListenerData:cookie.load('ListenerData'),
-			Namelistener:"",
+			Nameprofile:"",
 			Phonenumber:"",
 			WebAvalaible:true,
 			NotificationListener:[],
@@ -60,8 +60,8 @@ class ListenerWeb extends React.Component {
 		document.body.style.backgroundColor ="rgba(41, 121, 175, 0.28)";
 		if(this.state.ListenerData){
 			
-			this.setState({...this.state,...this.state.ListenerData, DD:"11", MM:"11", YYYY:"1999", Namelistener:"default", Phonenumber:"444444444444"})
-			this.state.Namelistener = this.state.ListenerData.Namelistener
+			this.setState({...this.state,...this.state.ListenerData, DD:"11", MM:"11", YYYY:"1999", Nameprofile:"default", Phonenumber:"444444444444"})
+			this.state.Nameprofile = this.state.ListenerData.Nameprofile
 			this.state.DD = "11"
 			this.state.MM = "11"
 			this.state.YYYY = "1999"
@@ -156,7 +156,11 @@ class ListenerWeb extends React.Component {
 		
 		 	return;
 		}
+<<<<<<< HEAD
 		if (this.state.Namelistener === "") {
+=======
+		if (this.state.Nameprofile == "") {
+>>>>>>> Victor
 			this.setState({errName:Languaje("ErrName")});
 			
 		 	return;
@@ -181,7 +185,7 @@ class ListenerWeb extends React.Component {
 	writeUserData( user) {
 		if(!this.state.addNew){
 			this.setState({sendingData:true})
-			Api._RegisterListener({Namelistener:this.state.Namelistener,Os:this.state.devices, Phonenumber: this.state.Phonenumber.slice(0, 3) + " " + this.state.Phonenumber.slice(3) , Agreeterms:1, Latitud:this.state.Latitud, Longitud:this.state.Longitud,Genre:this.state.genre, Age:this.state.DD+"/"+this.state.MM+"/"+this.state.YYYY},
+			Api._RegisterListener({Nameprofile:this.state.Nameprofile,Os:this.state.devices, Phonenumber: this.state.Phonenumber.slice(0, 3) + " " + this.state.Phonenumber.slice(3) , Agreeterms:1, Latitud:this.state.Latitud, Longitud:this.state.Longitud,Genre:this.state.genre, Age:this.state.DD+"/"+this.state.MM+"/"+this.state.YYYY},
 				this.props.match.params.id,this.props.match.params.idlistener, (data)=>{
 				this.setState({sendingData:false})
 				document.body.style.backgroundImage = "";
@@ -466,7 +470,7 @@ class ListenerWeb extends React.Component {
 														</FormGroup>
 														 <FormGroup style={{marginBottom:'8%'}}>
 																 <div className="subTitleReceptor">{Languaje("CreateName")}</div>
-																 <Input className="imputReceptor" type="text" id="Name" name="name" placeholder={Languaje("TuNombre")} onChange={(event)=>this.setState({Namelistener:event.target.value})}/>
+																 <Input className="imputReceptor" type="text" id="Name" name="name" placeholder={Languaje("TuNombre")} onChange={(event)=>this.setState({Nameprofile:event.target.value})}/>
 																 	<div className="errores">{this.state.errName}</div>
 														 </FormGroup>
 														 <FormGroup style={{marginBottom:'8%'}}>
@@ -496,8 +500,13 @@ class ListenerWeb extends React.Component {
 																    :
 																    <Button
 																    	onClick={this.RegisterListenerButtom.bind(this)}
+<<<<<<< HEAD
 																		style={{borderWidth:1,borderStyle:"solid",borderColor:(this.state.Phonenumber.length<8 || this.state.DD === "DD" || this.state.MM === "MM" || this.state.YYYY === "YYYY" || this.state.Namelistener === "" || !this.state.checkbox) ? "grey" :"green",
 																			color:(this.state.Phonenumber.length<8 || this.state.DD === "DD" || this.state.MM === "MM" || this.state.YYYY === "YYYY" || this.state.Namelistener === "" || !this.state.checkbox) ? "grey" :"green",}}
+=======
+																		style={{borderWidth:1,borderStyle:"solid",borderColor:(this.state.Phonenumber.length<8 || this.state.DD == "DD" || this.state.MM == "MM" || this.state.YYYY == "YYYY" || this.state.Nameprofile == "" || !this.state.checkbox) ? "grey" :"green",
+																			color:(this.state.Phonenumber.length<8 || this.state.DD == "DD" || this.state.MM == "MM" || this.state.YYYY == "YYYY" || this.state.Nameprofile == "" || !this.state.checkbox) ? "grey" :"green",}}
+>>>>>>> Victor
 																		type="submit" size="md" color="primary" className=" buttonReceptor js-push-btn mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
 																			{this.state.buttonMjs}
 																	</Button>

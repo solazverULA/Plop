@@ -128,7 +128,7 @@ class Contacts extends React.Component{
                             {contacts.Srcicon}
                           </td>
                           <td className="justify-content-center text-center">
-                            <Button style={{width:'150px'}} color="primaryBlue" for="notification_file" onClick={()=>this.deleteListener(i)}>
+                            <Button style={{width:'50px', alignItems:"center"}} color="primaryBlue" for="notification_file" onClick={()=>this.deleteListener(i)}>
                               <i className='now-ui-icons ui-1_simple-remove'></i>
                             </Button>
                           </td>
