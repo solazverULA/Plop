@@ -133,6 +133,8 @@ CREATE TABLE `notifications` (
   `idnotifications` int(11) NOT NULL,
   `title` text,
   `body` text,
+  `name_button` text DEFAULT NULL COMMENT 'label of the button in the notification',
+  `action` text DEFAULT NULL COMMENT 'Url where the button notification go',
   `type` int(45) DEFAULT NULL COMMENT 'what is the notification type (0 for single, 1 for expandible, 2 button, 3 whatsapp)',
   `src_image` text COMMENT 'drive id of notification image'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

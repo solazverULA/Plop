@@ -85,14 +85,9 @@ func GetListenersUser(w http.ResponseWriter, r * http.Request) {
 	user_id := vars["id"]
 	w.Header().Set("Content-Type", "text/html; charset-utf-8")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	var listener []modellisteners.Listeners
-
-	//conexion base de datos
-
-	listener = modellisteners.GetListenerUser(user_id)
 
 	//conexion con json
-	json.NewEncoder(w).Encode(listener)
+	json.NewEncoder(w).Encode(modellisteners.GetListenerUser(user_id))
 }
 
 

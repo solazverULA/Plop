@@ -7,8 +7,31 @@ import { PanelHeader, FormInputs, CardAuthor, CardSocials } from '../../componen
 
 import userBackground from '../../assets/img/bg5.jpg';
 import userAvatar from '../../assets/img/mike.jpg';
+import Cookies from 'react-cookies';
+import Api from '../../api/Api/Api'
+import Languaje from '../../api/translator/translator'
 
 class User extends React.Component{
+
+    constructor(props) {
+    super(props);
+
+    this.state = {
+                  userId:Cookies.load('userId'),
+                  user:{}
+                  Email:"",
+                  Password:"",
+                  Gender:"",
+                  Namecountry:"",
+                  Namecities:"",
+                  Zip_code:"",
+                 };
+
+                 Api._getUserForId(userId, (data)=>{
+                    this.setState({user:data})
+                 })
+    }
+
     render(){
         return (
             <div>
@@ -18,7 +41,7 @@ class User extends React.Component{
                         <Col md={8} xs={12}>
                             <Card>
                                 <CardHeader>
-                                    <h5 className="title">Edit Profile</h5>
+                                    <h5 className="title">{Languaje("EditarUsuario")}</h5>
                                 </CardHeader>
                                 <CardBody>
                                     <form>
@@ -26,11 +49,11 @@ class User extends React.Component{
                                             ncols = {["col-md-5 pr-1" , "col-md-3 px-1" , "col-md-4 pl-1"]}
                                             proprieties = {[
                                                 {
-                                                    label : "Company (disabled)",
+                                                    label : Languaje("CreateName"),
                                                     inputProps : {
                                                         type : "text",
-                                                        disabled: true,
-                                                        defaultValue: "Creative Code Inc."
+                                                        disabled: false,
+                                                        defaultValue: "Mi nombre"
                                                     }
                                                 },
                                                 {
