@@ -24,6 +24,8 @@ type Notifications struct {
 	Id                 				int    `gorm:"primary_key;column:idnotifications" json:idnotifications`
 	Title              				string `gorm:"column:title" json:Title`
 	Body               				string `gorm:"column:body" json:Body`
+	Namebutton         				string `gorm:"column:name_button" json:Namebutton`
+	Action             				string `gorm:"column:action" json:Action`
 	Type 							int 	`gorm:"column:type" json:Type`
 	Srcimage           				string `gorm:"column:src_image" json:Srcimage`
 }

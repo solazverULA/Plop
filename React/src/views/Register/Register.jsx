@@ -90,7 +90,7 @@ class Register extends React.Component{
                                     <div xs={10} md={2} lg={2} style={{paddingTop:'2%'}}>
                                       <FormGroup>
                                         <div>
-                                          Name
+                                          Nombre
                                         </div>
                                         <InputGroup>
                                           <Input onChange={(event)=>this.setState({Nameprofile:event.target.value})} type="text" id="register_name" name="Name" required={true}/>
@@ -98,7 +98,7 @@ class Register extends React.Component{
                                       </FormGroup>
                                       <FormGroup>
                                         <div>
-                                          E-mail
+                                          Correo electrónico
                                         </div>
                                         <InputGroup>
                                           <Input onChange={(event)=>this.setState({Email:event.target.value})} type="email" id="register_email" name="Email" required={true}/>
@@ -106,7 +106,7 @@ class Register extends React.Component{
                                       </FormGroup>
                                       <FormGroup>
                                         <div>
-                                          Password
+                                          Contraseña
                                         </div>
                                         <InputGroup>
                                           <Input onChange={(event)=>this.setState({Password:event.target.value})} type="password" id="register_password" name="Password" required={true}/>
@@ -114,7 +114,7 @@ class Register extends React.Component{
                                       </FormGroup>
                                       <FormGroup>
                                         <div>
-                                          Confirm password
+                                          Confirmar Contraseña
                                         </div>
                                         <InputGroup>
                                           <Input onChange={(event)=>this.confirmPassword(event)} type="password" id="register_confirm_password" name="Password" required={true}/>
@@ -125,7 +125,7 @@ class Register extends React.Component{
                                       : null }
                                       <FormGroup>
                                         <div>
-                                          ID number
+                                          Cedula
                                         </div>
                                         <InputGroup>
                                           <Input onChange={(event)=>this.setState({iduser:event.target.value})} type="number" id="register_id_number" name="id" required={true}/>
@@ -134,20 +134,20 @@ class Register extends React.Component{
                                       <Row>
                                         <Col className="justify-content-center text-center">
                                           <Radio
-                                              label="Male"
+                                              label="Masculino"
                                               inputProps={{name:"radio",value:"M",onChange:(event)=>this.setState({Gender:event.target.value})}}
                                           />
                                         </Col>
                                         <Col className="justify-content-center text-center">
                                           <Radio
-                                              label="Female"
+                                              label="Femenino"
                                               inputProps={{name:"radio",value:"F",onChange:(event)=>this.setState({Gender:event.target.value})}}
                                           />
                                         </Col>
                                       </Row>
                                       <FormGroup>
                                         <div>
-                                          Country
+                                          Pais
                                         </div>
                                         <InputGroup className="max-width">
                                           <CountryDropdown
@@ -160,7 +160,7 @@ class Register extends React.Component{
                                         <Col>
                                           <FormGroup style={{paddingTop:'5%'}}>
                                             <div>
-                                              City
+                                              Ciudad
                                             </div>
                                             <InputGroup>
                                               <RegionDropdown
@@ -174,10 +174,10 @@ class Register extends React.Component{
                                         <Col>
                                           <FormGroup>
                                             <div>
-                                              ZIP code
+                                              Codigo Postal
                                             </div>
                                             <InputGroup>
-                                              <Input onChange={(event)=>this.setState({Zip_code:event.target.value})} type="number" id="zip_code" name="zip" required={true}/>
+                                              <Input onChange={(event)=>this.setState({Zip_code:event.target.value})} type="number" id="zip_code" name="Zip_code" required={true}/>
                                             </InputGroup>
                                           </FormGroup>
                                         </Col>

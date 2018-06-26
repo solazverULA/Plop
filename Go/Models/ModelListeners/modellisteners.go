@@ -90,6 +90,11 @@ type People struct {
 	Countries_idcountries 			int 		`gorm:"column:countries_idcountries" json:Countries_idcountries`
 }
 
+type Countries struct {
+	Id                    			int    		`gorm:"primary_key;column:idcountries" json:idcountries`
+	Namecountry           			string 		`gorm:"column:name_country" json:Namecountry`
+}
+
 //Crear nuevo receptor
 func CreateListener(devices Devices, people People, iduser int) Listeners {
 	var listener Listeners
@@ -291,21 +296,26 @@ func SendNotificationOffline(notification Notifications, listenerIds ListenerVec
 } 
 
 //Función para ver si existe un listener
-func GetListenerUser(iduser string) []Listeners {
+func GetListenerUser(iduser string) []People {
 	var listenerhasuser []ListenersHasUsers
 	//var idlistener []int
-	var listenersuser []Listeners
-	var listener []Listeners
+	var listenersuser []People
+	var listener []People
 
 	connect.GetConnection().Where("users_ciuser = ?", iduser).Find(&listenerhasuser) //Obtengo todos los usuarios que tienen la id pedida
 
 	for i := 0; i < len(listenerhasuser); i++ {
 		//idlistener = append(idlistener, listenerhasuser[i].Listeners_idlisteners)
-		connect.GetConnection().Where("cilisteners = ?", listenerhasuser[i].Listeners_idlisteners).Find(&listenersuser)
+		connect.GetConnection().Table("people").Where("cipeople = ?", listenerhasuser[i].Listeners_idlisteners).Find(&listenersuser)
 		for j := 0; j < len(listenersuser); j++ {
-			//if listenersuser[j].Listenerdelete != "delete" {
-				listener = append(listener, listenersuser[j])
-			//}
+			var devices Devices
+			var countries Countries
+			connect.GetConnection().Table("devices").Where("listeners_cilisteners = ?", listenersuser[j].Id).First(&devices)
+			connect.GetConnection().Table("countries").Where("idcountries = ?", listenersuser[j].Countries_idcountries).First(&countries)
+			listenersuser[j].Gender = devices.Phonenumber		
+			listenersuser[j].Srcicon = countries.Namecountry	
+			listener = append(listener, listenersuser[j])
+
 		}
 	}
 
