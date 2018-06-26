@@ -237,7 +237,7 @@ const host = localhost;
 					formData.append(keys,Data[keys])
 			})
 			console.log(formData)
-      console.log(Data)
+      		console.log(Data)
 			fetch(host+"register", {
 			  method: 'POST',
 
@@ -258,11 +258,11 @@ const host = localhost;
 // Fields in the post
 		//Alert.alert("", JSON.stringify({...fileIcon,...fileLogo}))
 		console.log("Id:", id)
-    console.log("Data:", Data)
-    console.log("File:", fileIcon)
+	    console.log("Data:", Data)
+	    console.log("File:", fileIcon)
 		formData.append("image", fileLogo);
 		formData.append("imageIcon", fileIcon);
-    console.log(fileIcon)
+    	console.log(fileIcon)
 		Object.keys(Data).map((keys)=>{
 				formData.append(keys,Data[keys])
 		})

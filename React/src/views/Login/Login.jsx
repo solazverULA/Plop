@@ -1,23 +1,14 @@
 import React from 'react';
 import {
-    Card, CardHeader, CardBody, CardFooter, CardTitle, Button, Row, Col, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Table, Input,  InputGroup, FormGroup
+    Card, CardHeader, CardBody, CardFooter, CardTitle, Button, Row, Col,  Input,  InputGroup, FormGroup
 } from 'reactstrap';
 // react plugin used to create charts
-import { Line, Bar } from 'react-chartjs-2';
+
 // function that returns a color based on an interval of numbers
 import Cookies from 'react-cookies';
 import {
-    PanelHeader, Stats, CardCategory, Tasks
+    PanelHeader
 } from '../../components';
-
-import {
-    dashboardPanelChart,
-    dashboardShippedProductsChart,
-    dashboardAllProductsChart,
-    dashboard24HoursPerformanceChart
-} from '../../variables/charts.jsx';
-
-import { tasks } from '../../variables/general.jsx';
 
 import Api from '../../api/Api/Api'
 

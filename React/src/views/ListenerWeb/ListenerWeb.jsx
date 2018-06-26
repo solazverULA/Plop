@@ -11,9 +11,8 @@ import {
 } from "reactstrap";
 import Loader from 'react-loader-spinner'
 import ReactPhoneInput from "../../components/reactPhoneInput";
-import HomePage from '../NotiPromo';
-import NotificationPage from '../Notipoints/Notipoints'
-import Switch from "react-switch";
+//import HomePage from '../NotiPromo';
+//import NotificationPage from '../Notipoints/Notipoints'
 import Api from "../../api/Api/Api";
 import cookie from "react-cookies";
 import Languaje from "../../api/translator/translator";
@@ -21,7 +20,7 @@ import FondoApp from "../../assets/img/fondoapp.jpg";
 import LogoPlop from "../../assets/img/Logo_plop.png";
 
 
-const applicationServerPublicKey ="BFHGUoqTwUGrJ94P4bquY4BsL8aIpzaaXYqyQgaJwp7YcFr0QddCpMYE344NwPu-bEBeZo_drz5RSPKtf0-ykjw";
+//const applicationServerPublicKey ="BFHGUoqTwUGrJ94P4bquY4BsL8aIpzaaXYqyQgaJwp7YcFr0QddCpMYE344NwPu-bEBeZo_drz5RSPKtf0-ykjw";
 
 class ListenerWeb extends React.Component {
 
@@ -97,7 +96,7 @@ class ListenerWeb extends React.Component {
 		Api._getUserForId(this.props.match.params.id, (Data)=>{
 			this.setState({UserData:Data.Profile ? Data.Profile:{}, User:Data.User});
 			document.title=this.state.UserData.Linktitle;
-			if(Data.User.Roles_idrole==2){
+			if(Data.User.Roles_idrole===2){
 				document.body.style.backgroundColor ="white";
 			} else {
 				document.body.style.backgroundColor ="white";
@@ -105,7 +104,7 @@ class ListenerWeb extends React.Component {
 					document.body.style.backgroundImage = FondoApp;
 				}
 			}
-			if(Data.Namelanguage == "Spanish"){
+			if(Data.Namelanguage === "Spanish"){
 				cookie.save('LenguajeAdmin', "Spanish", { path: '/' });
 				this.setState({...this.state})
 			} else {
@@ -134,7 +133,7 @@ class ListenerWeb extends React.Component {
 				if(data){
 					let bandera=false;
 					for (var i = data.length - 1; i >= 0; i--) {
-						if(data[i].Id == this.props.match.params.id)
+						if(data[i].Id === this.props.match.params.id)
 						bandera = true
 					}
 					this.setState({addNew:!bandera})
@@ -157,12 +156,12 @@ class ListenerWeb extends React.Component {
 		
 		 	return;
 		}
-		if (this.state.Namelistener == "") {
+		if (this.state.Namelistener === "") {
 			this.setState({errName:Languaje("ErrName")});
 			
 		 	return;
 		}
-		if (this.state.DD == "DD" || this.state.MM == "MM" || this.state.YYYY == "YYYY") {
+		if (this.state.DD === "DD" || this.state.MM === "MM" || this.state.YYYY === "YYYY") {
 			this.setState({errDate:Languaje("ErrDate")});
 			
 		 	return;
@@ -229,14 +228,14 @@ class ListenerWeb extends React.Component {
 	}
 
 	_onNotification(user){
-		this.setState({openNotificationsUser:true,notificationsUser:this.state.NotificationListener.filter((data)=>(data.Notifications.Users_iduser==user.Id)), userSelected:user})
+		this.setState({openNotificationsUser:true,notificationsUser:this.state.NotificationListener.filter((data)=>(data.Notifications.Users_iduser===user.Id)), userSelected:user})
 
 	}
 
 /*
 <Switch
-																				checked={this.state.genre!="Female"}
-																				onChange={()=>{this.state.genre=this.state.genre=="Female"?"Male":"Female"}}
+																				checked={this.state.genre!=="Female"}
+																				onChange={()=>{this.state.genre=this.state.genre==="Female"?"Male":"Female"}}
 																				onColor="#2693e6"
 																				onHandleColor="#2693e6"
 																				handleDiameter={30}
@@ -261,7 +260,7 @@ class ListenerWeb extends React.Component {
 							<div className="animated fadeIn">
 								<Row className="justify-content-center text-center">
 									{
-										this.state.User.Roles_idrole!=2
+										this.state.User.Roles_idrole!==2
 										?<Col xs="12">
 											<img src= {this.state.UserData.Srcicon ? "https://drive.google.com/uc?export=view&id="+ this.state.UserData.Srcicon : LogoPlop} style={{}} className="imageReceptor"/>
 										</Col>
@@ -272,7 +271,7 @@ class ListenerWeb extends React.Component {
 										<CardBlock className="card-body">
 											<Row className="justify-content-center text-center noOpacity">
 												{
-													this.state.User.Roles_idrole!=2
+													this.state.User.Roles_idrole!==2
 													?<Col xs="12" className="titleReceptor">
 														{ this.state.UserData.Nameprofile ?this.state.UserData.Nameprofile.toUpperCase(): null}
 													</Col>
@@ -299,8 +298,8 @@ class ListenerWeb extends React.Component {
 																<Col xs="4">
 
 																	<Label className="switch switch-sm switch-text switch-info float-right mb-0">
-														                <Input  type="checkbox" className="switch-input" onChange={()=>{ this.setState({genre:this.state.genre=="Female"?"Male":"Female"})}}/>
-														                <span style={{fontSize:12 ,padding: 5, color:this.state.genre=="Female"?"white":"#2979AF"}} className="switch-label" data-on={Languaje("SexoFemenino")} data-off={Languaje("SexoMasculino")}>{this.state.genre=="Female" ? Languaje("SexoFemenino") : Languaje("SexoMasculino")}</span>
+														                <Input  type="checkbox" className="switch-input" onChange={()=>{ this.setState({genre:this.state.genre==="Female"?"Male":"Female"})}}/>
+														                <span style={{fontSize:12 ,padding: 5, color:this.state.genre==="Female"?"white":"#2979AF"}} className="switch-label" data-on={Languaje("SexoFemenino")} data-off={Languaje("SexoMasculino")}>{this.state.genre==="Female" ? Languaje("SexoFemenino") : Languaje("SexoMasculino")}</span>
 														                <span className="switch-handle"></span>
 														            </Label>		
 
@@ -345,9 +344,9 @@ class ListenerWeb extends React.Component {
 																			<option value="26">{String(26)}</option>
 																			<option value="27">{String(27)}</option>
 																			<option value="28">{String(28)}</option>
-																			{this.state.MM != "2" ? <option value="29">{String(29)}</option>:null}
-																			{this.state.MM != "2" ? <option value="30">{String(30)}</option>:null}
-																			{this.state.MM != "9" && this.state.MM != "4" && this.state.MM != "6" && this.state.MM != "11" && this.state.MM != "2"?<option value="31">{String(31)}</option>:null}
+																			{this.state.MM !== "2" ? <option value="29">{String(29)}</option>:null}
+																			{this.state.MM !== "2" ? <option value="30">{String(30)}</option>:null}
+																			{this.state.MM !== "9" && this.state.MM !== "4" && this.state.MM !== "6" && this.state.MM !== "11" && this.state.MM !== "2"?<option value="31">{String(31)}</option>:null}
 																	</Input>
 																</Col>
 																<Col xs="4">
@@ -497,8 +496,8 @@ class ListenerWeb extends React.Component {
 																    :
 																    <Button
 																    	onClick={this.RegisterListenerButtom.bind(this)}
-																		style={{borderWidth:1,borderStyle:"solid",borderColor:(this.state.Phonenumber.length<8 || this.state.DD == "DD" || this.state.MM == "MM" || this.state.YYYY == "YYYY" || this.state.Namelistener == "" || !this.state.checkbox) ? "grey" :"green",
-																			color:(this.state.Phonenumber.length<8 || this.state.DD == "DD" || this.state.MM == "MM" || this.state.YYYY == "YYYY" || this.state.Namelistener == "" || !this.state.checkbox) ? "grey" :"green",}}
+																		style={{borderWidth:1,borderStyle:"solid",borderColor:(this.state.Phonenumber.length<8 || this.state.DD === "DD" || this.state.MM === "MM" || this.state.YYYY === "YYYY" || this.state.Namelistener === "" || !this.state.checkbox) ? "grey" :"green",
+																			color:(this.state.Phonenumber.length<8 || this.state.DD === "DD" || this.state.MM === "MM" || this.state.YYYY === "YYYY" || this.state.Namelistener === "" || !this.state.checkbox) ? "grey" :"green",}}
 																		type="submit" size="md" color="primary" className=" buttonReceptor js-push-btn mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
 																			{this.state.buttonMjs}
 																	</Button>
@@ -511,7 +510,7 @@ class ListenerWeb extends React.Component {
 									</Card>
 								</Row>
 								{
-									this.state.User.Roles_idrole==2
+									this.state.User.Roles_idrole===2
 									?<Row className="justify-content-center text-center">
 										<Col xs="12">
 											<div style={{fontSize:15, color:"#2979AF", fontWeight:"bold"}} >{Languaje("EnviaNotificaciones")}</div>
@@ -649,10 +648,10 @@ export default ListenerWeb;
 								{this.state.notificationsUser.filter(createFilter(this.state.textSearch, ["Notifications.Title", "Notifications.Body"])).map((data,i) => {
 									return (
 										<div key={i} onClick={()=>{
-											let url = (data.Notifications.Type == 2 || data.Notifications.Type == 3 || data.Notifications.Type == 6) ? data.Notifications.Action : "https://notificatorapp.com/Admin/#/notification/"+ data.Notifications.Srcimage;
-										    if (data.Notifications.Type == 7)
+											let url = (data.Notifications.Type === 2 || data.Notifications.Type === 3 || data.Notifications.Type === 6) ? data.Notifications.Action : "https://notificatorapp.com/Admin/#/notification/"+ data.Notifications.Srcimage;
+										    if (data.Notifications.Type === 7)
 										      url = "https://docs.google.com/document/d/"+data.Notifications.Srcimageexpandible+"/edit"
-										    if (data.Notifications.Type == 8)
+										    if (data.Notifications.Type === 8)
 										      url = "https://notificatorapp.com/Admin/#/information/"+ data.Notifications.Id
 											if(!url.includes("https://") && !url.includes("http://")){
 												url= "http://" + url;

@@ -23,7 +23,7 @@ import (
 type Cities struct {
 	Id                    		int    		`gorm:"primary_key;column:idcities" json:idcities`
 	Namecities            		string 		`gorm:"column:name" json:Namecities`
-	Zip_code 					int 		`gorm:"column:zip_code" json:Zip_code`
+	Zip_code 					int 		`gorm:"column:zip_code" json:Zipcode`
 	Countries_idcountries 		int    		`gorm:"column:countries_idcountries" json:Countries_idcountries`
 }
 
@@ -67,8 +67,8 @@ type ResponseUserId struct {
 	User         				Users        `json:User`
 	People      				People     	 `json:Profiles`
 	Roles_idrole 				int          `json:Roles_idrole`
-	Namecities   				string       `json:Namecities`
-	Namecountry  				string       `json:Namecountry`
+	Cities   					Cities       `json:Cities`
+	Countries  					Countries    `json:Countries`
 }
 
 type UserRol struct {
@@ -163,7 +163,7 @@ func CreateUser(user Users, people People, cities Cities, countries Countries, F
 }
 
 //Consulta a la base de datos para obtener la informacion de un usuario por id
-func GetUser(id string) (Users, People, int, string, string) {
+func GetUser(id string) (Users, People, int, Cities, Countries) {
 	var user Users
 	var people People
 	var roles Roles
@@ -176,7 +176,7 @@ func GetUser(id string) (Users, People, int, string, string) {
 	connect.GetConnection().Where("idcountries = ?", people.Countries_idcountries).First(&countries)
 	connect.GetConnection().Where("countries_idcountries = ?", countries.Id).First(&cities)
 
-	return user, people, roles.Id, cities.Namecities, countries.Namecountry
+	return user, people, roles.Id, cities, countries
 }
 
 //Buscar el usuario con el email

@@ -2,18 +2,12 @@ import React from 'react';
 import {
 	Row,
 	Col,
-	Button,
 	Card,
 	CardBlock,
-	CardHeader,
-	FormGroup,
-	Label,
-	Input,
 } from "reactstrap";
 
-import Switch from "react-switch";
 import Languaje from "../../api/translator/translator"
-import cookie from "react-cookies";
+//import cookie from "react-cookies";
 import Api from "../../api/Api/Api";
 import SearchInput, { createFilter } from 'react-search-input'
 import {Animated} from "react-animated-css";
@@ -115,7 +109,7 @@ class NotiPromo extends React.Component {
 
 					<h7 className="slide-notipromo" style={{'paddingRight':'5%'}} onClick={this.handlePlaces.bind(this)}>
 						{Languaje("Lugares")}
-						{ this.state.active == true ?
+						{ this.state.active === true ?
 							<div style={{'paddingBottom':'5%', 'paddingTop':'5%'}}>
 								<div style={{'width':'100%', 'height':'2px', 'backgroundColor':'#FFFFFF'}} />
 							</div>
@@ -128,7 +122,7 @@ class NotiPromo extends React.Component {
 					</h7>
 					<h7 className="slide-notipromo" style={{'paddingLeft':'5%'}} onClick={this.handleAll.bind(this)}>
 						{Languaje("Todos")}
-						{ this.state.active == false ?
+						{ this.state.active === false ?
 							<div style={{'paddingBottom':'5%', 'paddingTop':'5%'}}>
 								<div style={{'width':'100%', 'height':'2px', 'backgroundColor':'#FFFFFF'}} />
 							</div>

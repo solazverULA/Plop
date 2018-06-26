@@ -163,6 +163,8 @@ func GetDataFromUser(r *http.Request) (modeluser.Users, modeluser.People, modelu
 
 	cities.Namecities = r.FormValue("Namecities")
 	countries.Namecountry = r.FormValue("Namecountry")
+	Zipcode, err := strconv.Atoi(r.FormValue("Zipcode"))
+	cities.Zip_code = Zipcode
 
 	log.Println("usuario: ")
 	log.Println(user)

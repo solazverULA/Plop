@@ -1,7 +1,4 @@
-
-
 import cookie from "react-cookies";
-import React, { Component } from 'react';
 
 const data = {
 
@@ -97,8 +94,8 @@ const data = {
 	RegistrarReceptor:["Registrar Receptor", "Register Listener"],
 	EditarReceptor:["Editar Receptor", "Edit Listener"],
 	CreateGenero:["Género", "Gender"],
-	SexoFemenino:["Mujer", "Female"],
-	SexoMasculino:["Hombre", "Male"],
+	SexoFemenino:["Femenino", "Female"],
+	SexoMasculino:["Masculino", "Male"],
 	CreateEdad:["Edad", "Age"],
 	CreateFechaNacimiento:["Fecha de nacimiento", "birthday"],
 	Usuario:["Usuario", "User"],
@@ -111,13 +108,16 @@ const data = {
 	ButtonRegistrate:["Registrate con nosotros", "Register with us"],
 	Nombre:["NOMBRE", "NAME"],
 	TuNombre:["Tu Nombre", "Your Name"],
-	Telefono:["NUMERO DE TELEFONO", "PHONE NUMBER"],
+	TelefonoM:["NUMERO DE TELEFONO", "PHONE NUMBER"],
 	MsjAqui:["aqui", "here"],
 	MsjBienvenida:["Unete a nosotros para tener las mejores notificaciones siempre.", "Join us to always have the best notifications."],
 	Volver:["Volver", "Go back"],
 	VerMas:["Ver más", "See more"],
 	Cerrar:["Cerrar", "Close"],
 	Compartir:["Compartir", "Share"],
+	Hola:["Hola", "Hi"],
+	Lugar:["En este lugar puedes", "In this place yo can"],
+	Editar:["editar tu perfil", "edit your profile"],
 
 	//Errores Notificaciones
 	ErrorReceptor:["Debe seleccionar un receptor.", "You must select a Listener."],
@@ -201,7 +201,7 @@ const data = {
 
 const lenguage = (message) => {
  	const selectedLanguage = cookie.load('language');
-	const index = (selectedLanguage ? (selectedLanguage == "English" ? 1:0) : 0)
+	const index = (selectedLanguage ? (selectedLanguage === "English" ? 1:0) : 0)
 
 	if (data[message])
 		return data[message][index]

@@ -21,7 +21,7 @@ import {
     PanelHeader
 } from '../../components';
 
-import Api from '../../api/Api/Api'
+//import Api from '../../api/Api/Api'
 import language from "../../api/translator/translator"
 
 class Groups extends React.Component{
