@@ -37,7 +37,7 @@ class Notifications extends React.Component{
 
     this.toggleModal = this.toggleModal.bind(this);
     this.registerNotification = this.registerNotification.bind(this);
-
+    Api._getNotificationsUser(this.state.User.Id, (data)=>this.setState({notifications:data ? data : []}));
   }
 
   showChart() {
@@ -56,6 +56,10 @@ class Notifications extends React.Component{
 
   registerNotification() {
     Api._RegisterNotification(this.state, this.state.File, this.state.User.Id,this.toggleModal)
+  }
+
+  deleteNotification(index) {
+    this.setState({notifications:this.state.notifications.filter((data,i)=>i!==index)})
   }
 
     render(){
@@ -115,15 +119,29 @@ class Notifications extends React.Component{
                   <thead className="thead-default">
                     <tr>
                       <th className="justify-content-center text-center">{language("CreateTitulo")}</th>
-                      <th className="justify-content-center text-center">{language("Fecha")}</th>
+                      <th className="justify-content-center text-center">{language("CreateMensaje")}</th>
+                      <th className="justify-content-center text-center">{language("CreateImagen")}</th>
+                      <th className="justify-content-center text-center">{language("BotonEliminar")}</th>
                     </tr>
                   </thead>
                   <tbody>
                     { this.state.notifications.map((notifications, i)=>{
                       return(
                         <tr key = {i}>
-                          <td className="justify-content-center text-center"></td>
-                          <td className="justify-content-center text-center"></td>
+                          <td className="justify-content-center text-center">
+                            {notifications.Notifications.Title}
+                          </td>
+                          <td className="justify-content-center text-center">
+                            {notifications.Notifications.Body}
+                          </td>
+                          <td className="justify-content-center text-center">
+                            <img width="50" height="50" src={"https://drive.google.com/uc?export=view&id="+notifications.Notifications.Srcimage}/>
+                          </td>
+                          <td className="justify-content-center text-center">
+                             <Button style={{width:'50px', alignItems:"center"}} color="primaryBlue" for="notification_file" onClick={()=>this.deleteNotification(i)}>
+                              <i className='now-ui-icons ui-1_simple-remove'></i>
+                            </Button>
+                          </td>
                         </tr>
                       );
 
