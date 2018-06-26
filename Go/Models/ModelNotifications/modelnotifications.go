@@ -267,7 +267,7 @@ func CreateNotifications(notification Notifications, Listener modellisteners.Lis
 			return notification
 		}
 		id = strconv.Itoa(notification.Id)
-		//permision, _ := modelimages.GetSrv().Permissions.Create("file.Id,", &drive.Permission{Role:"owner", Type:"anyone"}).Do()
+		
 		var file_metadata *drive.File
 		if notification.Type == 7 {
 			file_metadata = &drive.File{
@@ -347,7 +347,7 @@ func CreateNotifications(notification Notifications, Listener modellisteners.Lis
 
 		//notification.Srcimageexpandible = "ImageServerExpandible" + id
 	}
-
+	fmt.Printf("notifiacione src",notification.Srcimage)
 	connect.GetConnection().Table("notifications").Where("idnotifications = ?", notification.Id).Updates(notification)
 	for i := 0; i < len(Listener.Ids); i++ {
 		id, _ := strconv.Atoi(Listener.Ids[i])
