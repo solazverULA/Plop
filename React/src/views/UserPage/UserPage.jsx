@@ -5,8 +5,8 @@ import {
 
 import { PanelHeader, FormInputs, CardAuthor, CardSocials } from '../../components';
 
-//import userBackground from '../../assets/img/bg5.jpg';
-//import userAvatar from '../../assets/img/mike.jpg';
+import userBackground from '../../assets/img/bg5.jpg';
+import userAvatar from '../../assets/img/mike.jpg';
 
 class User extends React.Component{
     render(){
@@ -133,11 +133,11 @@ class User extends React.Component{
                         <Col md={4}  xs={12}>
                             <Card className="card-user">
                                 <div className="image">
-                                    <img src={/*userBackground*/""} alt="..."/>
+                                    <img src={userBackground} alt="..."/>
                                 </div>
                                 <CardBody>
                                     <CardAuthor
-                                        avatar={/*userAvatar*/""}
+                                        avatar={userAvatar}
                                         avatarAlt="..."
                                         title="Mike Andrew"
                                         description="michael23"

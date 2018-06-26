@@ -8,7 +8,7 @@ var indexRoutes = [
     { path: "/login", name: "Login", component: Login },
     { path: "/ListenerWeb/:id", name: "ListenerWeb", component: ListenerWeb },
     { path: "/", name: "Home", component: Dashboard },
-    
+
 ];
 
 export default indexRoutes;

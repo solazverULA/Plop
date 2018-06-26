@@ -422,16 +422,16 @@ const host = localhost;
 	    .catch(err => console.log(err));
 
 	},
-	_RegisterUser:function(Data, file, Do){
+	_registerUser:function(Data, file, Do){
 
 			var formData = new FormData();
-// Fields in the post
 
 			formData.append("image", file);
 			Object.keys(Data).map((keys)=>{
 					formData.append(keys,Data[keys])
 			})
 			console.log(formData)
+      console.log(Data)
 			fetch(host+"register", {
 			  method: 'POST',
 
@@ -440,14 +440,13 @@ const host = localhost;
 			.then((response) => response.json())
 			.then((responseJson) => {
 			  Do(responseJson)
-			  //window.location.href ="/Admin/#/users/all";
+
 			})
 			.catch((error) => {
 			    console.log(error)
 			});
-
-
 	},
+
 	_updateUser:function(Data,  id, fileIcon, fileLogo, Do){
 		var formData = new FormData();
 // Fields in the post

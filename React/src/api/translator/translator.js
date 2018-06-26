@@ -72,6 +72,7 @@ const data = {
 	BotonRegresar:["Regresar", "Return"],
 	BotonCancelar:["Cancelar", "Cancel"],
 	BotonGuardar:["Guardar", "Save"],
+	BotonCrear:["Crear", "Create"],
 
 	//Mensajes:
 	MsjEliminarUsuario:["¿Desea eliminar el usuario", "Do you want to delete the user"],
@@ -80,7 +81,6 @@ const data = {
 	MsjEnviarNotificaciones:["¿Desea enviar la notificacion desde el usuario?", "Do you want to send the notification from the user"],
 	Msjhaciareceptores:["hacia los receptores", "to the listeners"],
 	MsjEliminarNotificacion:["¿Desea eliminar la notificacion de el usuario", "Do you want to delete the user's notification"],
-
 
 	//Errores Listener
 	ErrorSO:["Debe seleccionar un sistema operativo.", "You must select an operating system."],
@@ -92,7 +92,6 @@ const data = {
 	AceptaTerminos:["Acepta nuestros términos y servicios.", "Accept our terms and services."],
 	ErrorUsuario:["Debe seleccionar un Usuario.", "You must select a User."],
 	ErrorNavegador:["Parece que tu navegador no es compatible con nuestras notificaciones, descarga nuestra app desde", "It seems that your browser is not compatible with our notifications, download our app from"],
-
 
 	//Listener
 	RegistrarReceptor:["Registrar Receptor", "Register Listener"],
@@ -132,18 +131,12 @@ const data = {
 	Añadidos:["Añadidos", "Added"],
 	CreateTitulo:["Titulo", "Title"],
 	CreateMensaje:["Mensaje", "Message"],
+	AdjuntarImagen:["Adjuntar una imagen", "Atach an image"],
 	CreateImagen:["Imagen", "Image"],
 	EnviaNotificaciones:["Envia notificaciones personalizadas gratis", "Send free custom push notifications"],
 	IntroduceMensaje:["Introduce aqui tu mensaje", "Enter your message."],
-
-	//Dashboard
-	UsuariosActivos:["Usuarios Activos", "Active users"],
-	UsuariosInactivos:["Usuarios Inactivos", "Inactive Users"],
-	UsuariosSuspendidos:["Usuarios Suspendidos","Suspended Users"],
-	ReceptoresRegistrados:["Receptores Registrados", "Registered Listeners"],
-	NotificacionesEnviadas:["Notificaciones Enviadas", "Notifications Sent"],
-	Estadisticas:["Estadísticas", "Statistics"],
-	MetodoPago:["Método de Pago", "Payment Method"],
+	CrearNuevaNotificacion:["¡Crea una nueva una notificación!", "Create a new notification!"],
+	Fecha:["Fecha", "Date"],
 
 	//Header
 	Lenguaje:["Lenguaje", "Language"],
@@ -166,109 +159,24 @@ const data = {
 	MsjPermitirNotificaciones:["Permitir el uso de notificaciones programadas", "Allow the use of scheduled notifications"],
 	LogoPersonalizable:["Logo Personalizable", "Customizable logo"],
 	MjsLogoPersonalizable:["Permite el uso de logo de la compañia del usuario no premium", "Allows the use of the non-premium user's company logo"],
-	CrearGrupos:["Crear Grupos", "Create Groups"],
 	MsjCrearGrupos:["Permitir crear grupos a usuarios no premium", "Allow creating groups to non-premium users"],
 	PermitirImagenes:["Permitir imagen en la notificación", "Allow image in the notification"],
 	MsjPermitirImagenes:["Permitir que la notificacion contenga imágenes para usuarios no premium", "Allow the notification to contain images for non-premium users"],
 	PermitirTipoNotificacion:["Permitir tipos de notificación", "Allow notification types"],
 	MsjPermitirTipoNotificacion:["Permitir que usuarios no premium puedan enviar distintos tipos de notificación.", "Allow non-premium users to send different types of notification."],
 
-	//Reseller Sidebar
-	Inicio:["Inicio", "Dashboard"],
-	MisUsuarios:["Mis usuarios", "My users"],
-	Membresia:["Membresía", "Membership"],
-	AyudaClientes:["Ayuda a mis clientes", "Help my customers"],
-	Soporte:["Conversa con nosotros", "Chat with us"],
-	Material:["Material", "Material"],
-
-	//Reseller header
-	Retiros:["Retiros", "Withdraw"],
-
-	//Reseller Dashboard
-	GananciasMensuales:["Ganancias del Mes", "Month Earnings"],
-	UsuariosRegistrados:["Usuarios", "Users Registered"],
-	MiBilletera:["Mi Billetera", "My Wallet"],
-
-  	//Reseller users
-  	FechaIngreso:["Fecha de ingreso", "Added date"],
-
-  	//Reseller support
-  	Grupos:["Grupos", "Groups"],
-  	Contactos:["Contactos", "Contacts"],
-  	Fondo:["Fondo", "Background"],
-		ReceptoresDe:["Receptores de", "Listiners of"],
-		NotificacionesDe:["Notificaciones de", "Notifications of"],
-		TicketsDe:["Tickets de", "Tickets of"],
-		LogoDe:["Cambiar logo de", "Change logo of"],
-		NoSupport:["Este usuario no tiene tickets.", "This user does not have any ticket."],
-		UsuarioActualizado:["Usuario actualizado con éxito.", "User updated successfully."],
-
-  	//Reseller membership
-  	CodigoReseller:["Tu codigo de revendedor", "Your reseller code"],
-  	CambioCodigoReseller:["Solo puedes cambiar tu código una vez.", "You can only change your code once."],
-	CodigoActualizado:["Codigo actualizado exitosamente!", "Code successfully updated!"],
-	NoPuedeActualizar:["No puede editar su código nuevamente.", "You can not edit your code anymore."],
-
-	//Reseller Edit Profile
-	PerfilEditadoReseller:["Perfil actualizado exitosamente! Verá los cambios en su próximo inicio de sesión.", "Profile successfully updated! You will see the changes in your next logon."],
-	EditarPerfil:["Editar perfil", "Edit profile"],
-
-	//Reseller add account
-	AgregarBanco:["Agrega tu cuenta bancaria", "Add your bank account"],
-	SeleccionarBanco:["Seleccionar", "Select a bank"],
-	NombreBanco:["Nombre del banco", "Bank name"],
-	NumeroRuta:["Número de ruta", "Route number"],
-	NumeroCuenta:["Número de cuenta", "Account number"],
-	Enviar:["Enviar", "Submit"],
-	Agregar:["Agregar cuenta", "Add account"],
-	ErrorBanco:["Debe seleccionar un Banco", "You must select a bank"],
-	ErrorRuta:["Debe ingresar un número de ruta", "You must enter a routing number"],
-	ErrorCuenta:["Debe ingresar un número de cuenta", "You must enter an account number"],
-	ErrorTipo:["Debe ingresar un tipo de cuenta", "You must enter an account type"],
-	NoDisponible:["Esta funcionalidad se encuentra temporalmente deshabilitada.", "This function is temporarily disabled."],
-	MisCuentas:["Mis cuentas bancarias", "My bank accounts"],
-	TipoCuenta:["Tipo de cuenta", "Account type"],
-	CuentaCorriente:["CHECKINGS", "CORRIENTE"],
-	CuentaAhorro:["SAVINGS", "AHORRO"],
-	ErrorRetiroCuenta:["Debe seleccionar una cuenta", "You must select an account"],
-	ErrorRetiroCantidad:["Debe especificar una cantidad", "You must especify an amount"],
-	EnProceso:["EN PROCESO", "IN PROCESS"],
-	Pagado:["PAGADO", "PAYED"],
-	Negado:["NEGADO", "DENIED"],
-
-	//Reseller Withdraw
-	SolicitarRetiro:["Solicitar retiro", "Request withdraw"],
-	SeleccionarCuenta:["Seleccionar cuenta", "Select bank account"],
-	Cantidad:["Cantidad", "Amount"],
-	Descripcion:["Descripción (opcional)", "Description (optional)"],
-	Solicitar:["Solicitar", "Request"],
-	Fecha:["Fecha", "Date"],
-	RetiroCuenta:["A la cuenta", "To account"],
-	Estado:["Estado", "Status"],
-	EstadoRetiro:["Actualizar estado", "Update status"],
-
-	//banks
-	AgregarBancoAdmin:["Agregar un nuevo banco", "Add a new bank"],
-
-	//Reseller Material
-	Pronto:["Pronto...", "Coming soon..."],
-
 	//Sidebar
-	Usuarios:["Usuarios", "Users"],
-	TodosUsuarios:["Todos los usuarios", "All users"],
-	CrearUsuario:["Crear nuevo usuario", "Create new user"],
-	Inactivos:["Inactivos", "Inactive"],
-	Activos:["Activos", "Active"],
-	Suspendidos:["Suspendidos", "Suspended"],
-	TodosReceptores:["Todos los receptores", "All Listeners"],
-	CrearReceptor:["Crear receptor", "Create listener"],
 	Notificaciones:["Notificaciones", "Notifications"],
-	TodasNotificaciones:["Todas", "All notifications"],
-	CrearNotificacion:["Crear notificación", "Create notification"],
-	Config:["Configuración", "Configuration"],
-	Numerodenotificaciones:["Nº de notificaciones", "Nº notifications"],
-	RetirosAdmin:["Administrar retiros", "Manage withdraws"],
-	Bancos:["Bancos", "Banks"],
+	Contactos:["Contactos", "Contacts"],
+	Grupos:["Grupos", "Groups"],
+	CompartirEnlace:["Comparte este enlace con tus clientes", "Share this link to your clients"],
+
+	//Contactos
+	InvitarReceptores:["¡Invita nuevos receptores!", "Invite new receptors!"],
+
+	//Grupos
+	CrearGrupos:["¡Crea nuevos grupos!", "Create new groups!"],
+	CrearGruposModal:["Crear Grupos", "Create Groups"],
 
 	//meses del ano
 	Enero:["Enero", "Jenuary"],
@@ -284,55 +192,6 @@ const data = {
 	Noviembre:["Noviembre", "November"],
 	Diciembre:["Diciembre", "December"],
 
-	//Business new user
-	ConfiguracionSistema:["Configuración del sistema", "System configuration"],
-	UsuarioRegistrado:["Usuario registrado con éxito.", "User registered successfully."],
-	NombreCompleto:["Nombre completo", "Full name"],
-	EmailPlaceholder:["alguien@ejemplo.com", "someone@example.com"],
-	EscribeLoQueQuieras:["Escribe lo que quieras", "Write whatever you want"],
-	ParrafoNewUser:["Puedes darle un nombre al perfil de este usuario que esté acorde con los perfiles de tu compañia.", "You can give this user's profile a name that chord with your company's profiles."],
-	CrearCampaña:["Crear campaña", "Create campaign"],
-	ParrafoCampaña:["Si desactivas esta opción, este usuario solo podrá ver las campañas existentes en Notificator.", "If you deactivate this option, this user could only see the existing campaigns in Notificator."],
-	Ashley:["Permitir uso de Ashley AI", "Allow use of Ashley AI"],
-	ParrafoAshley:["Si activas esta opción, este usuario podrá enviar notificaciones a la base de datos de Notificator, esto podría generar cargos adicionales. Consulta con tu distribuidor local para más información.", "If you activate this option, this user will be able to send notifications to the database of Notificator, this may generate aditional charges. Check with your local distributor for more information."],
-	ModificarLogotipo:["Permitir modificar logotipo", "Allow modify logo"],
-	ParrafoModificarLogotipo:["Si activas esta opción, este usuario podrá cambiar el logotipo que ven tus suscriptores al suscribirse a tus listas de Notificator.", "If you activate this option, this user will be able to change the logo that your subscriptors will see when they subscribe to your lists in Notificator."],
-	EditarMisCampañas:["Permitir editar mis campañas", "Allow edit my campaigns"],
-	ParrafoEditarMisCampañas:["Si activas esta opción, este usuario podrá editar las campañas que haz creado hasta ahora.", "If you activate this option, this user will be able to edit campaigns that you have created until now."],
-	ModificarFondo:["Permitir modificar fondo", "Allow modify background"],
-	ParrafoModificarFondo:["Si activas esta opción, este usuario podrá cambiar el fondo de pantalla que ven tus suscriptores al suscribirse a tus listas de Notificator.", "If you activate this option, this user will be able to change the screen background that your subscriptors will see when they subscribe to your lists in Notificator."],
-
-	//Bussines create campaign
-	ConfigurarCampaña:["Configurar campaña", "Configure campaign"],
-	FechaInicio:["Fecha de inicio", "Starting date"],
-	FechaFin:["Fecha de finalización", "Ending date"],
-	ZonaHoraria:["Zona horaria", "Time zone"],
-	Hora:["Hora", "Time"],
-	NotificacionBienvenida:["Notificacion de bienvenida", "Welcome notification"],
-	Automatizacion:["Automatizacion", "Automation"],
-	Repeticion:["Repeticion", "Repetation"],
-	TextoNotificacionBienvenida:["Crea una notificacion primaria, para dar bienvenida a tus suscriptores.", "Create a primary notification to welcome your subscriptors."],
-	TextoAutomatizacion:["Crea una secuencia de notificaciones para tus nuevos suscriptores.", "Create a new sequence of notifications to your new subscriptors."],
-	TextoRepeticion:["Determina cuantas veces se repite el envio de cada notificacion.", "Setup how many times a notification will be repeated"],
-	BaseDeDatos:["¿Qué base de datos usaremos?", "Which database are we going to use?"],
-	TipoNotificacion:["Tipo de notificación", "Notification type"],
-	Propia:["Propia", "Own database"],
-	NotificacionSimple:["Notificacion simple", "Simple notification"],
-	TituloNotificacion:["Titulo de la notificacion", "Notification Title"],
-	AdjuntarImagen:["Adjuntar imagen", "Upload image"],
-	Segmentacion:["Segmentacion", "Segmentation"],
-	GeneroEdad:["Genero y edad", "Genre and age"],
-	Hombres:["Hombres", "Men"],
-	Mujeres:["Mujeres", "Women"],
-	EquipoSO:["Dispositivo / Sistema Operativo", "Device / OS"],
-	Ios:["iOS / iPhone", "iOS / iPhone"],
-	Android:["Android", "Android"],
-	Web:["Web / Navegadores", "Web / Browsers"],
-	Ubicacion:["Ubicacion", "Location"],
-	Todas:["Todas", "All locations"],
-	Algunas:["Algunas", "Some locations"],
-	Ciudades:["Ciudades", "Cities"],
-
 	//Notipoints
 	Lugares:["LUGARES", "PLACES"],
 	Todos:["TODOS", "ALL"],
@@ -341,7 +200,7 @@ const data = {
 
 
 const lenguage = (message) => {
- 	const selectedLanguage = cookie.load('currentLanguage');
+ 	const selectedLanguage = cookie.load('language');
 	const index = (selectedLanguage ? (selectedLanguage == "English" ? 1:0) : 0)
 
 	if (data[message])

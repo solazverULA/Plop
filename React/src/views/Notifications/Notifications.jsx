@@ -7,7 +7,7 @@ import {
 */
 
 import {
-    Button,  Row,  Modal,  ModalHeader,  ModalBody,  ModalFooter,  Input,  InputGroup, FormGroup
+    Button,  Row,  Modal,  ModalHeader,  ModalBody,  ModalFooter,  Input,  InputGroup, FormGroup, Table
 } from 'reactstrap';
 
 /*
@@ -22,14 +22,16 @@ import {
 } from '../../components';
 
 import Api from '../../api/Api/Api'
+import language from "../../api/translator/translator"
 
-class Dashboard extends React.Component{
+class Notifications extends React.Component{
 
   constructor(props) {
     super(props);
 
     this.state = {visible: false,
-                  toggle: false
+                  toggle: false,
+                  notifications:[]
                  };
 
     this.toggleModal = this.toggleModal.bind(this);
@@ -61,21 +63,15 @@ class Dashboard extends React.Component{
 
               {this.showChart()}
 
-              <div style={{'marginLeft':'1%', }}>
-                <Button color="primaryBlue" className="btn-round btn-icon" onClick={this.toggleModal}>
-                  <i className="now-ui-icons ui-1_simple-add"></i>
-                </Button>
-              </div>
-
               <Modal isOpen={this.state.toggle} toggle={this.toggleModal}
                 className={this.props.className}>
-                <ModalHeader toggle={this.toggleModal}>Create a new notification</ModalHeader>
+                <ModalHeader toggle={this.toggleModal}>{language("CrearNotificacion")}</ModalHeader>
                 <ModalBody style={{'paddingLeft':'7%', 'paddingRight':'7%'}}>
                   <div style={{'paddingLeft':'7%', 'paddingRight':'7%'}}>
                     <Row>
                       <FormGroup>
                         <div>
-                          Title
+                          {language("CreateTitulo")}
                         </div>
                         <InputGroup>
                           <Input style={{width:'300px'}} type="text" id="notification_title" name="Title" placeholder="Notification title" onChange={(event)=>this.setState({Title:event.target.value})} required={true}/>
@@ -84,7 +80,7 @@ class Dashboard extends React.Component{
                     </Row>
                     <Row>
                       <FormGroup>
-                        Atach an image
+                        {language("AdjuntarImagen")}
                         <InputGroup>
                           <Button style={{width:'150px'}} color="primaryBlue" for="notification_file" onClick={()=>{document.getElementById("notification_file").click()}}>
                             <i className='now-ui-icons design_image'></i>
@@ -96,7 +92,7 @@ class Dashboard extends React.Component{
                     <Row>
                       <FormGroup>
                         <div className='business-title-color'>
-                          Message
+                          {language("CreateMensaje")}
                         </div>
                         <InputGroup>
                           <textarea onChange={(event)=>this.setState({Body:event.target.value})} className='business-title-color' style={{'borderRadius':'5px', 'borderColor':'#979797', 'height':'107px'}} type="text" id="notification_Body" name="Body" required={true}/>
@@ -107,13 +103,45 @@ class Dashboard extends React.Component{
 
                 </ModalBody>
                 <ModalFooter className='justify-content-right text-right'>
-                  <Button color="primaryBlue" onClick={this.registerNotification}>Create</Button>
+                  <Button color="primaryBlue" onClick={this.registerNotification}>{language("BotonCrear")}</Button>
                 </ModalFooter>
 
               </Modal>
 
+              { this.state.notifications[0] != null ?
+
+                <Table hover responsive>
+                  <thead className="thead-default">
+                    <tr>
+                      <th className="justify-content-center text-center">{language("CreateTitulo")}</th>
+                      <th className="justify-content-center text-center">{language("Fecha")}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    { this.state.notifications.map((notifications, i)=>{
+                      return(
+                        <tr key = {i}>
+                          <td className="justify-content-center text-center"></td>
+                          <td className="justify-content-center text-center"></td>
+                        </tr>
+                      );
+
+                    })}
+                  </tbody>
+                </Table>
+
+              :
+
               <div className="content flex-center animated animatedFadeInUp fadeInUp">
-                  <h2>Create a new notification!</h2>
+                  <h2>{language("CrearNuevaNotificacion")}</h2>
+              </div>
+
+              }
+
+              <div style={{paddingBottom:'1%', paddingRight:'1%'}} className="fixed-right justify-content-right text-right">
+                <Button color="primaryBlue" style={{width:'50px', height:'50px'}} className="btn-round btn-icon" onClick={this.toggleModal}>
+                  <i className="now-ui-icons ui-1_simple-add"></i>
+                </Button>
               </div>
 
             </div>
@@ -121,4 +149,4 @@ class Dashboard extends React.Component{
     }
 }
 
-export default Dashboard;
+export default Notifications;

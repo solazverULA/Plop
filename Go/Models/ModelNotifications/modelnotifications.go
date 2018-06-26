@@ -13,11 +13,11 @@ import (
 	"../../connect"
 	//webpush "../../src/github.com/sherclockholmes/webpush-go"
 	//"../ModelFeatures"
-	//"../ModelImages"
+	"../ModelImages"
 	"../ModelListeners"
 	//"../ModelOthers"
-	//"../ModelUser"
-	//"google.golang.org/api/drive/v3"
+	"../ModelUser"
+	"google.golang.org/api/drive/v3"
 )
 
 type Notifications struct {
@@ -195,13 +195,13 @@ func CreateNotifications(notification Notifications, Listener modellisteners.Lis
 	//notification.Users_iduser = userid
 
 	connect.GetConnection().Create(&notification) //Creara una id cada vez
-	//iduser := strconv.Itoa(userid)
+	iduser := strconv.Itoa(userid)
 
 	usersendnotifications.Notifications_idnotifications = notification.Id
 	usersendnotifications.Users_iduser = userid
 	connect.GetConnection().Create(&usersendnotifications)
 	
-	/*
+	
 	iddriveuserfolder := modelimages.SearchIdDrive("UserNotification" + iduser)
 
 	id := strconv.Itoa(notification.Id)
@@ -269,7 +269,7 @@ func CreateNotifications(notification Notifications, Listener modellisteners.Lis
 		id = strconv.Itoa(notification.Id)
 		//permision, _ := modelimages.GetSrv().Permissions.Create("file.Id,", &drive.Permission{Role:"owner", Type:"anyone"}).Do()
 		var file_metadata *drive.File
-		/*if notification.Type == 7 {
+		if notification.Type == 7 {
 			file_metadata = &drive.File{
 				Name:     "FileServer" + id,
 				MimeType: "application/vnd.google-apps.document",
@@ -277,16 +277,16 @@ func CreateNotifications(notification Notifications, Listener modellisteners.Lis
 			}
 			//var defaultvalues modelothers.Defaultvalues
 			//connect.GetConnection().Table("defaultvalues").Where("iddefaultvalues = ?", "1").First(&defaultvalues)
-			notification.Srcimage = defaultvalues.Defaultbackgroundimage
+			//notification.Srcimage = defaultvalues.Defaultbackgroundimage
 			//notification.Srcimageexpandible = "FileServer" + id
-		} else {*/
-			/*file_metadata = &drive.File{
+		} else {
+			file_metadata = &drive.File{
 				Name:     "ImageServer" + id,
 				MimeType: Handle.Header.Get("Content-Type"),
 				Parents:  vector,
 			}
 			notification.Srcimage = "ImageServer" + id
-//		}
+		}
 
 		file, err := modelimages.GetSrv().Files.Create(file_metadata).Media(bytes.NewReader(data)).Do()
 		if err != nil {
@@ -312,7 +312,7 @@ func CreateNotifications(notification Notifications, Listener modellisteners.Lis
 		notification.Srcimage = defaultvalues.Defaultbackgroundimage
 	}*/
 
-	/*if FileExpandible != nil {
+	if FileExpandible != nil {
 		log.Printf("entro en expansible")
 		vector = []string{notificationid}
 		data, err := ioutil.ReadAll(FileExpandible)
@@ -345,8 +345,8 @@ func CreateNotifications(notification Notifications, Listener modellisteners.Lis
 		}
 		fmt.Printf("%s, %s\n", pres.Type, pres.Role)
 
-		notification.Srcimageexpandible = "ImageServerExpandible" + id
-	}*/
+		//notification.Srcimageexpandible = "ImageServerExpandible" + id
+	}
 
 	connect.GetConnection().Table("notifications").Where("idnotifications = ?", notification.Id).Updates(notification)
 	for i := 0; i < len(Listener.Ids); i++ {
@@ -360,3 +360,87 @@ func CreateNotifications(notification Notifications, Listener modellisteners.Lis
 	return notification //Para usar luego esa id
 }
 
+//Funcion para ver las notificaciones por usuario
+func GetNotificationUser(iduser string) []NotificationsAll {
+
+	var notificationsall []NotificationsAll
+	var notification []Notifications
+	var usersendnotifications []UsersSendNotifications
+	connect.GetConnection().Where("users_ciuser = ?", iduser).Find(&usersendnotifications)
+	for i := 0; i < len(usersendnotifications); i++ {
+		var notifi Notifications
+		connect.GetConnection().Where("idnotifications = ?", usersendnotifications[i].Notifications_idnotifications).First(&notifi)
+		notification = append(notification, notifi)
+	}
+
+	//var namelisteners []string
+	for j := 0; j < len(notification); j++ {
+		if notification[j].Title != "" {
+			var listeners []modellisteners.Listeners
+			var user modeluser.Users
+
+			var listenerhasnotifications []ListenersReceiveNotifications
+			connect.GetConnection().Where("ciuser = ?", iduser).First(&user)
+			connect.GetConnection().Where("notifications_idnotifications = ?", notification[j].Id).Find(&listenerhasnotifications)
+			for i := 0; i < len(listenerhasnotifications); i++ {
+				var listeneraux modellisteners.Listeners
+				connect.GetConnection().Where("cilisteners = ?", listenerhasnotifications[i].Listeners_idlisteners).First(&listeneraux)
+				listeners = append(listeners, listeneraux)
+			}
+
+			notification[j].Srcimage = modelimages.SearchIdDrive(notification[j].Srcimage)
+			notificationsall = append(notificationsall, NotificationsAll{user.Email, notification[j], listeners})
+		}
+	}
+
+	return notificationsall
+}
+
+//Funcion para conectar con la base de datos y ver una notificacion
+func GetNotification(idnotification string) NotificationsAll {
+	var notification Notifications
+	var user modeluser.Users
+	var usersendnotifications UsersSendNotifications
+	var listenerhasnotifications []ListenersReceiveNotifications
+
+	connect.GetConnection().Where("idnotifications = ?", idnotification).First(&notification)
+	connect.GetConnection().Where("notifications_idnotifications = ?", notification.Id).Find(&listenerhasnotifications)
+	connect.GetConnection().Where("notifications_idnotifications = ? ", notification.Id).First(&usersendnotifications)
+	connect.GetConnection().Where("ciuser = ?", usersendnotifications.Users_iduser).First(&user)
+	//log.Println(listenerhasnotifications)
+
+	var listeners []modellisteners.Listeners
+	for j := 0; j < len(listenerhasnotifications); j++ {
+		var listener modellisteners.Listeners
+		connect.GetConnection().Where("cilisteners	= ?", listenerhasnotifications[j].Listeners_idlisteners).First(&listener)
+		listeners = append(listeners, listener)
+	}
+	notification.Srcimage = modelimages.SearchIdDrive(notification.Srcimage)
+	notificationsall := NotificationsAll{user.Email, notification, listeners}
+	//notificationsall := NotificationsAll{"ana", notification, listeners}
+
+	return notificationsall
+
+}
+
+//Función para ver las notificaciones por receptor
+func GetListenersNotifications(id string) []AllNotifications {
+	var listenerhasnotifications []ListenersReceiveNotifications
+	var user modeluser.Users
+	var allnotifications []AllNotifications
+
+	connect.GetConnection().Where("listeners_cilisteners = ?", id).Find(&listenerhasnotifications)
+
+	var listeners []string
+	for j := 0; j < len(listenerhasnotifications); j++ {
+		var usersendnotifications UsersSendNotifications
+		connect.GetConnection().Where("notifications_idnotifications = ? ", listenerhasnotifications[j].Notifications_idnotifications).First(&usersendnotifications)
+		connect.GetConnection().Where("ciuser = ?", usersendnotifications.Users_iduser).First(&user)
+		var notification Notifications
+		connect.GetConnection().Where("idnotifications = ?", listenerhasnotifications[j].Notifications_idnotifications).First(&notification)
+		notification.Srcimage = modelimages.SearchIdDrive(notification.Srcimage)
+		allnotifications = append(allnotifications, AllNotifications{user.Email, notification, listeners})
+	}
+
+	return allnotifications
+}
