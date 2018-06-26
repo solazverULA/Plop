@@ -18,7 +18,7 @@ class User extends React.Component{
 
     this.state = {
                   userId:Cookies.load('userId'),
-                  user:{}
+                  user:{},
                   Email:"",
                   Password:"",
                   Gender:"",
@@ -27,7 +27,7 @@ class User extends React.Component{
                   Zip_code:"",
                  };
 
-                 Api._getUserForId(userId, (data)=>{
+                 Api._getUserForId(this.state.userId, (data)=>{
                     this.setState({user:data})
                  })
     }
