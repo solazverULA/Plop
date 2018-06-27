@@ -90,7 +90,7 @@ func SendNotification(idnotification string) Notifications {
 		//connect.GetConnection().Where("cilisteners =?", listenerhasnotifications[i].Listeners_idlisteners).First(&listener)
 		var devices []modellisteners.Devices
 		connect.GetConnection().Where("listeners_cilisteners=?", listener.Id).Find(&devices)
-		for j := 0; j < /*len(devices)*/ 1; j++ {
+		for j := 0; j < len(devices); j++ {
 			
 				var jsonstr []byte
 				//var profile modeluser.People
@@ -106,7 +106,7 @@ func SendNotification(idnotification string) Notifications {
 				idlistener := strconv.Itoa(listener.Id)
 
 				//jsonstr = []byte(`{ "to":"` + devices[j].Token + `","data":{"title":"` + notification.Title + `",` + `"body":"` + notification.Body + `","src":"` + modelimages.SearchIdDrive(notification.Srcimage) + `","srcExpandible":"` + modelimages.SearchIdDrive(notification.Srcimageexpandible) + `","icon":"` + modelimages.SearchIdDrive(profile.Srcicon) + `","type":` + notificationtype + `,"action":"` + notification.Action + `","id":` + idnotification + `,"idlisteners":` + idlistener + `,"namebutton":"` + notification.Namebutton + `"}}`)
-				jsonstr = []byte(`{ "to":"c84oxjTlgEU:APA91bHw1Eb38k7r4gIAQiajoDPHcUOfoOd9Dub5iN9b2eF8UfPvHvX34xNDTPEEh2_dtEkVbTAxq-XsoMrH4gyNgToyRkJ09_fKDvYqECm8GUIEIbbwx9rlLLI_Jqrpju9LqGXMulnN","data":{"title":"` + notification.Title + `",` + `"body":"` + notification.Body /*` + modelimages.SearchIdDrive(notification.Srcimage) + `*/ + `","src":"","type":1,"idlisteners":` + idlistener + `,"namebutton":"` +`"}}`)
+				jsonstr = []byte(`{ "to":"`+ devices[j].Token+`","data":{"title":"` + notification.Title + `",` + `"body":"` + notification.Body /*` + modelimages.SearchIdDrive(notification.Srcimage) + `*/ + `","src":"","type":1,"idlisteners":` + idlistener + `,"namebutton":"` +`"}}`)
 
 				url := "https://fcm.googleapis.com/fcm/send"
 				log.Println(string(jsonstr))

@@ -29,15 +29,15 @@ export default class Login extends Component<{}> {
 
   _onRegisterPhone(Numberphone){
 
-    if(Numberphone==""){
+    if(Numberphone.length <= 3){
       this.setState({Err:true, errNumero:"Introduce tu numero"})
     }else {
-
-      Api._SubscribeListener(Numberphone, (data)=>{
-        
+      452422342
+      Api._SubscribeListener(Numberphone.substr(3), (data)=>{
+        console.log("respuesta del server", JSON.stringify(data))
         if(data.Id!=0){
-            
-          AsyncStorage.setItem('ListenerData', JSON.stringify(data.Data))
+          
+          AsyncStorage.setItem('ListenerData', JSON.stringify(data))
             .then((data)=>{
              
               this.props._goHome();

@@ -51,13 +51,13 @@ let notif={};
 		
 		
 })();
-
+const token={};
 PushNotification.configure({
 				// (optional) Called when Token is generated (iOS and Android)
-				onRegister: ((token) => {
+				onRegister: ((tokenConf) => {
 					//Alert.alert("", JSON.stringify(token))
-					Api._RegisterUser({Token:token.token, Os:token.os},()=>{})
 					
+					token = tokenConf;
 				
 	 
 				}),
@@ -161,7 +161,9 @@ export default class AllNotification extends Component<{}> {
 					};                    
 		AsyncStorage.getItem('ListenerData')
 			.then((data)=>{
+
 				this.setState({listener:JSON.parse(data)})
+				Api._addDevices({Token:token.token, Os:token.os},this.state.listener.Id,(data)=>{console.log(data)})
 				Api._getUserListener(this.state.listener.Id, (data)=>{
 					this.setState({users:data?data:[], usersToShow:data?data:[]})
 				})

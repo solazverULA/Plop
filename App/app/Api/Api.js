@@ -2,7 +2,7 @@ const server = "https://notificatorapp.com/";
 
 const localhost = "http://localhost:8001/";
 
-const serverpruebas = "http://vps-1506896-x.dattaweb.com/";
+const serverpruebas = "http://vps-1506896-x.dattaweb.com/api/";
 
 const host = serverpruebas;
 
@@ -117,15 +117,15 @@ const host = serverpruebas;
 	    })
 	    .catch(err => console.log(err));
 	},
-	_updateUser:function(devices, id){
+	_addDevices:function(devices, id, Do){
 		fetch(host+"listeners/"+id+"/adddevices", {
 	      method: 'POST', 
 	      header:{"Content-Type":"application/json"}, 
-	      body:JSON.stringify(user)
+	      body:JSON.stringify(devices)
 	  	})
 	    .then((data)=>{
 	      console.log(data);
-	      window.location.href ="/#/users/all";
+	      Do(data)
 	    })
 	    .catch(err => console.log(err));
 	},
