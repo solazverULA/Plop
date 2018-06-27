@@ -1,5 +1,5 @@
 const localhost = "http://localhost:8001/";
-const server = "http://vps-1506896-x.dattaweb.com/api/";
+const server = "https://vps-1506896-x.dattaweb.com/api/";
 const host = server;
 
  const Api = {
