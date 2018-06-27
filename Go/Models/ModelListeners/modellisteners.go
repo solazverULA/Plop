@@ -181,7 +181,7 @@ func GetUsersOfListener(idlistener string) []modeluser.Users {
 	for i := 0; i < len(listenerhasuser); i++ {
 		var user modeluser.Users
 		var profiles modeluser.People
-		connect.GetConnection().Table("people").Where("cipeople =?", listenerhasuser[i].Users_iduser).First(&profiles)
+		connect.GetConnection().Table("people").Where("cipeople = ?", listenerhasuser[i].Users_iduser).First(&profiles)
 		connect.GetConnection().Where("ciuser =?", listenerhasuser[i].Users_iduser).First(&user)
 		user.Created_at = modelimages.SearchIdDrive(profiles.Srcicon)
 		user.Updated_at = profiles.Nameprofile
@@ -332,10 +332,11 @@ func GetListenerId(id string) People {
 }
 
 //Opcion de suscribir y desuscribir un listener
-func SuscribeListener(phonenumber string) Devices {
-	var listener Devices
-
-	connect.GetConnection().Table("devices").Where("phone_number = ?", phonenumber).First(&listener)
+func SuscribeListener(phonenumber string) Listeners {
+	var device Devices
+	var listener Listeners
+	connect.GetConnection().Table("devices").Where("phone_number = ?", phonenumber).First(&device)
+	connect.GetConnection().Where("idlisteners = ?", devices.Listeners_idlisteners).First(&listener)
 	//listener.Agreeterms = 1
 	//connect.GetConnection().Table("listeners").Where("number = ?", phonenumber).Updates(&listener)
 
