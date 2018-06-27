@@ -49,8 +49,8 @@ func SubscribeListener(w http.ResponseWriter, r * http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset-utf-8")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 
-	responselistener := modellisteners.ResponseListener{"succes", modellisteners.SuscribeListener(phonenumber), "Agreeterms actualizado con éxito"}
-	json.NewEncoder(w).Encode(responselistener)	
+	//responselistener := modellisteners.ResponseListener{"succes",, "Agreeterms actualizado con éxito"}
+	json.NewEncoder(w).Encode( modellisteners.SuscribeListener(phonenumber))	
 }
 
 //Función para ver todos los listener pertenecientes a un SO 
