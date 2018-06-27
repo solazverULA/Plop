@@ -75,6 +75,6 @@ func main() {
 	r.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir("../React/build/"))))
 
 	log.Println("El servidor se encuentra en el puerto 8001")
-	log.Fatal(http.ListenAndServe(":8001", r))
+	log.Fatal(http.ListenAndServe(":8002", r))
 
 }
