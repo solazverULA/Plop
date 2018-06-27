@@ -49,7 +49,7 @@ func SubscribeListener(w http.ResponseWriter, r * http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset-utf-8")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 
-	responselistener := modellisteners.ResponseDevices{"succes", modellisteners.SuscribeListener(phonenumber), "Agreeterms actualizado con éxito"}
+	responselistener := modellisteners.ResponseListener{"succes", modellisteners.SuscribeListener(phonenumber), "Agreeterms actualizado con éxito"}
 	json.NewEncoder(w).Encode(responselistener)	
 }
 
