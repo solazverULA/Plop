@@ -85,9 +85,9 @@ func SendNotification(idnotification string) Notifications {
 		connect.GetConnection().Table("notifications").Where("idnotifications = ?", idnotification).Updates(notification)
 		return notification
 	}*/
-	for i := 0; i < /*len(listenerhasnotifications)*/1; i++ {
+	for i := 0; i < len(listenerhasnotifications); i++ {
 		var listener modellisteners.Listeners
-		//connect.GetConnection().Where("cilisteners =?", listenerhasnotifications[i].Listeners_idlisteners).First(&listener)
+		connect.GetConnection().Where("cilisteners =?", listenerhasnotifications[i].Listeners_idlisteners).First(&listener)
 		var devices []modellisteners.Devices
 		connect.GetConnection().Where("listeners_cilisteners=?", listener.Id).Find(&devices)
 		for j := 0; j < len(devices); j++ {
