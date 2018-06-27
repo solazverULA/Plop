@@ -58,7 +58,8 @@ class Notifications extends React.Component{
 
   toggleModal() {
     this.setState({
-      toggle: !this.state.toggle
+      toggle: !this.state.toggle,
+      showAddContacts:false
     });
   }
 
