@@ -6,7 +6,7 @@ import Notification from '../views/NotificationWeb/NotificationWeb.jsx';
 var indexRoutes = [
 	{ path: "/register", name: "Register", component: Register },
     { path: "/login", name: "Login", component: Login },
-    { path: "/notification/:id", name: "Login", component: Login },
+    { path: "/notification/:id", name: "Login", component: Notification },
     { path: "/ListenerWeb/:id", name: "ListenerWeb", component: ListenerWeb },
     { path: "/", name: "Home", component: Dashboard },
     
