@@ -336,7 +336,7 @@ func SuscribeListener(phonenumber string) Listeners {
 	var device Devices
 	var listener Listeners
 	connect.GetConnection().Table("devices").Where("phone_number = ?", phonenumber).First(&device)
-	connect.GetConnection().Where("idlisteners = ?", device.Listeners_idlisteners).First(&listener)
+	connect.GetConnection().Where("cilisteners = ?", device.Listeners_idlisteners).First(&listener)
 	//listener.Agreeterms = 1
 	//connect.GetConnection().Table("listeners").Where("number = ?", phonenumber).Updates(&listener)
 

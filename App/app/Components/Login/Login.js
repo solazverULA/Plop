@@ -35,7 +35,7 @@ export default class Login extends Component<{}> {
 
       Api._SubscribeListener(Numberphone, (data)=>{
         
-        if(data.Data.Id!=0){
+        if(data.Id!=0){
             
           AsyncStorage.setItem('ListenerData', JSON.stringify(data.Data))
             .then((data)=>{
