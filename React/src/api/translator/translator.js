@@ -70,6 +70,7 @@ const data = {
 	BotonCancelar:["Cancelar", "Cancel"],
 	BotonGuardar:["Guardar", "Save"],
 	BotonCrear:["Crear", "Create"],
+	BotonAgregarListener:["Agregar contactos", "Add Contacts"],
 
 	//Mensajes:
 	MsjEliminarUsuario:["¿Desea eliminar el usuario", "Do you want to delete the user"],
@@ -196,6 +197,7 @@ const data = {
 	Lugares:["LUGARES", "PLACES"],
 	Todos:["TODOS", "ALL"],
 	verMenos:["Ver menos", "See less"],
+	numContacts:["Numero de contactos", "Contacts number"]
 }
 
 

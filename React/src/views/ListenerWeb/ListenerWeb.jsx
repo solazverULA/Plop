@@ -156,11 +156,9 @@ class ListenerWeb extends React.Component {
 		
 		 	return;
 		}
-<<<<<<< HEAD
-		if (this.state.Namelistener === "") {
-=======
-		if (this.state.Nameprofile == "") {
->>>>>>> Victor
+
+		if (this.state.Nameprofile === "") {
+
 			this.setState({errName:Languaje("ErrName")});
 			
 		 	return;
@@ -500,13 +498,9 @@ class ListenerWeb extends React.Component {
 																    :
 																    <Button
 																    	onClick={this.RegisterListenerButtom.bind(this)}
-<<<<<<< HEAD
-																		style={{borderWidth:1,borderStyle:"solid",borderColor:(this.state.Phonenumber.length<8 || this.state.DD === "DD" || this.state.MM === "MM" || this.state.YYYY === "YYYY" || this.state.Namelistener === "" || !this.state.checkbox) ? "grey" :"green",
-																			color:(this.state.Phonenumber.length<8 || this.state.DD === "DD" || this.state.MM === "MM" || this.state.YYYY === "YYYY" || this.state.Namelistener === "" || !this.state.checkbox) ? "grey" :"green",}}
-=======
-																		style={{borderWidth:1,borderStyle:"solid",borderColor:(this.state.Phonenumber.length<8 || this.state.DD == "DD" || this.state.MM == "MM" || this.state.YYYY == "YYYY" || this.state.Nameprofile == "" || !this.state.checkbox) ? "grey" :"green",
-																			color:(this.state.Phonenumber.length<8 || this.state.DD == "DD" || this.state.MM == "MM" || this.state.YYYY == "YYYY" || this.state.Nameprofile == "" || !this.state.checkbox) ? "grey" :"green",}}
->>>>>>> Victor
+																		style={{borderWidth:1,borderStyle:"solid",borderColor:(this.state.Phonenumber.length<8 || this.state.DD === "DD" || this.state.MM === "MM" || this.state.YYYY === "YYYY" || this.state.Nameprofile === "" || !this.state.checkbox) ? "grey" :"green",
+																			color:(this.state.Phonenumber.length<8 || this.state.DD === "DD" || this.state.MM === "MM" || this.state.YYYY === "YYYY" || this.state.Nameprofile === "" || !this.state.checkbox) ? "grey" :"green",}}
+
 																		type="submit" size="md" color="primary" className=" buttonReceptor js-push-btn mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
 																			{this.state.buttonMjs}
 																	</Button>

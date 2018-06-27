@@ -104,7 +104,7 @@ class Contacts extends React.Component{
               </Modal>
 
               { this.state.contacts[0] != null ?
-
+            
                 <Table hover responsive>
                   <thead className="thead-default">
                     <tr>
