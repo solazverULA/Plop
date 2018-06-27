@@ -3,10 +3,13 @@ import { Link } from 'react-router-dom';
 import {
     Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem,
     Dropdown, DropdownToggle, DropdownMenu, DropdownItem,
-    Container, InputGroup, InputGroupAddon, Input
+    Container
 } from 'reactstrap';
+import cookie from "react-cookies";
 
 import dashboardRoutes from '../../routes/dashboard.jsx';
+
+import language from "../../api/translator/translator"
 
 class Header extends React.Component{
     constructor(props) {
@@ -14,11 +17,27 @@ class Header extends React.Component{
         this.state = {
             isOpen: false,
             dropdownOpen: false,
-            color: "transparent"
+            color: "transparent",
+
+            language: cookie.load('language'),
         };
         this.toggle = this.toggle.bind(this);
         this.dropdownToggle = this.dropdownToggle.bind(this);
     }
+
+    _toSpanish(){
+      if(this.state.language!=="Spanish"){
+        cookie.save('language', "Spanish", { path: '/' });
+        window.location.reload()
+      }
+    }
+    _toEnglish(){
+      if(this.state.language!=="English"){
+        cookie.save('language', "English", { path: '/' });
+        window.location.reload()
+      }
+    }
+
     toggle() {
         if(this.state.isOpen){
             this.setState({
@@ -114,21 +133,7 @@ class Header extends React.Component{
                         <span className="navbar-toggler-bar navbar-kebab"></span>
                     </NavbarToggler>
                     <Collapse isOpen={this.state.isOpen} navbar className="justify-content-end">
-                        <form>
-                            <InputGroup className="no-border">
-                                <Input placeholder="Search..." />
-                                <InputGroupAddon><i className="now-ui-icons ui-1_zoom-bold"></i></InputGroupAddon>
-                            </InputGroup>
-                        </form>
                         <Nav navbar>
-                            <NavItem>
-                                <Link to="#pablo" className="nav-link">
-                                    <i className="now-ui-icons media-2_sound-wave"></i>
-            						<p>
-                                        <span className="d-lg-none d-md-block">Stats</span>
-                                    </p>
-                                </Link>
-                            </NavItem>
                             <Dropdown nav isOpen={this.state.dropdownOpen} toggle={(e) => this.dropdownToggle(e)}>
                                 <DropdownToggle caret nav>
                                     <i className="now-ui-icons location_world"></i>
@@ -137,13 +142,12 @@ class Header extends React.Component{
             						</p>
                                 </DropdownToggle>
                                 <DropdownMenu right>
-                                    <DropdownItem tag="a">Action</DropdownItem>
-                                    <DropdownItem tag="a">Another Action</DropdownItem>
-                                    <DropdownItem tag="a">Something else here</DropdownItem>
+                                    <DropdownItem onClick={this._toSpanish.bind(this)} tag="a">{language("Español")}</DropdownItem>
+                                    <DropdownItem onClick={this._toEnglish.bind(this)} tag="a">{language("Ingles")}</DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
                             <NavItem>
-                                <Link to="#pablo" className="nav-link">
+                                <Link to="/user-profile" className="nav-link">
                                     <i className="now-ui-icons users_single-02"></i>
                                     <p>
                                         <span className="d-lg-none d-md-block">Account</span>

@@ -1,23 +1,16 @@
 import React from 'react';
 import {
-    Card, CardHeader, CardBody, CardFooter, CardTitle, Button, Row, Col, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Table, Input,  InputGroup, FormGroup
+    Card, CardHeader, CardBody, CardFooter, CardTitle, Button, Row, Col,  Input,  InputGroup, FormGroup
 } from 'reactstrap';
 // react plugin used to create charts
-import { Line, Bar } from 'react-chartjs-2';
-// function that returns a color based on an interval of numbers
 
+// function that returns a color based on an interval of numbers
+import Cookies from 'react-cookies';
 import {
-    PanelHeader, Stats, CardCategory, Tasks
+    PanelHeader
 } from '../../components';
 
-import {
-    dashboardPanelChart,
-    dashboardShippedProductsChart,
-    dashboardAllProductsChart,
-    dashboard24HoursPerformanceChart
-} from '../../variables/charts.jsx';
-
-import { tasks } from '../../variables/general.jsx';
+import cookie from 'react-cookies';
 
 import Api from '../../api/Api/Api'
 
@@ -26,9 +19,12 @@ class Login extends React.Component{
   loginUser() {
     Api._loginUser(this.state, (data)=>{
       if(data.Status === "success"){
-        window.location.href="/notifications"
+        cookie.save('userId', data.DataUser, { path: '/' });
+        window.location.href="/Dashboard"
+        Cookies.save('userId', data.DataUser, { path: '/' })
+        console.log(data)
       }
-      console.log(data)
+
     })
   }
 

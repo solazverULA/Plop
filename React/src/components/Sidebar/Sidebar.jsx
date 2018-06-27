@@ -4,7 +4,7 @@ import { Nav } from 'reactstrap';
 // javascript plugin used to create scrollbars on windows
 import PerfectScrollbar from 'perfect-scrollbar';
 
-import logo from "../../logo-white.svg";
+//import logo export  "../../logo-white.svg";
 
 var ps;
 
@@ -27,11 +27,11 @@ class Sidebar extends React.Component{
             ps.destroy();
         }
     }
+    //<img src={logo} alt="react-logo" />
     render(){
         return (
             <div className="sidebar" data-color="blue">
                 <div className="logo">
-
                 	<a className="simple-text logo-normal">
                 		<h4>Plop!</h4>
                 	</a>
@@ -41,6 +41,8 @@ class Sidebar extends React.Component{
                         {
                             this.props.routes.map((prop,key) => {
                                 if(prop.redirect)
+                                    return null;
+                                if(prop.invisible) 
                                     return null;
                                 return (
                                     <li className={this.activeRoute(prop.path) + (prop.pro ? " active active-pro":"")} key={key}>

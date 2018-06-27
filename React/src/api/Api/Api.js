@@ -4,117 +4,6 @@ const host = localhost;
 
  const Api = {
 
-   _registerBank:function(Data){
-
-     fetch(host+"banks/addbank", {
-       method: 'POST',
-       header:{"Content-Type":"application/json"},
-       body: JSON.stringify(Data)
-      })
-      .then((response)=>{return response.json()})
-      .then((data)=>{
-        console.log(data);
-
-      })
-     .catch((error) => {
-       console.log(error)
-     });
-   },
-
-   _deleteBank:function(id, Do){
-
-     fetch(host+"banks/"+id+"/delete",{
-         method: 'POST',
-         header:{"Content-Type":"application/json"},
-       })
-
-       .then((response)=>{return response.json()})
-       .then((json)=>{
-         console.log(json)
-         Do()
-       })
-       .catch(err => console.log(err));
-
-   },
-
-   _getAllBanks:function(Do){
-
-     fetch(host+"banks/getbanks")
-       .then((response)=>{return response.json()})
-       .then((json)=>{
-         console.log(json)
-         Do(json);
-       })
-       .catch(err => console.log(err));
-
-   },
-
-   _updateWithdraw:function(id,  Data){
-     var formData = new FormData();
-
-     fetch(host+"editwithdraws/"+id, {
-       method: 'POST',
-       header:{"Content-Type":"application/json"},
-       body: JSON.stringify(Data)
-      })
-     .then((response) => response.json())
-     .then((responseJson) => {
-      // Perform success response.
-
-     })
-     .catch((error) => {
-
-     });
-   },
-
-   _deleteWithdraw:function(id, Do){
-
-     fetch(host+"deletewithdraws/"+id,{
-         method: 'POST',
-         header:{"Content-Type":"application/json"},
-       })
-       .then((response)=>{return response.json()})
-       .then((json)=>{
-         console.log(json)
-         Do()
-       })
-       .catch(err => console.log(err));
-
-   },
-
-   _getAllWithdraws:function(Do){
-
-     fetch(host+"allwithdraws")
-       .then((response)=>{return response.json()})
-       .then((json)=>{
-         console.log(json)
-         Do(json);
-       })
-       .catch(err => console.log(err));
-
-   },
-
-   _registerWithdraw:function(idreseller, idaccount, Data){
-
-     console.log(Data)
-
-     fetch(host+"reseller/"+idreseller+"/account/"+idaccount+"/registerwithdraws", {
-       method: 'POST',
-       header:{"Content-Type":"application/json"},
-       body: JSON.stringify(Data)
-      })
-      .then((response)=>{return response.json()})
-      .then((data)=>{
-        console.log(data);
-
-        window.location.href="Admin/#/reseller/withdraw"
-
-      })
-     .catch((error) => {
-       console.log(error)
-     });
-   },
-
    _deleteAccount:function(id, Do){
 
  		fetch(host+"deleteaccounts/"+id,{
@@ -175,66 +64,6 @@ const host = localhost;
      });
    },
 
-   _getWithdrawsOfReseller:function(idReseller, Do){
-
-     fetch(host+"reseller/"+idReseller+"/withdraws")
-       .then((response)=>{return response.json()})
-       .then((json)=>{
-         console.log(json)
-         Do(json);
-       })
-       .catch(err => console.log(err));
-
-   },
-
-   _getWalletOfReseller:function(idReseller, Do){
-
-     fetch(host+"getwallets/"+idReseller)
-       .then((response)=>{return response.json()})
-       .then((json)=>{
-         console.log(json)
-         Do(json);
-       })
-       .catch(err => console.log(err));
-
-   },
-
-   _getResellerForId:function(id, Do){
-
- 		fetch(host+"reseller/"+id)
- 	    .then((response)=>{return response.json()})
- 	    .then((json)=>{
- 	      console.log(json)
- 	      Do(json);
- 	    })
- 	    .catch(err => {console.log(err); return []});
-
- 	},
-
-   _updateReseller:function(id,  Data){
-     var formData = new FormData();
-
-     // Fields in the post
-     Object.keys(Data).map((keys)=>{
-         formData.append(keys,Data[keys])
-     })
-     console.log(formData)
-     fetch(host+"reseller/"+id+"/update", {
-       method: 'POST',
-
-       body: formData
-      })
-     .then((response) => response.json())
-     .then((responseJson) => {
-      // Perform success response.
-
-       window.location.href ="Admin/#/reseller/membership";
-
-     })
-     .catch((error) => {
-
-     });
-   },
 
    _getNotificationsUser:function(idUser, Do){
 
@@ -259,29 +88,6 @@ const host = localhost;
        .catch(err => console.log(err));
    },
 
-   _getIncomesOfReseller:function(idReseller, Do){
-
-     fetch(host+"reseller/"+idReseller+"/incomes")
-       .then((response)=>{return response.json()})
-       .then((json)=>{
-         console.log(json)
-         Do(json);
-       })
-       .catch(err => console.log(err));
-
-   },
-
-   _getUsersForReseller:function(code, Do){
-
-     fetch(host+"resellerscode?code="+code)
-       .then((response)=>{return response.json()})
-       .then((json)=>{
-         console.log(json)
-         Do(json);
-       })
-       .catch(err => {console.log(err); return []});
-
-   },
 
 	_getUsersForStatus:function(status, Do){
 
@@ -422,16 +228,16 @@ const host = localhost;
 	    .catch(err => console.log(err));
 
 	},
-	_RegisterUser:function(Data, file, Do){
+	_registerUser:function(Data, file, Do){
 
 			var formData = new FormData();
-// Fields in the post
 
 			formData.append("image", file);
 			Object.keys(Data).map((keys)=>{
 					formData.append(keys,Data[keys])
 			})
 			console.log(formData)
+      		console.log(Data)
 			fetch(host+"register", {
 			  method: 'POST',
 
@@ -440,24 +246,23 @@ const host = localhost;
 			.then((response) => response.json())
 			.then((responseJson) => {
 			  Do(responseJson)
-			  //window.location.href ="/Admin/#/users/all";
+
 			})
 			.catch((error) => {
 			    console.log(error)
 			});
-
-
 	},
+
 	_updateUser:function(Data,  id, fileIcon, fileLogo, Do){
 		var formData = new FormData();
 // Fields in the post
 		//Alert.alert("", JSON.stringify({...fileIcon,...fileLogo}))
 		console.log("Id:", id)
-    console.log("Data:", Data)
-    console.log("File:", fileIcon)
+	    console.log("Data:", Data)
+	    console.log("File:", fileIcon)
 		formData.append("image", fileLogo);
 		formData.append("imageIcon", fileIcon);
-    console.log(fileIcon)
+    	console.log(fileIcon)
 		Object.keys(Data).map((keys)=>{
 				formData.append(keys,Data[keys])
 		})
