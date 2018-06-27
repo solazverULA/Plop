@@ -1,13 +1,16 @@
 {
-  "main.css": "static/css/main.9bcf77f4.css",
-  "main.css.map": "static/css/main.9bcf77f4.css.map",
-  "main.js": "static/js/main.8c3ba924.js",
-  "main.js.map": "static/js/main.8c3ba924.js.map",
+  "main.css": "static/css/main.82c0ec21.css",
+  "main.css.map": "static/css/main.82c0ec21.css.map",
+  "main.js": "static/js/main.dbafe87e.js",
+  "main.js.map": "static/js/main.dbafe87e.js.map",
+  "static/media/Logo_plop.png": "static/media/Logo_plop.b117f765.png",
+  "static/media/bg3.jpg": "static/media/bg3.f807b37b.jpg",
+  "static/media/bg5.jpg": "static/media/bg5.056eb058.jpg",
   "static/media/fondoapp.jpg": "static/media/fondoapp.85332a4b.jpg",
+  "static/media/mike.jpg": "static/media/mike.aab414f7.jpg",
   "static/media/nucleo-outline.eot": "static/media/nucleo-outline.53a1bed7.eot",
   "static/media/nucleo-outline.ttf": "static/media/nucleo-outline.22a0bffe.ttf",
   "static/media/nucleo-outline.woff": "static/media/nucleo-outline.24e2d6b4.woff",
   "static/media/nucleo-outline.woff2": "static/media/nucleo-outline.8ebec31f.woff2",
-  "static/media/react-phone-input-style.less": "static/media/react-phone-input-style.1b053049.less",
-  "static/media/tickets.png": "static/media/tickets.3569dac0.png"
+  "static/media/react-phone-input-style.less": "static/media/react-phone-input-style.1b053049.less"
 }
