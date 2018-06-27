@@ -19,7 +19,8 @@ const data = {
 	Meses:["Meses", "Mounths"],
 	Año:["Año", "Year"],
 	PorMes:["por/mes", "per/month"],
-
+	NotificacionSimple:["Notificacion Sencilla", "Simple Notification"],
+	NotificacionURL:["Notificacion Url", "Url notification"],
 	//Registro de usuarios
 	RegistrarUsuario:["Registrar Usuario", "Register User"],
 	NumeroTlf:["Número de teléfono", "Phone number"],

@@ -76,7 +76,7 @@ class Notifications extends React.Component{
   }
 
   changeNotificationType(event){
-    this.setState({notificationType:Number(event.target.value)})
+    this.setState({notificationType:Number(event.target.value), Type:Number(event.target.value)})
   }
 
   addListenerToNotification(contacts) {
@@ -103,7 +103,7 @@ class Notifications extends React.Component{
                         <InputGroup style={{'marginLeft':'1%'}}>
                         <Input onChange={this.changeNotificationType} style={{'borderRadius':'5px', 'borderColor':'#979797'}} className='business-title-color' type="select" id="notification_type" name="Type" required={true}>
                           <option value="0">{language("NotificacionSimple")}</option>
-                          <option value="1">{language("NotificacionURL")}</option>
+                          <option value="2">{language("NotificacionURL")}</option>
                         </Input>
                       </InputGroup>
 
@@ -148,7 +148,7 @@ class Notifications extends React.Component{
                       </div>
                       : null }
 
-                      { this.state.notificationType === 1 ?
+                      { this.state.notificationType === 2 ?
 
                         <div style={{'paddingLeft':'7%', 'paddingRight':'7%'}}>
 
@@ -174,7 +174,7 @@ class Notifications extends React.Component{
       														{language("EtiquetaBoton")}
       													</div>
                                 <InputGroup>
-                                  <Input style={{width:'300px'}} type="text" id="notification_title" name="Title" placeholder="Notification title" onChange={(event)=>this.setState({name_button:event.target.value})} required={true}/>
+                                  <Input style={{width:'300px'}} type="text" id="notification_title" name="Title" placeholder="Notification title" onChange={(event)=>this.setState({Namebutton:event.target.value})} required={true}/>
                                 </InputGroup>
       												</FormGroup>
       											</Row>
@@ -184,7 +184,7 @@ class Notifications extends React.Component{
       														URL
       													</div>
                                 <InputGroup>
-                                  <Input style={{width:'300px'}} type="text" id="notification_title" name="Title" placeholder="Notification title" onChange={(event)=>this.setState({action:event.target.value})} required={true}/>
+                                  <Input style={{width:'300px'}} type="text" id="notification_title" name="Title" placeholder="Notification title" onChange={(event)=>this.setState({Action:event.target.value})} required={true}/>
                                 </InputGroup>
       												</FormGroup>
       											</Row>

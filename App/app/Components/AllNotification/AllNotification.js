@@ -36,7 +36,7 @@ let notif={};
 		})
 		.catch(err => console.log(err));
 			console.log ('Notification action received: ' + action);
-			let url = (notif["type"] === "2" || notif["type"] === "3" ) ? notif["action"]: "https://notificatorapp.com/Admin/#/notification/"+ notif["src"];
+			let url = (notif["type"] === "2" || notif["type"] === "3" ) ? notif["action"]: "http://vps-1506896-x.dattaweb.com/notification/"+ notif["src"];
 
 			if(!url.includes("https://") && !url.includes("http://")){
 				url= "http://" + url;
@@ -44,7 +44,7 @@ let notif={};
 			if (notif["type"] == 7) 
 				url = "https://docs.google.com/document/d/"+notif["src"]+"/edit"
 			if (notif["type"] == 8)
-				url = "https://notificatorapp.com/Admin/#/information/"+ notif["id"]
+				url = "http://vps-1506896-x.dattaweb.com/information/"+ notif["id"]
 			Linking.openURL(url)
 			
 		});
@@ -104,11 +104,11 @@ PushNotification.configure({
 						notification.finish();
 					}else{
 						 
-							let url = (notif["type"] === "2" || notif["type"] === "3" ) ? notif["action"]: "https://notificatorapp.com/Admin/#/notification/"+ notif["src"];
+							let url = (notif["type"] === "2" || notif["type"] === "3" ) ? notif["action"]: "http://vps-1506896-x.dattaweb.com/notification/"+ notif["src"];
 							if (notif["type"] == 7) 
 								url = "https://docs.google.com/document/d/"+notif["src"]+"/edit"
 							if (notif["type"] == 8)
-								url = "https://notificatorapp.com/Admin/#/information/"+ notif["id"]
+								url = "http://vps-1506896-x.dattaweb.com/information/"+ notif["id"]
 							if(!url.includes("https://") && !url.includes("http://")){
 								url= "http://" + url;
 							}
@@ -157,7 +157,7 @@ export default class AllNotification extends Component<{}> {
 						UserSeleted:{},
 						usersToShow:[], 
 						notificationsUser:[],
-						notification:[]
+						Notifications:[]
 					};                    
 		AsyncStorage.getItem('ListenerData')
 			.then((data)=>{
@@ -191,7 +191,7 @@ export default class AllNotification extends Component<{}> {
 
 	}
 	_onNotification(user){
-		this.setState({NotificationOpen:true, UserSeleted:user, notificationsUser:this.state.NotificationsL.filter((data)=>(data.Notifications.Users_iduser==user.Id))})
+		this.setState({NotificationOpen:true, UserSeleted:user, notificationsUser:this.state.Notifications.filter((data)=>(data.Notifications.Users_iduser==user.Id))})
 	}
 	
 	/*<List containerStyle={{marginBottom: 20}}>

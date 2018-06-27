@@ -31,9 +31,9 @@ export default class App extends Component<{}> {
     super(props);
   
     this.state = {isloging:false};
-   /*AsyncStorage.getItem('ListenerData')
+   AsyncStorage.getItem('ListenerData')
       .then((data)=>{this.setState({isloging:data!=null})})
-      .catch((errr)=>Alert.alert("nno", JSON.stringify(errr)))*/
+      .catch((errr)=>Alert.alert("nno", JSON.stringify(errr)))
 
       
    

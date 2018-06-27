@@ -102,11 +102,11 @@ func SendNotification(idnotification string) Notifications {
 				}*/
 				//connect.GetConnection().Table("featureuser").Where("users_iduser = ?", notification.Users_iduser).Updates(&feactureUser)
 				//connect.GetConnection().Where("users_iduser = ?", notification.Users_iduser).First(&profile)
-				//notificationtype := strconv.Itoa(notification.Type)
+				notificationtype := strconv.Itoa(notification.Type)
 				idlistener := strconv.Itoa(listener.Id)
 
 				//jsonstr = []byte(`{ "to":"` + devices[j].Token + `","data":{"title":"` + notification.Title + `",` + `"body":"` + notification.Body + `","src":"` + modelimages.SearchIdDrive(notification.Srcimage) + `","srcExpandible":"` + modelimages.SearchIdDrive(notification.Srcimageexpandible) + `","icon":"` + modelimages.SearchIdDrive(profile.Srcicon) + `","type":` + notificationtype + `,"action":"` + notification.Action + `","id":` + idnotification + `,"idlisteners":` + idlistener + `,"namebutton":"` + notification.Namebutton + `"}}`)
-				jsonstr = []byte(`{ "to":"`+ devices[j].Token+`","data":{"title":"` + notification.Title + `",` + `"body":"` + notification.Body /*` + modelimages.SearchIdDrive(notification.Srcimage) + `*/ + `","src":"","type":1,"idlisteners":` + idlistener + `,"namebutton":"` +`"}}`)
+				jsonstr = []byte(`{ "to":"`+ devices[j].Token+`","data":{"title":"` + notification.Title + `",` + `"body":"` + notification.Body +` ","src":"` + modelimages.SearchIdDrive(notification.Srcimage) + `","type":1,"idlisteners":` + idlistener + `,"namebutton":"`+notification.Namebutton  + `","action":"` + notification.Action +`","type":` + notificationtype +`}}`)
 
 				url := "https://fcm.googleapis.com/fcm/send"
 				log.Println(string(jsonstr))
