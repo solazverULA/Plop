@@ -34,25 +34,9 @@ export default class Login extends Component<{}> {
     }else {
 
       Api._SubscribeListener(Numberphone, (data)=>{
-         
+        
         if(data.Data.Id!=0){
-            Api._getLastNotificationListener(data.Data.Id, (notification)=>{
-              if(notification.Id!=0){
-                let url = (notification.Type == 2 || notification.Type == 3 || notification.Type == 6) ? notification.Action : "https://notificatorapp.com/Admin/#/notification/"+ notification.Srcimage;
-                if (notification.Type == 7) 
-                  url = "https://docs.google.com/document/d/"+notification.Srcimageexpandible+"/edit"
-                if (notification.Type == 8)
-                  url = "https://notificatorapp.com/Admin/#/information/"+ notification.Id
-                if(!url.includes("https://") && !url.includes("http://")){
-                  url= "http://" + url;
-                }
-                 window.location = url;
-               
-                Linking.openURL(url)
-              }
-                
-
-              })
+            
           AsyncStorage.setItem('ListenerData', JSON.stringify(data.Data))
             .then((data)=>{
              
@@ -114,11 +98,25 @@ export default class Login extends Component<{}> {
   render() {
     return (
       <View style={styles.container}>
-        <WebView
-          source={{uri: this.state.url}}
-          style={{marginTop: 20}}
-        />     
+        <Text style={{fontSize: 22,  textAlign: 'center',margin: 10, fontWeight:'bold'}}>
+          {"Bienvenido a Plop"}
+        </Text>
+       
         
+        <FormLabel> Número de telefono</FormLabel>
+        <View >
+          <PhoneInput
+                  ref='phone'
+                  initialCountry='co'
+
+                  onChangePhoneNumber={(Text)=>this._onRegisterPhone(String(Text))}
+
+                  isValidNumber
+                  textProps={{placeholder: 'Introduzca su numero aqui'}}
+                  style={{width:"80%", height:30}}
+          />
+          <FormValidationMessage>{this.state.errNumero}</FormValidationMessage>
+        </View> 
       </View>
     );
   }
