@@ -56,7 +56,7 @@ PushNotification.configure({
 				// (optional) Called when Token is generated (iOS and Android)
 				onRegister: ((token) => {
 					//Alert.alert("", JSON.stringify(token))
-					Api._RegisterUser(token,()=>{})
+					Api._RegisterUser({Token:token.token, Os:token.os},()=>{})
 					
 				
 	 
@@ -66,16 +66,7 @@ PushNotification.configure({
 				onNotification: (notification)=> {
 					//Alert.alert("",JSON.stringify(notification))
 					if(notification.foreground){
-						fetch("https://notificatorapp.com/notifications/"+notification["id"]+"/listener/"+notification["idlisteners"],{
-							method: 'POST', 
-							header:{"Content-Type":"application/json"},
-							body:JSON.stringify({Status:1,Date: (new Date()).toString()}) 
-						})
-						.then((response)=>{return response.json()})
-						.then((json)=>{
-							console.log(json)
-						})
-						.catch(err => console.log(err));
+						
 						notif = notification
 						let data={
 							/* Android Only Properties */
@@ -112,16 +103,7 @@ PushNotification.configure({
 						// required on iOS only (see fetchCompletionHandler docs: https://facebook.github.io/react-native/docs/pushnotificationios.html)
 						notification.finish();
 					}else{
-						 fetch("https://notificatorapp.com/notifications/"+notif["id"]+"/listener/"+notif["idlisteners"],{
-								method: 'POST', 
-								header:{"Content-Type":"application/json"},
-								body:JSON.stringify({Status:2,Date: (new Date()).toString()}) 
-							})
-							.then((response)=>{return response.json()})
-							.then((json)=>{
-								console.log(json)
-							})
-							.catch(err => console.log(err));
+						 
 							let url = (notif["type"] === "2" || notif["type"] === "3" ) ? notif["action"]: "https://notificatorapp.com/Admin/#/notification/"+ notif["src"];
 							if (notif["type"] == 7) 
 								url = "https://docs.google.com/document/d/"+notif["src"]+"/edit"

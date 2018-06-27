@@ -2,9 +2,9 @@ const server = "https://notificatorapp.com/";
 
 const localhost = "http://localhost:8001/";
 
-const serverpruebas = "http://vps-1456295-x.dattaweb.com/";
+const serverpruebas = "http://vps-1506896-x.dattaweb.com/";
 
-const host = server;
+const host = serverpruebas;
 
  const Api = {
 	
@@ -117,6 +117,19 @@ const host = server;
 	    })
 	    .catch(err => console.log(err));
 	},
+	_updateUser:function(devices, id){
+		fetch(host+"listeners/"+id+"/adddevices", {
+	      method: 'POST', 
+	      header:{"Content-Type":"application/json"}, 
+	      body:JSON.stringify(user)
+	  	})
+	    .then((data)=>{
+	      console.log(data);
+	      window.location.href ="/#/users/all";
+	    })
+	    .catch(err => console.log(err));
+	},
+	
 	_getProfileForUserId:function(id, Do){
 		
 		fetch(host+"user/"+id+"/getprofile")
