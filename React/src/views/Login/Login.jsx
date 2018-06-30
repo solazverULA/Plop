@@ -14,6 +14,19 @@ import Api from '../../api/Api/Api'
 
 class Login extends React.Component{
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+                  bgClass:"",
+                 };
+
+  }
+    
+  componentDidMount() {
+    this.setState({ bgClass: 'login-register-bg' });
+  }
+    
   loginUser() {
     Api._loginUser(this.state, (data)=>{
       if(data.Status === "success"){
@@ -31,7 +44,7 @@ class Login extends React.Component{
                 <PanelHeader
                     size="sm"
                 />
-              <div className="content">
+              <div className={'content ' + this.state.bgClass}>
                     <Row className="justify-content-center">
                         <Col xs={12} md={4} className="justify-content-center">
                             <Card className="card-chart" style={{height: '300px'}}>
